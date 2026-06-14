@@ -23,10 +23,7 @@ const values = [
 
 export default function About() {
   return (
-    <section
-      id="about"
-      className="relative overflow-hidden py-24"
-    >
+    <section id="about" className="relative overflow-hidden py-24">
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-[#616CFA]/10 blur-[120px]" />
@@ -58,11 +55,13 @@ export default function About() {
           {/* Image */}
           <FadeUp>
             <div className="relative h-[420px] overflow-hidden rounded-3xl border border-white/10">
-              <Image
-                src="/team.jpg"
-                alt="Y SPACE Team"
-                fill
-                className="object-cover brightness-50 transition duration-700 hover:scale-105"
+              <video
+                src="/about-robo.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover brightness-100 transition duration-700 hover:scale-105"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />

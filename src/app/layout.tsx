@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Lexend } from "next/font/google";
 import "./globals.css";
+import Chatbot from "../components/chatbot/Chatbot";
 
 const headingFont = Space_Grotesk({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+        <Chatbot />
       </body>
     </html>
   );
