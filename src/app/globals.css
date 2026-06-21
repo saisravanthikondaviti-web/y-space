@@ -3,8 +3,8 @@
 :root {
   --background: #000000;
 
-  --primary: #616CFA;   /* Electric Indigo */
-  --secondary: #E46ECC; /* Electric Orchid */
+  --primary: #616CFA;
+  --secondary: #E46ECC;
 
   --white: #FFFFFF;
 
@@ -15,6 +15,8 @@
   --border: rgba(255,255,255,0.08);
 }
 
+/* ================= BASE ================= */
+
 html {
   scroll-behavior: smooth;
 }
@@ -24,7 +26,10 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   cursor: none;
+  line-height: 1.6;
 }
+
+/* ================= TYPOGRAPHY ================= */
 
 .font-heading {
   font-family: var(--font-heading), sans-serif;
@@ -39,33 +44,66 @@ body {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #71717a;
+  margin-bottom: 0.75rem;
 }
 
 .section-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.05;
+  margin-bottom: 1rem;
 }
 
 .section-text {
   font-size: 1.125rem;
   line-height: 1.8;
   color: #a1a1aa;
+  max-width: 60ch;
 }
 
-/* background grid */
+/* ================= LAYOUT SPACING SYSTEM ================= */
+/* This is the important fix for your “spacing consistency” */
+
+.section-padding {
+  padding-top: clamp(5rem, 10vw, 9rem);
+  padding-bottom: clamp(5rem, 10vw, 9rem);
+}
+
+.section-padding-sm {
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.section-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* spacing between blocks inside sections */
+.content-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ================= BACKGROUND GRID ================= */
 
 .hero-grid {
   background-image:
-    linear-gradient(
-      rgba(255,255,255,0.04) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,0.04) 1px,
-      transparent 1px
-    );
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
 
   background-size: 50px 50px;
+}
+
+/* ================= UTILITIES ================= */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

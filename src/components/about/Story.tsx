@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 const story = [
   {
@@ -27,28 +26,21 @@ const story = [
 ];
 
 export default function Story() {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://unpkg.com/@splinetool/viewer@1.12.97/build/spline-viewer.js";
-    script.type = "module";
-    document.body.appendChild(script);
-  }, []);
-
   return (
     <section className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden">
-      {/* background glow */}
+      {/* Background Glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[180px] rounded-full" />
       </div>
 
       <div className="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-20">
-        {/* LEFT */}
+        {/* LEFT COLUMN */}
         <div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="text-[#E46ECC] uppercase tracking-[0.35em] text-sm"
           >
             Our Story
@@ -57,6 +49,7 @@ export default function Story() {
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="text-5xl md:text-6xl font-bold mt-6 leading-tight text-white"
           >
             Built on{" "}
@@ -69,22 +62,27 @@ export default function Story() {
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
             className="mt-8 text-zinc-400 text-lg leading-relaxed max-w-md"
           >
             Every studio has a beginning. Ours started with a refusal to build
             meaningless design — and a commitment to build brands that feel
             alive.
           </motion.p>
-          {/* CANVA EMBED */}
-          <div className="mt-12 relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_0_70px_rgba(0,0,0,0.6)]">
-            <iframe
-              loading="lazy"
-              className="absolute inset-0 w-full h-full"
-              src="https://www.canva.com/design/DAHNJh1lPbY/myRa6S9zlempbzLqJMGjpw/watch?embed"
-              allowFullScreen
-            />
 
-            {/* cinematic overlay */}
+          {/* VIDEO */}
+          <div className="mt-12 relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_0_70px_rgba(0,0,0,0.6)]">
+            <video
+              className="absolute inset-0 w-full h-full object-contain"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src="/roadmap.mp4" type="video/mp4" />
+            </video>
+
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
           </div>
         </div>
@@ -96,12 +94,15 @@ export default function Story() {
               key={index}
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
               className="mb-14 relative"
             >
               <div className="absolute -left-[22px] top-2 w-3 h-3 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] shadow-[0_0_20px_rgba(97,108,250,0.6)]" />
 
-              <h3 className="text-white text-lg font-semibold">{item.title}</h3>
+              <h3 className="text-white text-lg font-semibold">
+                {item.title}
+              </h3>
 
               <p className="mt-2 text-zinc-400 text-base leading-relaxed">
                 {item.text}

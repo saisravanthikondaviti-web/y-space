@@ -37,7 +37,6 @@ export default function Belief() {
       </div>
 
       <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
-        
         {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -49,9 +48,9 @@ export default function Belief() {
           </p>
 
           <h2 className="text-5xl md:text-6xl font-bold mt-6 leading-tight text-white">
-            We Build With{" "}
+            Every Decision Starts With{" "}
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-              Intent
+              Belief
             </span>
           </h2>
 
@@ -96,7 +95,6 @@ export default function Belief() {
 
         {/* RIGHT ORBIT */}
         <div className="relative h-[620px] flex items-center justify-center">
-          
           {/* orbit ring */}
           <div className="absolute w-[460px] h-[460px] rounded-full border border-white/10" />
 
