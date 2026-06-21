@@ -7,12 +7,16 @@ import Approach from "@/components/about/Approach";
 import Founder from "@/components/about/Founder";
 import Philosophy from "@/components/about/Philosophy";
 import CTA from "@/components/about/CTA";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 
 export default function AboutPage() {
   return (
     <main className="bg-black text-white overflow-hidden">
+      <ScrollProgress />
+      <SmoothScroll />
       <CustomCursor />
       <Navbar />
       <AboutHero />

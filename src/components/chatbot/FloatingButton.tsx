@@ -7,23 +7,28 @@ interface Props {
 export default function FloatingButton({ onClick }: Props) {
   return (
     <button
-      onClick={onClick}
-      className="
-      fixed
-      bottom-6
-      right-6
-      h-16
-      w-16
-      rounded-full
-      bg-white/10
-      backdrop-blur-xl
-      border
-      border-white/20
-      shadow-xl
-      z-50
-    "
-    >
-      💬
-    </button>
+  onClick={onClick}
+  className="
+    fixed
+    bottom-6
+    right-6
+    h-16
+    w-16
+    rounded-full
+    bg-white/10
+    backdrop-blur-xl
+    border
+    border-white/20
+    shadow-xl
+    z-50
+    flex items-center justify-center
+  "
+>
+  <img
+    src="/yspacelogo.png"
+    alt="Logo"
+    className="h-8 w-8 object-contain"
+  />
+</button>
   );
 }
