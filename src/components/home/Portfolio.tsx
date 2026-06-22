@@ -9,21 +9,21 @@ const projects = [
     title: "Building Distinct Digital Identities",
     description:
       "Creating memorable brand experiences that connect with audiences and establish long-term recognition.",
-    image: "/portfolio/branding.jpg",
+    image: "/images/portfolio/branding.jpg",
   },
   {
     category: "Web Development",
     title: "High-Performance Digital Platforms",
     description:
       "Modern websites engineered for speed, scalability, and exceptional user experiences.",
-    image: "/portfolio/webdev.png",
+    image: "/images/portfolio/webdev.png",
   },
   {
     category: "Digital Marketing",
     title: "Growth-Focused Marketing Campaigns",
     description:
       "Data-driven campaigns designed to increase visibility, engagement, and measurable results.",
-    image: "/portfolio/marketing.jpg",
+    image: "/images/portfolio/marketing.jpg",
   },
 ];
 

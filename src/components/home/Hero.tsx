@@ -36,7 +36,7 @@ export default function Hero() {
       />
       <div className="relative z-10 text-center">
         <p className="mb-4 text-sm uppercase tracking-[0.4em] text-zinc-500">
-          Creative Growth Organization
+          Creative Space
         </p>
 
         <motion.h1
@@ -45,9 +45,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          We Build Brands
+          Build Your Space.
           <br />
-          That Grow.
+          Own Your Market.
         </motion.h1>
 
         <p className="mx-auto mt-8 max-w-2xl text-lg text-zinc-400">
@@ -83,7 +83,7 @@ export default function Hero() {
           </motion.button>
 
           <button className="rounded-full border border-white/20 px-6 py-3">
-            View Portfolio
+            Explore Work
           </button>
         </div>
       </div>

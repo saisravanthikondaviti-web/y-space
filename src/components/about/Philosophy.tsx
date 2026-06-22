@@ -6,25 +6,25 @@ const items = [
   {
     title: "Branding",
     text: "Not about looking good. About being remembered.",
-    image: "/philosophy-1.avif",
+    image: "/images/philosophy/philosophy-1.avif",
     span: "md:col-span-2 md:row-span-2",
   },
   {
     title: "Marketing",
     text: "Not about doing more. About doing what matters.",
-    image: "/philosophy-2.jpg",
+    image: "/images/philosophy/philosophy-2.jpg",
     span: "",
   },
   {
     title: "Growth",
     text: "Not everything. Only what drives impact.",
-    image: "/philosophy-3.jpg",
+    image: "/images/philosophy/philosophy-3.jpg",
     span: "",
   },
   {
   title: "Success",
   text: "Not accidental. It is designed with intent.",
-  image: "/philosophy-4.jpg",
+  image: "/images/philosophy/philosophy-4.jpg",
   span: "",
 }
 ];

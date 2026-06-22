@@ -25,7 +25,7 @@ export default function FloatingButton({ onClick }: Props) {
   "
 >
   <img
-    src="/yspacelogo.png"
+    src="/images/yspacelogo.png"
     alt="Logo"
     className="h-8 w-8 object-contain"
   />

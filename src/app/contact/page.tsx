@@ -14,27 +14,11 @@ export default function ContactPage() {
         <SmoothScroll />
         <CustomCursor />
         <Navbar />
-      {/* HERO */}
-      <section className="px-6 md:px-16 pt-40 pb-32 text-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-bold"
-        >
-          Let’s Build Something{" "}
-          <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-            Meaningful
-          </span>
-        </motion.h1>
-
-        <p className="mt-6 text-white/60 max-w-2xl mx-auto text-lg">
-          Tell us about your project. We’ll respond with clarity, direction, and a
-          plan — not just a reply.
-        </p>
-      </section>
+      
+      
 
       {/* CONTACT SECTION */}
-      <section className="px-6 md:px-16 pb-32">
+      <section className="px-6 md:px-16 pt-32 pb-24">
         <div className="mx-auto max-w-7xl grid lg:grid-cols-2 gap-16 items-start">
 
           {/* LEFT SIDE */}
@@ -62,14 +46,12 @@ export default function ContactPage() {
 
     <div>
       <p className="text-white/40 uppercase text-xs tracking-widest">
-        Contact Us
+        Reach Us Through
       </p>
     </div>
 
-    <p>📞 Phone: +91 9951737226</p>
     <p>📧 Email: hello@vaispace.in</p>
     <p>📍 Location: Visakhapatnam, India</p>
-    <p>📸 Instagram: @vaispace</p>
 
   </div>
 

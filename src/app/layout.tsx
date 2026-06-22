@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Lexend } from "next/font/google";
 import "./globals.css";
 import Chatbot from "../components/chatbot/Chatbot";
+import GlobalParticles from "@/components/ui/GlobalParticles";
 
 const headingFont = Space_Grotesk({
   subsets: ["latin"],
@@ -14,18 +15,18 @@ const bodyFont = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "Y SPACE | Creative Growth Organization",
+  title: "VAI SPACE | Creative Growth Organization",
   description:
-    "Y SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+    "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
   keywords: [
     "Digital Marketing Agency",
     "Branding Agency",
     "Creative Agency",
     "Web Development",
     "Performance Marketing",
-    "Y SPACE",
+    "VAI SPACE",
   ],
-  authors: [{ name: "Y SPACE" }],
+  authors: [{ name: "VAI SPACE" }],
 };
 
 export default function RootLayout({
@@ -40,6 +41,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+        {/* Global Particles */}
+        <GlobalParticles />
         <Chatbot />
       </body>
     </html>

@@ -9,11 +9,11 @@ export default function Footer() {
           <div className="flex items-center gap-3">
             {/* Replace src with your actual logo path */}
             <img
-              src="/yspacelogo.png"
-              alt="Y SPACE Logo"
+              src="/images/yspacelogo.png"
+              alt="VAI SPACE Logo"
               className="h-8 w-8 object-contain"
             />
-            <h3 className="font-bold text-lg tracking-wide">Y SPACE</h3>
+            <h3 className="font-bold text-lg tracking-wide">VAI SPACE</h3>
           </div>
 
           <p className="mt-4 text-zinc-400 leading-relaxed">
@@ -52,7 +52,7 @@ export default function Footer() {
       {/* BOTTOM BAR */}
       <div className="mt-12 border-t border-white/10 pt-6">
         <div className="mx-auto max-w-7xl px-8 flex flex-col md:flex-row justify-between gap-4 text-sm text-zinc-500">
-          <p>© {new Date().getFullYear()} Y SPACE. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} VAI SPACE. All rights reserved.</p>
           
         </div>
       </div>

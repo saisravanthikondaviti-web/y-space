@@ -39,7 +39,7 @@ export default function CTA() {
             {/* IMAGE */}
             <div className="relative w-full h-[320px] rounded-3xl overflow-hidden border border-white/10 group">
               <img
-                src="/cta.jpg"
+                src="/images/cta.jpg"
                 alt="Creative work preview"
                 className="w-full h-full object-cover scale-105 group-hover:scale-110 transition duration-700"
               />

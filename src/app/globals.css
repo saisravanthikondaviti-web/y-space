@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+
+/* ================= FONTS ================= */
+
+@font-face {
+  font-family: "MadeTommy";
+  src: url("/fonts/MADETommy-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lexend";
+  src: url("/fonts/Lexend-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 :root {
   --background: #000000;
 
@@ -27,6 +45,8 @@ body {
   overflow-x: hidden;
   cursor: none;
   line-height: 1.6;
+
+  font-family: var(--font-body), sans-serif;
 }
 
 /* ================= TYPOGRAPHY ================= */
@@ -59,6 +79,15 @@ body {
   line-height: 1.8;
   color: #a1a1aa;
   max-width: 60ch;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
 }
 
 /* ================= LAYOUT SPACING SYSTEM ================= */

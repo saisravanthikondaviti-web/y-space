@@ -80,7 +80,7 @@ export default function Story() {
               playsInline
               preload="auto"
             >
-              <source src="/roadmap.mp4" type="video/mp4" />
+              <source src="/videos/roadmap.mp4" type="video/mp4" />
             </video>
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />

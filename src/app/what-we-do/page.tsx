@@ -30,7 +30,15 @@ const outcomes = [
   },
 ];
 
-const services = [
+type Service = {
+  title: string;
+  video: string;
+  description: string;
+  items: string[];
+  details: Record<string, string>;
+};
+
+const services: Service[] = [
   {
     title: "Branding",
     video: "/videos/Brand.mp4",
@@ -65,24 +73,24 @@ const services = [
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
-      "Design That Communicates",
-      "Marketing Collateral Design",
       "Social Media Creatives",
+      "Marketing Collateral Design",
       "Corporate Design",
       "Ad Creatives",
+      "Design That Communicates",
     ],
     details: {
-      "Design That Communicates":
-        "We create visually compelling designs that strengthen brand perception and support marketing objectives.",
-      "Marketing Collateral Design":
-        "Designing brochures, flyers, and presentations that effectively communicate your brand's message and value proposition.",
       "Social Media Creatives":
         "Crafting eye-catching visuals for social media platforms that engage your audience and enhance your brand presence.",
       "Corporate Design":
         "Developing professional designs for corporate materials such as annual reports, business cards, and internal communications.",
+      "Marketing Collateral Design":
+        "Designing brochures, flyers, and presentations that effectively communicate your brand's message and value proposition.",
       "Ad Creatives":
         "Creating impactful ad creatives that capture attention and drive conversions across various advertising channels.",
-    },
+      "Design That Communicates":
+        "We create visually compelling designs that strengthen brand perception and support marketing objectives.",
+        },
   },
   {
     title: "Digital Marketing",
@@ -460,7 +468,7 @@ export default function WhatWeDo() {
             <h2 className="mt-5 text-4xl md:text-5xl font-bold leading-tight">
               Your next stage of growth
               <span className="block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                starts with clarity.
+                starts with vai space.
               </span>
             </h2>
 

@@ -8,21 +8,28 @@ type Particle = {
   top: number;
   duration: number;
   color: string;
+  size: number;
 };
 
 export default function GlobalParticles() {
+  const [mounted, setMounted] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
+    setMounted(true);
+
     const generated: Particle[] = [...Array(40)].map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
       duration: 4 + Math.random() * 6,
       color: Math.random() > 0.5 ? "#616CFA" : "#E46ECC",
+      size: 2 + Math.random() * 6,
     }));
 
     setParticles(generated);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -38,10 +45,12 @@ export default function GlobalParticles() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute h-[2px] w-[2px] rounded-full"
+          className="absolute rounded-full"
           style={{
             left: `${p.left}%`,
             top: `${p.top}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
             backgroundColor: p.color,
           }}
         />

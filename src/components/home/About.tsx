@@ -35,7 +35,7 @@ export default function About() {
         <div className="mb-20 max-w-4xl">
           <FadeUp>
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
-              About Y SPACE
+              About VAISPACE
             </p>
           </FadeUp>
 
@@ -56,7 +56,7 @@ export default function About() {
           <FadeUp>
             <div className="relative h-[420px] overflow-hidden rounded-3xl border border-white/10">
               <video
-                src="/about-robo.mp4"
+                src="/videos/about-robo.mp4"
                 autoPlay
                 loop
                 muted
@@ -90,7 +90,7 @@ export default function About() {
               </h3>
 
               <p className="mb-6 leading-relaxed text-zinc-400">
-                Y SPACE is a creative and technology-driven agency dedicated to
+                VAI SPACE is a creative and technology-driven agency dedicated to
                 helping businesses build powerful digital identities and
                 meaningful customer experiences. We collaborate with startups,
                 enterprises, and growing brands to transform ideas into engaging

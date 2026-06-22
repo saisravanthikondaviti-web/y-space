@@ -46,7 +46,7 @@ export default function Services() {
 
         <FadeUp>
           <h2 className="max-w-3xl text-4xl font-bold md:text-5xl">
-              Solutions Designed
+              Designed
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
                 {" "}
                 For Digital Growth

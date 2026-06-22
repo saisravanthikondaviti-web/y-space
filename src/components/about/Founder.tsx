@@ -23,7 +23,7 @@ export default function Founder() {
           className="mx-auto w-[220px] h-[220px] md:w-[280px] md:h-[280px] rounded-full overflow-hidden border border-white/10 shadow-xl"
         >
           <Image
-            src="/founder.png"
+            src="/images/founder.png"
             alt="Founder"
             width={600}
             height={600}
