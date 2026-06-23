@@ -23,7 +23,7 @@ export default function GlobalParticles() {
       top: Math.random() * 100,
       duration: 4 + Math.random() * 6,
       color: Math.random() > 0.5 ? "#616CFA" : "#E46ECC",
-      size: 2 + Math.random() * 6,
+      size: 1 + Math.random() * 3,
     }));
 
     setParticles(generated);

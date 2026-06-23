@@ -32,7 +32,7 @@ export default function Navbar() {
             <Link href="/team">TEAM</Link>
           </li>
           <li>
-            <Link href="/blog">BLOG</Link>
+            <Link href="/blogs">BLOG</Link>
           </li>
           <li>
             <Link href="/contact">CONTACT</Link>
@@ -41,7 +41,7 @@ export default function Navbar() {
 
         {/* CTA */}
         <Link
-          href="/contact"
+          href="/auth"
           className="rounded-full bg-white px-5 py-2 text-black text-sm font-medium hover:scale-105 transition font-[Lexend]"
         >
           Let's Talk

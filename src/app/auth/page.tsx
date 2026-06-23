@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+
 import { motion } from "framer-motion";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
@@ -8,6 +11,53 @@ import CustomCursor from "@/components/ui/CustomCursor";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      if (!isLogin) {
+        if (password !== confirmPassword) {
+          throw new Error("Passwords do not match");
+        }
+
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        alert("Account created successfully. Please check your email.");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        router.push("/");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -152,14 +202,43 @@ export default function AuthPage() {
               </motion.div>
 
               {/* FORM */}
-              <form className="mt-8 space-y-5">
-                {!isLogin && <Input label="Full Name" type="text" />}
+              <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                {!isLogin && (
+                  <Input
+                    label="Full Name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                )}
 
-                <Input label="Email Address" type="email" />
-                <Input label="Password" type="password" />
+                <Input
+                  label="Email Address"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <Input
+                  label="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
 
                 {!isLogin && (
-                  <Input label="Confirm Password" type="password" />
+                  <Input
+                    label="Confirm Password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                )}
+
+                {error && (
+                  <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">
+                    {error}
+                  </div>
                 )}
 
                 <button
@@ -177,13 +256,19 @@ export default function AuthPage() {
                     shadow-[0_10px_40px_rgba(97,108,250,0.25)]
                   "
                 >
-                  {isLogin ? "Continue" : "Create Account"}
+                  {loading
+                    ? "Please Wait..."
+                    : isLogin
+                      ? "Continue"
+                      : "Create Account"}
                 </button>
               </form>
 
               {/* FOOTER */}
               <div className="mt-7 text-center text-xs text-white/35">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}
+                {isLogin
+                  ? "Don't have an account?"
+                  : "Already have an account?"}
                 <button
                   onClick={() => setIsLogin(!isLogin)}
                   className="ml-2 text-white hover:text-[#616CFA] transition"
@@ -203,9 +288,13 @@ export default function AuthPage() {
 function Input({
   label,
   type,
+  value,
+  onChange,
 }: {
   label: string;
   type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <div>
@@ -215,6 +304,9 @@ function Input({
 
       <input
         type={type}
+        value={value}
+        onChange={onChange}
+        required
         className="
           mt-2 w-full
           rounded-lg
