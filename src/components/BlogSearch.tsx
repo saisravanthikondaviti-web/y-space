@@ -42,7 +42,7 @@ export default function BlogSearch({
           placeholder="Search blogs..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none"
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-10 py-4 outline-none"
         />
       </div>
 

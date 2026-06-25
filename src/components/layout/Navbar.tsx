@@ -10,11 +10,15 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/yspacelogo.png"
+            src="/images/yspacelogo.png"
             alt="Y SPACE Logo"
-            width={52}
-            height={52}
+            width={45}
+            height={45}
             priority
+            style={{
+              width: "auto",
+              height: "auto",
+            }}
           />
 
           <h2 className="text-[22px] font-bold tracking-wider">SPACE</h2>
