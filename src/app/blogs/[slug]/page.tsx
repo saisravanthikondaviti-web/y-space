@@ -11,6 +11,7 @@ import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
+import SaveButton from "@/components/SaveButton";
 
 export default async function BlogPage({
   params,
@@ -48,7 +49,6 @@ export default async function BlogPage({
       <CustomCursor />
       <Navbar />
       <div className="pt-36 px-10 max-w-4xl mx-auto">
-        
         <Link
           href="/blogs"
           className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full
@@ -88,8 +88,10 @@ export default async function BlogPage({
 
         <div className="mt-8">{blog.content}</div>
 
-        <LikeButton blogId={blog.id} />
-
+        <div className="flex items-center gap-4 mt-8">
+          <LikeButton blogId={blog.id} />
+          <SaveButton blogId={blog.id} />
+        </div>
         <RecentlyViewed />
 
         <RelatedBlogs category={blog.category} currentBlogId={blog.id} />

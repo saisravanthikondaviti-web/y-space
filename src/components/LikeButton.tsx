@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-export default function LikeButton({
-  blogId,
-}: {
-  blogId: string;
-}) {
+export default function LikeButton({ blogId }: { blogId: string }) {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -27,9 +23,7 @@ export default function LikeButton({
 
     setCount(likes?.length || 0);
 
-    const userLike = likes?.find(
-      (like) => like.user_id === user?.id
-    );
+    const userLike = likes?.find((like) => like.user_id === user?.id);
 
     setLiked(!!userLike);
   }
@@ -54,12 +48,10 @@ export default function LikeButton({
       setLiked(false);
       setCount((prev) => prev - 1);
     } else {
-      await supabase
-        .from("blog_likes")
-        .insert({
-          blog_id: blogId,
-          user_id: user.id,
-        });
+      await supabase.from("blog_likes").insert({
+        blog_id: blogId,
+        user_id: user.id,
+      });
 
       setLiked(true);
       setCount((prev) => prev + 1);
@@ -69,9 +61,10 @@ export default function LikeButton({
   return (
     <button
       onClick={toggleLike}
-      className="mt-6 rounded-lg border px-4 py-2"
+      className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/20 px-6 transition-all duration-300 hover:bg-white/10"
     >
-      ❤️ {count}
+      ❤️
+      <span>{count}</span>
     </button>
   );
 }
