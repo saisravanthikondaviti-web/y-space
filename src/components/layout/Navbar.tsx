@@ -55,7 +55,7 @@ export default function Navbar() {
   async function logout() {
     await supabase.auth.signOut();
     setOpen(false);
-    router.push("/auth");
+    router.push("/");
   }
 
   const username =
@@ -81,18 +81,14 @@ export default function Navbar() {
             }}
           />
 
-          <h2 className="text-[22px] font-bold tracking-wider">
-            SPACE
-          </h2>
+          <h2 className="text-[22px] font-bold tracking-wider">SPACE</h2>
         </Link>
 
         {/* Navigation */}
         <ul className="hidden md:flex items-center gap-8 text-sm font-[Lexend] text-gray-200">
           <li>
             <button
-              onClick={() =>
-                handleProtectedNavigation("/what-we-do")
-              }
+              onClick={() => handleProtectedNavigation("/what-we-do")}
               className="hover:text-white transition"
             >
               WHAT WE DO
@@ -101,9 +97,7 @@ export default function Navbar() {
 
           <li>
             <button
-              onClick={() =>
-                handleProtectedNavigation("/about")
-              }
+              onClick={() => handleProtectedNavigation("/about")}
               className="hover:text-white transition"
             >
               ABOUT
@@ -112,9 +106,7 @@ export default function Navbar() {
 
           <li>
             <button
-              onClick={() =>
-                handleProtectedNavigation("/team")
-              }
+              onClick={() => handleProtectedNavigation("/team")}
               className="hover:text-white transition"
             >
               TEAM
@@ -123,9 +115,7 @@ export default function Navbar() {
 
           <li>
             <button
-              onClick={() =>
-                handleProtectedNavigation("/blogs")
-              }
+              onClick={() => handleProtectedNavigation("/blogs")}
               className="hover:text-white transition"
             >
               BLOG
@@ -134,9 +124,7 @@ export default function Navbar() {
 
           <li>
             <button
-              onClick={() =>
-                handleProtectedNavigation("/contact")
-              }
+              onClick={() => handleProtectedNavigation("/contact")}
               className="hover:text-white transition"
             >
               CONTACT
@@ -162,15 +150,11 @@ export default function Navbar() {
                 <User size={18} />
               </div>
 
-              <span className="hidden md:block font-medium">
-                {username}
-              </span>
+              <span className="hidden md:block font-medium">{username}</span>
 
               <ChevronDown
                 size={18}
-                className={`transition ${
-                  open ? "rotate-180" : ""
-                }`}
+                className={`transition ${open ? "rotate-180" : ""}`}
               />
             </button>
 
@@ -184,9 +168,7 @@ export default function Navbar() {
                     </div>
 
                     <div>
-                      <h3 className="font-semibold text-white">
-                        {username}
-                      </h3>
+                      <h3 className="font-semibold text-white">{username}</h3>
 
                       <p className="text-sm text-gray-400 break-all">
                         {user?.email}
@@ -198,43 +180,11 @@ export default function Navbar() {
                 {/* Menu */}
                 <div className="p-3">
                   <button
-                    onClick={() =>
-                      router.push("/profile")
-                    }
+                    onClick={() => router.push("/profile")}
                     className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-white/5"
                   >
                     <User size={18} />
                     My Profile
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      router.push("/saved")
-                    }
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-white/5"
-                  >
-                    <Bookmark size={18} />
-                    Saved Blogs
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      router.push("/recently-viewed")
-                    }
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-white/5"
-                  >
-                    <Clock3 size={18} />
-                    Recently Viewed
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      router.push("/liked-blogs")
-                    }
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-white/5"
-                  >
-                    <Heart size={18} />
-                    Liked Blogs
                   </button>
 
                   <div className="my-3 border-t border-white/10" />
