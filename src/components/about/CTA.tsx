@@ -1,6 +1,6 @@
 export default function CTA() {
   return (
-    <section className="relative py-40 px-6 overflow-hidden">
+    <section id="cta" className="relative py-40 px-6 overflow-hidden">
 
       {/* background glow */}
       <div className="absolute inset-0 flex items-center justify-center">

@@ -23,16 +23,16 @@ const values = [
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden py-24">
+    <section id="about" className="relative overflow-hidden py-14 md:py-16">
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-[#616CFA]/10 blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-[#E46ECC]/10 blur-[120px]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-20 max-w-4xl">
+        <div className="mb-12 max-w-4xl">
           <FadeUp>
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
               About VAISPACE

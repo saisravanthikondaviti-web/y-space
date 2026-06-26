@@ -11,12 +11,14 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
+import SectionNavigator from "@/components/ui/SectionNavigator";
 
 export default function AboutPage() {
   return (
     <main className="bg-black text-white overflow-hidden">
       <ScrollProgress />
       <SmoothScroll />
+      <SectionNavigator />
       <CustomCursor />
       <Navbar />
       <AboutHero />

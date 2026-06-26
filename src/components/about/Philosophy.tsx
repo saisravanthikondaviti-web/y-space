@@ -31,7 +31,7 @@ const items = [
 
 export default function Philosophy() {
   return (
-    <section className="relative py-28 px-6 overflow-hidden">
+    <section id="philosophy" className="relative py-28 px-6 overflow-hidden">
 
       {/* background glow */}
       <div className="absolute inset-0 flex items-center justify-center">

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function AboutHero() {
   return (
-    <section className="relative min-h-[90vh] overflow-hidden flex items-center justify-center px-8 bg-black">
+    <section id="about-hero" className="relative min-h-[90vh] overflow-hidden flex items-center justify-center px-8 bg-black">
       {/* Indigo Blob */}
       <motion.div
         animate={{
