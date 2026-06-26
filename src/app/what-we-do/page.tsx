@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import SectionNavigator from "@/components/ui/SectionNavigator";
 
 const outcomes = [
   {
@@ -90,7 +91,7 @@ const services: Service[] = [
         "Creating impactful ad creatives that capture attention and drive conversions across various advertising channels.",
       "Design That Communicates":
         "We create visually compelling designs that strengthen brand perception and support marketing objectives.",
-        },
+    },
   },
   {
     title: "Digital Marketing",
@@ -208,6 +209,7 @@ function BackgroundFX() {
       <ScrollProgress />
       <SmoothScroll />
       <CustomCursor />
+      <SectionNavigator />
       <Navbar />
       {/* Grid */}
       <div
@@ -259,7 +261,11 @@ export default function WhatWeDo() {
       <BackgroundFX />
 
       {/* HERO */}
-      <section className="px-6 md:px-16 pt-60 pb-45">
+      <section
+        data-scroll-section
+        id="hero"
+        className="px-6 md:px-16 pt-60 pb-45"
+      >
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
@@ -286,7 +292,11 @@ export default function WhatWeDo() {
       </section>
 
       {/* PHILOSOPHY */}
-      <section className="px-6 md:px-16 py-20">
+      <section
+        data-scroll-section
+        id="philosophy"
+        className="px-6 md:px-16 py-20"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
             <span className="text-sm uppercase tracking-[0.25em] text-white/40">
@@ -329,7 +339,11 @@ export default function WhatWeDo() {
       </section>
 
       {/* OUTCOMES */}
-      <section className="px-6 md:px-16 py-32">
+      <section
+        data-scroll-section
+        id="outcomes"
+        className="px-6 md:px-16 py-32"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 text-center">
             <span className="text-sm uppercase tracking-[0.25em] text-white/40">
