@@ -8,57 +8,65 @@ export default function SectionNavigator() {
   const isScrolling = useRef(false);
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section");
+    console.log("✅ SectionNavigator Mounted");
 
-    // Track current section
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-scroll-section]")
+    );
+
+    console.log("Sections Found:", sections.length);
+
+    sections.forEach((section, index) => {
+      console.log(index, section.id);
+    });
+
+    if (!sections.length) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            currentSection.current = Array.from(sections).indexOf(entry.target);
+            currentSection.current = sections.indexOf(
+              entry.target as HTMLElement
+            );
           }
         });
       },
       {
         threshold: 0.6,
-      },
+      }
     );
 
     sections.forEach((section) => observer.observe(section));
 
-    // Mouse wheel
     const handleWheel = (e: WheelEvent) => {
       if (isScrolling.current) return;
 
-      e.preventDefault();
-
       if (Math.abs(e.deltaY) < 30) return;
 
+      e.preventDefault();
+
+      let target = currentSection.current;
+
       if (e.deltaY > 0) {
-        const next = currentSection.current + 1;
-
-        if (next < sections.length) {
-          isScrolling.current = true;
-
-          lenis?.scrollTo(sections[next]);
-
-          setTimeout(() => {
-            isScrolling.current = false;
-          }, 1200);
-        }
+        target++;
       } else {
-        const prev = currentSection.current - 1;
-
-        if (prev >= 0) {
-          isScrolling.current = true;
-
-          lenis?.scrollTo(sections[prev]);
-
-          setTimeout(() => {
-            isScrolling.current = false;
-          }, 1200);
-        }
+        target--;
       }
+
+      target = Math.max(0, Math.min(target, sections.length - 1));
+
+      if (target === currentSection.current) return;
+
+      isScrolling.current = true;
+
+      lenis?.scrollTo(sections[target], {
+        duration: 1.2,
+      });
+
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 1300);
     };
 
     window.addEventListener("wheel", handleWheel, {
@@ -67,6 +75,7 @@ export default function SectionNavigator() {
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("wheel", handleWheel);
     };
   }, []);
 

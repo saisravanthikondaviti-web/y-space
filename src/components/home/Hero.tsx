@@ -5,7 +5,11 @@ import HeroBackground from "./HeroBackground";
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section
+      id="hero"
+      data-scroll-section
+      className="relative flex h-screen items-center justify-center overflow-hidden"
+    >
       <HeroBackground />
       <div
         className="

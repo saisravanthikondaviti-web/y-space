@@ -29,16 +29,20 @@ const projects = [
 
 export default function Portfolio() {
   return (
-    <section id="portfolio" className="py-24">
+    <section
+      id="portfolio"
+      data-scroll-section
+      className="flex h-screen items-center"
+    >
       <div className="mx-auto max-w-7xl px-8">
         {/* Header */}
         <FadeUp>
-          <div className="mb-14">
+          <div className="mb-8">
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
               Featured Projects
             </p>
 
-            <h2 className="max-w-3xl text-4xl font-bold md:text-5xl">
+            <h2 className="max-w-3xl text-3xl font-bold md:text-4xl xl:text-5xl">
               Transforming Ideas Into
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
                 {" "}
@@ -46,7 +50,7 @@ export default function Portfolio() {
               </span>
             </h2>
 
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-zinc-400">
               A showcase of strategic, creative, and technology-driven solutions
               crafted to help brands grow and thrive in the digital landscape.
             </p>
@@ -63,7 +67,7 @@ export default function Portfolio() {
                   group
                   relative
                   flex
-                  h-[450px]
+                  h-[340px]
                   flex-col
                   justify-between
                   overflow-hidden
@@ -174,7 +178,7 @@ export default function Portfolio() {
 
         {/* Bottom CTA */}
         <FadeUp>
-          <div className="mt-12 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <Link
               href="/portfolio"
               className="

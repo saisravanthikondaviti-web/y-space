@@ -31,7 +31,7 @@ const steps = [
 
 export default function Approach() {
   return (
-    <section id="approach" className="relative py-20 px-6 overflow-hidden">
+    <section id="approach" data-scroll-section className="relative py-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div

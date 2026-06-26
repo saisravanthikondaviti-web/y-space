@@ -10,11 +10,14 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import GlobalParticles from "@/components/ui/GlobalParticles";
+import SectionNavigator from "@/components/ui/SectionNavigator";
+
 
 export default function Home() {
   return (
     <>
       <SmoothScroll />
+      <SectionNavigator />
       <ScrollProgress />
       <GlobalParticles />
       <CustomCursor />

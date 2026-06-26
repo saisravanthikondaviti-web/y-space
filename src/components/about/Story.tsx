@@ -27,7 +27,7 @@ const story = [
 
 export default function Story() {
   return (
-    <section id="story" className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden">
+    <section id="story" data-scroll-section className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden">
       {/* Background Glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />

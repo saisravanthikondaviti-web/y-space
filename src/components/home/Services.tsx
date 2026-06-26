@@ -38,31 +38,34 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-32">
+    <section
+      id="services"
+      data-scroll-section
+      className="flex h-screen items-center"
+    >
       <div className="mx-auto max-w-7xl px-8">
         <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
           Services
         </p>
 
         <FadeUp>
-          <h2 className="max-w-3xl text-4xl font-bold md:text-5xl">
-              Designed
-              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                {" "}
-                For Digital Growth
-              </span>
-            </h2>
+          <h2 className="max-w-3xl text-3xl font-bold md:text-4xl xl:text-5xl">
+            Designed
+            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+              {" "}
+              For Digital Growth
+            </span>
+          </h2>
         </FadeUp>
 
         <FadeUp>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-            From branding and marketing to creative production and technology,
-            we help businesses build stronger digital experiences and
-            sustainable growth.
+            We deliver branding, marketing, creative production, and technology
+            solutions that help businesses grow with confidence.
           </p>
         </FadeUp>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service, index) => (
             <FadeUp key={service.title}>
               <Link href="/services">
@@ -76,7 +79,7 @@ export default function Services() {
   border-white/15
   bg-zinc-900/80
   backdrop-blur-xl
-  p-6
+  p-4
   shadow-[0_10px_30px_rgba(0,0,0,0.25)]
   transition-all
   duration-500
@@ -102,7 +105,7 @@ export default function Services() {
                   </div>
 
                   {/* Top */}
-                  <div className="relative mb-5 flex items-center justify-between">
+                  <div className="relative mb-3 flex items-center justify-between">
                     <span className="text-xs font-medium tracking-wider text-zinc-400">
                       0{index + 1}
                     </span>
@@ -124,7 +127,7 @@ export default function Services() {
                   <div
                     className="
               relative
-              mb-5
+              mb-3
               h-px
               w-12
               bg-zinc-700
@@ -141,7 +144,7 @@ export default function Services() {
                   <div className="relative">
                     <h3
                       className="
-                mb-3
+                mb-2
                 text-xl
                 font-semibold
                 text-white
@@ -162,7 +165,7 @@ export default function Services() {
                   <div
                     className="
               relative
-              mt-6
+              mt-4
               flex
               items-center
               text-zinc-500

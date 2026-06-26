@@ -2,31 +2,42 @@ import FadeUp from "../ui/FadeUp";
 
 export default function CTA() {
   return (
-    <section className="py-40 text-center">
+    <section
+      id="cta"
+      data-scroll-section
+      className="flex h-screen items-center justify-center text-center"
+    >
+      <div className="mx-auto max-w-3xl px-6">
+        <FadeUp>
+          <h2 className="text-4xl md:text-5xl xl:text-6xl font-bold">
+            Ready To Scale?
+          </h2>
+        </FadeUp>
 
-      <FadeUp>
-        <h2 className="text-5xl md:text-6xl font-bold">
-        Ready To Scale?
-      </h2>
-      </FadeUp>
+        <p className="mx-auto mt-6 max-w-xl text-zinc-400">
+          Let's build something extraordinary.
+        </p>
 
-      <p className="mt-8 text-zinc-400">
-        Let's build something extraordinary.
-      </p>
-
-      <button
-        className="
-          mt-10
-          rounded-full
-          bg-white
-          px-8
-          py-4
-          text-black
-        "
-      >
-        Schedule Consultation
-      </button>
-
+        <button
+          className="
+mt-10
+rounded-full
+bg-gradient-to-r
+from-[#616CFA]
+to-[#E46ECC]
+px-8
+py-4
+font-medium
+text-white
+transition-all
+duration-300
+hover:scale-105
+hover:shadow-[0_0_35px_rgba(97,108,250,0.45)]
+"
+        >
+          Schedule Consultation
+        </button>
+      </div>
     </section>
   );
 }

@@ -29,7 +29,7 @@ const beliefs = [
 
 export default function Belief() {
   return (
-    <section id="belief" className="relative py-32 px-6 lg:px-8 overflow-hidden bg-black">
+    <section id="belief" data-scroll-section className="relative py-32 px-6 lg:px-8 overflow-hidden bg-black">
       {/* background glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />

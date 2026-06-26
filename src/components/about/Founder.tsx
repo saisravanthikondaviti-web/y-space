@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function Founder() {
   return (
-    <section id="founder" className="relative py-28 px-6 overflow-hidden">
+    <section id="founder" data-scroll-section className="relative py-28 px-6 overflow-hidden">
 
       {/* Background glow */}
       <div className="absolute inset-0 flex items-center justify-center">
