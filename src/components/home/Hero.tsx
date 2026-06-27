@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import HeroBackground from "./HeroBackground";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -59,36 +60,40 @@ export default function Hero() {
         </p>
 
         <div className="mt-10 flex justify-center gap-4">
-          <motion.button
-            className="
-    rounded-full
-    px-6
-    py-3
-    font-medium
-    text-white
-    bg-gradient-to-r
-    from-[#616CFA]
-    to-[#E46ECC]
-  "
-            animate={{
-              boxShadow: [
-                "0 0 10px rgba(97,108,250,0.4)",
-                "0 0 35px rgba(97,108,250,0.8)",
-                "0 0 10px rgba(97,108,250,0.4)",
-              ],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            Book Strategy Call
-          </motion.button>
+          <Link href="/contact">
+            <motion.button
+              className="
+        rounded-full
+        px-6
+        py-3
+        font-medium
+        text-white
+        bg-gradient-to-r
+        from-[#616CFA]
+        to-[#E46ECC]
+      "
+              animate={{
+                boxShadow: [
+                  "0 0 10px rgba(97,108,250,0.4)",
+                  "0 0 35px rgba(97,108,250,0.8)",
+                  "0 0 10px rgba(97,108,250,0.4)",
+                ],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Book Strategy Call
+            </motion.button>
+          </Link>
 
-          <button className="rounded-full border border-white/20 px-6 py-3">
-            Explore Work
-          </button>
+          <Link href="/what-we-do">
+            <button className="rounded-full border border-white/20 px-6 py-3">
+              Explore Work
+            </button>
+          </Link>
         </div>
       </div>
     </section>

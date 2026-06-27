@@ -1,9 +1,11 @@
+import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
+
+import { Mail } from "lucide-react";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 py-16">
-
       <div className="mx-auto max-w-7xl px-8 grid gap-12 md:grid-cols-3">
-
         {/* BRAND */}
         <div>
           <div className="flex items-center gap-3">
@@ -17,9 +19,12 @@ export default function Footer() {
           </div>
 
           <p className="mt-4 text-zinc-400 leading-relaxed">
-            Where Strategy Meets Storytelling.<br />
-            We don't help brands make noise.<br />
-            We help them stand out.<br />
+            Where Strategy Meets Storytelling.
+            <br />
+            We don't help brands make noise.
+            <br />
+            We help them stand out.
+            <br />
             <span className="text-white/70 font-medium">
               Build Your Space. Own Your Market.
             </span>
@@ -36,27 +41,63 @@ export default function Footer() {
             <p>Phone: +91 9951737226</p>
             <p>Email: hello@vaispace.in</p>
             <p>Location: Visakhapatnam, India</p>
-            <p>Instagram: @vaispace</p>
+          </div>
+
+          <div className="mt-6 flex items-center gap-4">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram
+                className="text-zinc-400 hover:text-pink-500 transition"
+                size={20}
+              />
+            </a>
+
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaLinkedin
+                className="text-zinc-400 hover:text-blue-500 transition"
+                size={20}
+              />
+            </a>
+
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook
+                className="text-zinc-400 hover:text-blue-600 transition"
+                size={20}
+              />
+            </a>
+
+            <a href="mailto:hello@vaispace.in">
+              <Mail
+                className="text-zinc-400 hover:text-white transition"
+                size={20}
+              />
+            </a>
           </div>
         </div>
 
         {/* EMPTY / FUTURE USE */}
         <div className="text-zinc-500">
-          <p className="text-sm">
-            Let’s build something meaningful together.
-          </p>
+          <p className="text-sm">Let’s build something meaningful together.</p>
         </div>
-
       </div>
 
       {/* BOTTOM BAR */}
       <div className="mt-12 border-t border-white/10 pt-6">
         <div className="mx-auto max-w-7xl px-8 flex flex-col md:flex-row justify-between gap-4 text-sm text-zinc-500">
           <p>© {new Date().getFullYear()} VAI SPACE. All rights reserved.</p>
-          
         </div>
       </div>
-
     </footer>
   );
 }

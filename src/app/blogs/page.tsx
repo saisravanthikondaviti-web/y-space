@@ -52,7 +52,9 @@ export default async function BlogsPage() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-10 pt-32">
-        <h1 className="text-5xl font-bold mb-12">Blogs</h1>
+        <p className="my-6 text-xs uppercase tracking-[0.3em] text-[#8E96FF]">
+          Blogs
+        </p>
 
         <BlogSearch blogs={blogsWithStats} />
 

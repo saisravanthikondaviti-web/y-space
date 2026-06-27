@@ -1,19 +1,21 @@
+import Link from "next/link";
+
 export default function CTA() {
   return (
-    <section id="cta" data-scroll-section className="relative py-40 px-6 overflow-hidden">
-
+    <section
+      id="cta"
+      data-scroll-section
+      className="relative py-40 px-6 overflow-hidden"
+    >
       {/* background glow */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-[800px] h-[800px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
       </div>
 
       <div className="relative max-w-6xl mx-auto">
-
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-
           {/* LEFT TEXT BLOCK */}
           <div>
-
             <p className="text-xs uppercase tracking-[0.3em] text-[#8E96FF]">
               Work With Us
             </p>
@@ -28,14 +30,13 @@ export default function CTA() {
             </h2>
 
             <p className="mt-8 text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl">
-              We don’t just design websites. We shape direction, clarity, and identity for brands that want to grow with intention.
+              We don’t just design websites. We shape direction, clarity, and
+              identity for brands that want to grow with intention.
             </p>
-
           </div>
 
           {/* RIGHT ACTION BLOCK */}
           <div className="flex flex-col lg:items-end space-y-6">
-
             {/* IMAGE */}
             <div className="relative w-full h-[320px] rounded-3xl overflow-hidden border border-white/10 group">
               <img
@@ -59,16 +60,17 @@ export default function CTA() {
             </p>
 
             {/* BUTTON */}
-            <button className="px-12 py-5 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] text-white font-medium text-lg hover:scale-105 transition-transform duration-300 shadow-lg">
+            <Link
+              href="/contact"
+              className="px-12 py-5 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] text-white font-medium text-lg hover:scale-105 transition-transform duration-300 shadow-lg inline-block"
+            >
               Start a Project →
-            </button>
+            </Link>
 
             <p className="text-sm text-gray-500 text-right">
               Response within 24–48 hours
             </p>
-
           </div>
-
         </div>
       </div>
     </section>

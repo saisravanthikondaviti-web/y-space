@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion } from "framer-motion";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Navbar from "@/components/layout/Navbar";
@@ -491,9 +493,12 @@ export default function WhatWeDo() {
               systems that move brands forward.
             </p>
 
-            <button className="mt-10 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-8 py-4 font-medium transition-transform hover:scale-105">
+            <Link
+              href="/contact"
+              className="mt-10 inline-block rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-8 py-4 font-medium transition-transform hover:scale-105"
+            >
               Start a Project
-            </button>
+            </Link>
           </div>
         </motion.div>
       </section>
