@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Lexend } from "next/font/google";
 import "./globals.css";
-import Chatbot from "../components/chatbot/Chatbot";
 import GlobalParticles from "@/components/ui/GlobalParticles";
 
 const headingFont = Space_Grotesk({
@@ -44,7 +43,6 @@ export default function RootLayout({
         {children}
         {/* Global Particles */}
         <GlobalParticles />
-        <Chatbot />
       </body>
     </html>
   );

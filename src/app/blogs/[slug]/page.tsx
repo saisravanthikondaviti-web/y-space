@@ -11,7 +11,7 @@ import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
-import SaveButton from "@/components/SaveButton";
+import ShareButton from "@/components/ShareButton";
 
 export default async function BlogPage({
   params,
@@ -48,6 +48,7 @@ export default async function BlogPage({
       <SmoothScroll />
       <CustomCursor />
       <Navbar />
+
       <div className="pt-36 px-10 max-w-4xl mx-auto">
         <Link
           href="/blogs"
@@ -90,12 +91,14 @@ export default async function BlogPage({
 
         <div className="flex items-center gap-4 mt-8">
           <LikeButton blogId={blog.id} />
-          <SaveButton blogId={blog.id} />
+          <ShareButton slug={blog.slug} />
         </div>
+
         <RecentlyViewed />
 
         <RelatedBlogs category={blog.category} currentBlogId={blog.id} />
       </div>
+
       <Footer />
     </>
   );
