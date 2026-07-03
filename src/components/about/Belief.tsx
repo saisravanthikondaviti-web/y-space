@@ -66,7 +66,7 @@ export default function Belief() {
                 • Deep Research First
               </h3>
               <p className="text-zinc-500 text-sm mt-1">
-                We don’t jump into design. We analyze users, markets, and
+                We don’t jump into design.<br /> We analyze users, markets, and
                 positioning before anything else.
               </p>
             </div>

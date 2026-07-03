@@ -184,23 +184,26 @@ const services: Service[] = [
     description:
       "We create compelling visual content designed to engage, educate, and inspire.",
     items: [
-      "Video Editing Services",
-      "Promotional Videos",
-      "Social Media Video Content",
+      "Ad Shoots",
+      "Product Videos",
       "Corporate Videos",
+      "Promotional Videos",
       "Motion Graphics & Reels",
+      "Video Editing Services",
     ],
     details: {
-      "Video Editing Services":
-        "We provide professional video editing services to enhance the quality and impact of your video content.",
+      "Ad Shoots":
+        "Create high-impact advertising videos designed to showcase your brand, products, and services.",
+      "Product Videos":
+        "Built to enhance brand perception, customer engagement, and sales performance.",
+      "Corporate Videos":
+        "Produce engaging promotional content that highlights your business offerings with clarity and creativity.",
       "Promotional Videos":
         "Create engaging promotional videos to showcase your products or services.",
-      "Social Media Video Content":
-        "Develop short-form videos optimized for social media platforms.",
-      "Corporate Videos":
-        "Produce professional corporate videos for internal communications and external marketing.",
       "Motion Graphics & Reels":
         "Design dynamic motion graphics and short-form reels to capture attention and convey messages effectively.",
+      "Video Editing Services":
+        "We provide professional video editing services to enhance the quality and impact of your video content.",
     },
   },
 ];
@@ -266,29 +269,32 @@ export default function WhatWeDo() {
       <section
         data-scroll-section
         id="hero"
-        className="px-6 md:px-16 pt-60 pb-45"
+        className="flex min-h-screen items-center justify-center px-6 pt-40 pb-28 md:px-16"
       >
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="max-w-6xl mx-auto"
+          className="mx-auto flex max-w-5xl flex-col items-center text-center"
         >
-          <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/60">
+          {/* Badge */}
+          <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-white/60 backdrop-blur-xl">
             Strategy • Design • Technology • Growth
           </div>
 
-          <h1 className="mt-8 max-w-5xl text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight">
+          {/* Heading */}
+          <h1 className="mt-8 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl xl:text-7xl">
             We help ambitious brands
-            <span className="block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+            <span className="mt-2 block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               become impossible to ignore.
             </span>
           </h1>
 
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/60">
+          {/* Description */}
+          <p className="mt-8 max-w-3xl text-lg leading-8 text-white/60 md:text-xl">
             Through strategy, branding, design, technology, and marketing, we
-            build connected systems that strengthen perception, create trust,
-            and drive meaningful growth.
+            build connected digital experiences that strengthen perception,
+            create trust, and drive meaningful growth.
           </p>
         </motion.div>
       </section>
@@ -474,31 +480,53 @@ export default function WhatWeDo() {
           viewport={{ once: true }}
           className="mx-auto max-w-7xl overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] p-10 md:p-16 backdrop-blur-xl"
         >
-          <div className="absolute inset-0 opacity-30" />
-
-          <div className="relative max-w-3xl">
-            <span className="text-sm uppercase tracking-[0.2em] text-white/40">
-              Let's Build
-            </span>
-
-            <h2 className="mt-5 text-4xl md:text-5xl font-bold leading-tight">
-              Your next stage of growth
-              <span className="block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                starts with vai space.
+          <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+            {/* Left Content */}
+            <div className="max-w-3xl">
+              <span className="text-sm uppercase tracking-[0.2em] text-white/40">
+                Let's Build
               </span>
-            </h2>
 
-            <p className="mt-6 text-lg leading-relaxed text-white/60">
-              Whether you're launching, scaling, or repositioning, we create the
-              systems that move brands forward.
-            </p>
+              <h2 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
+                Your next stage of growth
+                <span className="block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                  starts with VAISPACE.
+                </span>
+              </h2>
 
-            <Link
-              href="/contact"
-              className="mt-10 inline-block rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-8 py-4 font-medium transition-transform hover:scale-105"
-            >
-              Start a Project
-            </Link>
+              <p className="mt-6 text-lg leading-relaxed text-white/60">
+                Whether you're launching, scaling, or repositioning, we create
+                the systems that move brands forward.
+              </p>
+
+              <Link
+                href="/contact"
+                className="mt-10 inline-flex items-center rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-8 py-4 font-medium transition-all duration-300 hover:scale-105"
+              >
+                Start a Project →
+              </Link>
+            </div>
+
+            {/* Right Illustration */}
+            <div className="relative hidden justify-center lg:flex">
+              {/* Glow */}
+              <div className="absolute h-[380px] w-[380px] rounded-full bg-gradient-to-r from-[#616CFA]/25 to-[#E46ECC]/25 blur-[120px]" />
+
+              <img
+                src="/images/graphpic.png"
+                alt="Digital Agency Illustration"
+                className="
+        relative
+        z-10
+        w-full
+        max-w-[480px]
+        object-contain
+        transition-transform
+        duration-700
+        hover:scale-105
+      "
+              />
+            </div>
           </div>
         </motion.div>
       </section>

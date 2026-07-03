@@ -3,16 +3,171 @@
 /* ================= FONTS ================= */
 
 @font-face {
-  font-family: "MadeTommy";
-  src: url("/fonts/MADETommy-Regular.otf") format("opentype");
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Book.ttf") format("truetype");
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-BookItalic.ttf") format("truetype");
+  font-weight: 350;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-ExtraBoldItalic.ttf") format("truetype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Heavy.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-HeavyItalic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-Black.ttf") format("truetype");
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Axiforma";
+  src: url("/fonts/Axiforma-BlackItalic.ttf") format("truetype");
+  font-weight: 950;
+  font-style: italic;
   font-display: swap;
 }
 
 /* ================= ROOT VARIABLES ================= */
 
 :root {
+  --font-heading: "Axiforma";
+  --font-body: "Axiforma";
+
   --background: #000000;
 
   --primary: #616cfa;
@@ -167,6 +322,7 @@ a {
 }
 
 /* ================= CHATBOT ================= */
+
 .chat-scroll::-webkit-scrollbar {
   width: 5px;
 }
@@ -176,7 +332,7 @@ a {
 }
 
 .chat-scroll::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, .5);
+  background: rgba(139, 92, 246, 0.5);
   border-radius: 999px;
 }
 

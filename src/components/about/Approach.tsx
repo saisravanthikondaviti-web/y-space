@@ -24,14 +24,17 @@ const steps = [
   {
     number: "04",
     title: "Growth",
-    description:
-      "Optimizing, scaling, and continuously improving performance.",
+    description: "Optimizing, scaling, and continuously improving performance.",
   },
 ];
 
 export default function Approach() {
   return (
-    <section id="approach" data-scroll-section className="relative py-20 px-6 overflow-hidden">
+    <section
+      id="approach"
+      data-scroll-section
+      className="relative py-20 px-6 overflow-hidden"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -77,7 +80,21 @@ export default function Approach() {
                 </div>
 
                 {/* Card */}
-                <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-4 text-center transition-all duration-500 hover:border-[#616CFA]/40 hover:-translate-y-1">
+                <div
+                  className="
+    rounded-2xl
+    border
+    border-white/10
+    bg-white/[0.03]
+    p-5
+    backdrop-blur-xl
+    text-center
+    transition-all
+    duration-500
+    hover:-translate-y-1
+    hover:border-[#616CFA]/40
+  "
+                >
                   <h3 className="text-xl font-semibold text-white mb-2 tracking-tight">
                     {step.title}
                   </h3>

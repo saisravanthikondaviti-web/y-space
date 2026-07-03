@@ -10,18 +10,16 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/images/yspacelogo.png"
-            alt="Y SPACE Logo"
-            width={45}
-            height={45}
+            src="/images/hlogo.png"
+            alt="VAI SPACE Logo"
+            width={150}
+            height={50}
             priority
             style={{
               width: "auto",
-              height: "auto",
+              height: "50px",
             }}
           />
-
-          <h2 className="text-[22px] font-bold tracking-wider">SPACE</h2>
         </Link>
 
         {/* Navigation */}

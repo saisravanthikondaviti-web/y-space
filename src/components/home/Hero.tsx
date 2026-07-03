@@ -41,7 +41,7 @@ export default function Hero() {
       />
       <div className="relative z-10 text-center">
         <p className="mb-4 text-sm uppercase tracking-[0.4em] text-zinc-500">
-          Creative Space
+          A Creative Space
         </p>
 
         <motion.h1

@@ -5,7 +5,7 @@ import Belief from "@/components/about/Belief";
 import Story from "@/components/about/Story";
 import Approach from "@/components/about/Approach";
 import Founder from "@/components/about/Founder";
-import Philosophy from "@/components/about/Philosophy";
+import Philosophy from "@/components/about/Team";
 import CTA from "@/components/about/CTA";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";

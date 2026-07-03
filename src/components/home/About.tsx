@@ -94,11 +94,10 @@ export default function About() {
               </h3>
 
               <p className="mb-6 leading-relaxed text-zinc-400">
-                VAI SPACE is a creative and technology-driven agency dedicated
-                to helping businesses build powerful digital identities and
-                meaningful customer experiences. We collaborate with startups,
-                enterprises, and growing brands to transform ideas into engaging
-                digital solutions that create long-term value.
+                As we continue to evolve, VAI SPACE is expanding beyond creative
+                services into broader technology solutions, building a
+                future-ready ecosystem where businesses can scale, innovate, and
+                compete with confidence in a rapidly changing digital world.
               </p>
             </FadeUp>
 

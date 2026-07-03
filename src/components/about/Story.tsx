@@ -5,29 +5,33 @@ import { motion } from "framer-motion";
 const story = [
   {
     title: "A simple belief",
-    text: "VAI Space is a founder-led creative studio built on one belief — great brands are not accidental.",
+    text: "VAI SPACE. is a founder-led creative and technology driven hub built built on one belief Every iconic brand begins with a clear vision.  ",
   },
   {
     title: "Not chance, but clarity",
-    text: "They are shaped with clarity, consistency, and intention at every step of their journey.",
+    text: "Clarity, consistency, and vision shape every decision we make.Success follows brands built with intention, not assumptions.",
   },
   {
     title: "Since 2017",
-    text: "We’ve worked across branding, marketing, design, and filmmaking — helping businesses refine how they are seen and remembered.",
+    text: "We’ve worked acroos branding, marketing, design, and film making we helpinf businesses refine how they are seen and remembered.",
   },
   {
     title: "Not an agency",
-    text: "VAI Space was never meant to be another agency competing in the noise.",
+    text: "VAI SPACE was never meant to be another agency, We create impact, not just deliver services.",
   },
   {
     title: "A creative system",
-    text: "It exists as a creative space where strategy, design, and execution move as one system.",
+    text: "Where strategy, creativity, and execution work together as one powerful ecosystem.",
   },
 ];
 
 export default function Story() {
   return (
-    <section id="story" data-scroll-section className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden">
+    <section
+      id="story"
+      data-scroll-section
+      className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden"
+    >
       {/* Background Glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
@@ -56,7 +60,7 @@ export default function Story() {
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               Intent
             </span>{" "}
-            Not Chance
+            Not by Chance
           </motion.h2>
 
           <motion.p
@@ -65,9 +69,11 @@ export default function Story() {
             viewport={{ once: true }}
             className="mt-8 text-zinc-400 text-lg leading-relaxed max-w-md"
           >
-            Every studio has a beginning. Ours started with a refusal to build
-            meaningless design — and a commitment to build brands that feel
-            alive.
+            Every great brand begins with a vision. Ours began with a simple
+            conviction — design should create meaning, not just visuals. From
+            day one, VAI SPACE was built to help businesses grow through
+            purposeful branding, thoughtful creativity, and impactful digital
+            experiences.
           </motion.p>
 
           {/* VIDEO */}
@@ -100,9 +106,7 @@ export default function Story() {
             >
               <div className="absolute -left-[22px] top-2 w-3 h-3 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] shadow-[0_0_20px_rgba(97,108,250,0.6)]" />
 
-              <h3 className="text-white text-lg font-semibold">
-                {item.title}
-              </h3>
+              <h3 className="text-white text-lg font-semibold">{item.title}</h3>
 
               <p className="mt-2 text-zinc-400 text-base leading-relaxed">
                 {item.text}
