@@ -30,11 +30,11 @@ export const conversation = [
   {
     key: "timeline",
     question: "When are you planning to start?",
-    options: [
-      "Immediately",
-      "This Month",
-      "1–3 Months",
-      "Just Exploring",
-    ],
+    options: ["Immediately", "This Month", "1–3 Months", "Just Exploring"],
+  },
+  {
+    key: "projectDetails",
+    question:
+      "Would you like to share any additional details? You can tell us about your goals, features, budget, target audience, inspiration, or anything else that will help us understand your project better. (Optional)",
   },
 ];

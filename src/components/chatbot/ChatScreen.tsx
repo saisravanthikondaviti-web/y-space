@@ -30,6 +30,7 @@ export default function ChatScreen({ onClose }: Props) {
     service: "",
     project: "",
     timeline: "",
+    projectDetails: "",
   });
 
   // Auto Scroll
@@ -85,7 +86,22 @@ export default function ChatScreen({ onClose }: Props) {
     const nextStep = step + 1;
 
     // Conversation finished
+    // Conversation finished
     if (nextStep >= conversation.length) {
+      // Create the final object with the latest answer included
+      const finalLead = {
+        ...lead,
+        [current.key]: answer,
+      };
+
+      fetch("/api/chatbot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalLead),
+      }).catch(console.error);
+
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
@@ -100,7 +116,6 @@ export default function ChatScreen({ onClose }: Props) {
 
       return;
     }
-
     // Move to next question
     setStep(nextStep);
 

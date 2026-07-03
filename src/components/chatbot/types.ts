@@ -12,4 +12,5 @@ export interface LeadData {
   service: string;
   project: string;
   timeline: string;
+  projectDetails: string;
 }
