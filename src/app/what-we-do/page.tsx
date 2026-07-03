@@ -34,6 +34,7 @@ const outcomes = [
 ];
 
 type Service = {
+  slug: string;
   title: string;
   image: string;
   description: string;
@@ -43,6 +44,7 @@ type Service = {
 
 const services: Service[] = [
   {
+    slug: "branding",
     title: "Branding",
     image: "/images/whatwedo/branding.png",
     description:
@@ -71,6 +73,7 @@ const services: Service[] = [
     },
   },
   {
+    slug: "design-creative",
     title: "Design & Creative",
     image: "/images/whatwedo/design-creative.png",
     description:
@@ -96,6 +99,7 @@ const services: Service[] = [
     },
   },
   {
+    slug: "digital-marketing",
     title: "Digital Marketing",
     image: "/images/whatwedo/digital-marketing.png",
     description:
@@ -136,6 +140,7 @@ const services: Service[] = [
     },
   },
   {
+    slug: "web-development",
     title: "Website Design & Development",
     image: "/images/whatwedo/web development.png",
     description:
@@ -179,6 +184,7 @@ const services: Service[] = [
     },
   },
   {
+    slug: "video-production",
     title: "Video Production",
     image: "/images/whatwedo/video.png",
     description:
@@ -417,8 +423,9 @@ export default function WhatWeDo() {
         <div className="mx-auto max-w-7xl space-y-28">
           {services.map((service) => (
             <div
+              id={service.slug}
               key={service.title}
-              className="grid gap-12 lg:grid-cols-[320px_1fr]"
+              className="scroll-mt-32 grid items-center gap-16 lg:grid-cols-[320px_minmax(0,1fr)]"
             >
               {/* Sticky Left */}
               <div className="lg:sticky lg:top-32 h-fit">
@@ -443,26 +450,39 @@ export default function WhatWeDo() {
               </div>
 
               {/* Right */}
-              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {service.items.map((item) => (
-                  <motion.div
-                    key={item}
-                    whileHover={{
-                      y: -4,
-                      scale: 1.01,
-                    }}
-                    className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition-all"
-                  >
-                    <div className="h-1 w-12 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC]" />
+              <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+                <motion.div
+                  className="flex w-max gap-6"
+                  animate={{
+                    x: ["0%", "-50%"],
+                  }}
+                  transition={{
+                    duration: 80,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  {[...service.items, ...service.items].map((item, index) => (
+                    <motion.div
+                      key={`${item}-${index}`}
+                      whileHover={{
+                        y: -6,
+                        scale: 1.02,
+                      }}
+                      transition={{ duration: 0.25 }}
+                      className="h-[240px] w-[300px] flex-shrink-0 rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-xl hover:border-[#616CFA]/40 hover:bg-white/[0.05]"
+                    >
+                      <div className="h-1 w-14 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC]" />
 
-                    <h3 className="mt-6 text-lg font-semibold">{item}</h3>
+                      <h3 className="mt-6 text-xl font-semibold">{item}</h3>
 
-                    <p className="mt-3 text-sm leading-relaxed text-white/55">
-                      {service.details?.[item] ||
-                        "Crafted with strategy, creativity, and precision to support sustainable business growth."}
-                    </p>
-                  </motion.div>
-                ))}
+                      <p className="mt-4 text-sm leading-7 text-white/60">
+                        {service.details[item] ||
+                          "Crafted with strategy, creativity, and precision to help businesses build stronger brands and create lasting impact."}
+                      </p>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
             </div>
           ))}

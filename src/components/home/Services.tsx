@@ -5,31 +5,37 @@ import Link from "next/link";
 
 const services = [
   {
+    slug: "branding",
     title: "Branding",
     description:
       "Building memorable brand identities that create trust, recognition, and lasting impressions.",
   },
   {
+    slug: "digital-marketing",
     title: "Digital Marketing",
     description:
       "Strategic campaigns designed to increase visibility, engagement, and customer acquisition.",
   },
   {
+    slug: "performance-marketing",
     title: "Performance Marketing",
     description:
       "Data-driven marketing focused on measurable growth, conversions, and return on investment.",
   },
   {
+    slug: "design-creative",
     title: "Creative Production",
     description:
       "High-quality creative assets that elevate brand storytelling across digital platforms.",
   },
   {
+    slug: "video-production",
     title: "Video Production",
     description:
       "Engaging video content crafted to communicate ideas, products, and brand narratives.",
   },
   {
+    slug: "web-development",
     title: "Web Development",
     description:
       "Modern, responsive, and high-performance websites built for growth and scalability.",
@@ -68,7 +74,7 @@ export default function Services() {
         <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service, index) => (
             <FadeUp key={service.title}>
-              <Link href="/services">
+              <Link href={`/what-we-do#${service.slug}`} prefetch={false}>
                 <div
                   className="
   group
