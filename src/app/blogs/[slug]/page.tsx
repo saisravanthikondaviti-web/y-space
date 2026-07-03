@@ -12,6 +12,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import ShareButton from "@/components/ShareButton";
+import Comments from "@/components/comments/Comments";
 
 export default async function BlogPage({
   params,
@@ -93,6 +94,8 @@ export default async function BlogPage({
           <LikeButton blogId={blog.id} />
           <ShareButton slug={blog.slug} />
         </div>
+
+        <Comments blogId={blog.id} />
 
         <RecentlyViewed />
 
