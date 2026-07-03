@@ -26,7 +26,7 @@ export default function WelcomeScreen({ onStart }: Props) {
         </div>
 
         <h1 className="mb-3 text-3xl font-bold text-white">
-          Welcome to Y Space
+          Welcome to VAISPACE
         </h1>
 
         <p className="mx-auto max-w-sm text-zinc-400 leading-7">

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import Image from "next/image";
 import { motion } from "framer-motion";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Navbar from "@/components/layout/Navbar";
@@ -35,7 +35,7 @@ const outcomes = [
 
 type Service = {
   title: string;
-  video: string;
+  image: string;
   description: string;
   items: string[];
   details: Record<string, string>;
@@ -44,7 +44,7 @@ type Service = {
 const services: Service[] = [
   {
     title: "Branding",
-    video: "/videos/Brand.mp4",
+    image: "/images/whatwedo/branding.png",
     description:
       "We help businesses create meaningful identities that communicate who they are and what they stand for.",
     items: [
@@ -72,7 +72,7 @@ const services: Service[] = [
   },
   {
     title: "Design & Creative",
-    video: "/videos/creative.mp4",
+    image: "/images/whatwedo/design-creative.png",
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
@@ -97,7 +97,7 @@ const services: Service[] = [
   },
   {
     title: "Digital Marketing",
-    video: "/videos/growth.mp4",
+    image: "/images/whatwedo/digital-marketing.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -137,7 +137,7 @@ const services: Service[] = [
   },
   {
     title: "Website Design & Development",
-    video: "/videos/digital.mp4",
+    image: "/images/whatwedo/web development.png",
     description:
       "We design and develop websites that are visually refined, user-focused, and performance-driven.",
     items: [
@@ -180,7 +180,7 @@ const services: Service[] = [
   },
   {
     title: "Video Production",
-    video: "/videos/motion.mp4",
+    image: "/images/whatwedo/video.png",
     description:
       "We create compelling visual content designed to engage, educate, and inspire.",
     items: [
@@ -429,17 +429,14 @@ export default function WhatWeDo() {
                 {/* Circular Video */}
                 <div className="mt-8">
                   <div className="relative h-40 w-40 overflow-hidden rounded-full border border-white/10 bg-white/5">
-                    <video
-                      src={service.video}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="h-full w-full object-cover"
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
                     />
                   </div>
                 </div>
-
                 <p className="mt-5 text-white/60 leading-relaxed">
                   {service.description}
                 </p>

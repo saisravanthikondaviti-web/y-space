@@ -1,7 +1,7 @@
 export const conversation = [
   {
     key: "name",
-    question: "Hi 👋 Welcome to Y Space.\n\nWhat's your name?",
+    question: "Hi 👋 Welcome to VAISPACE.\n\nWhat's your name?",
   },
   {
     key: "service",

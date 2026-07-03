@@ -37,8 +37,8 @@ export default function Navbar() {
           </li>
 
           <li>
-            <Link href="/team" className="transition hover:text-white">
-              TEAM
+            <Link href="/hub" className="transition hover:text-white">
+              HUB
             </Link>
           </li>
 

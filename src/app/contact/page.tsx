@@ -49,10 +49,6 @@ export default function ContactPage() {
         Reach Us Through
       </p>
     </div>
-
-    <p>📧 Email: hello@vaispace.in</p>
-    <p>📍 Location: Visakhapatnam, India</p>
-
   </div>
 
   <div className="mt-10 h-[2px] w-20 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]" />
