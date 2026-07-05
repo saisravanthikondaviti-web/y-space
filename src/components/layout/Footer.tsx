@@ -85,9 +85,9 @@ export default function Footer() {
       </div>
 
       {/* ================= COPYRIGHT ================= */}
-      <div className="mt-12 border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-8 py-5 flex items-center justify-between">
-          <p className="text-sm text-zinc-500">
+      <div className="mt-4 border-t border-white/10">
+        <div className="mx-auto max-w-7xl py-2 flex justify-center">
+          <p className="text-center text-xs sm:text-sm text-zinc-500">
             © {new Date().getFullYear()} VAI SPACE. All rights reserved.
           </p>
         </div>
