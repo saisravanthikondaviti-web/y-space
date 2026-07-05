@@ -24,7 +24,8 @@ const steps = [
   {
     number: "04",
     title: "Growth",
-    description: "Optimizing, scaling, and continuously improving performance.",
+    description:
+      "Optimizing, scaling, and continuously improving performance.",
   },
 ];
 
@@ -33,21 +34,21 @@ export default function Approach() {
     <section
       id="approach"
       data-scroll-section
-      className="relative py-20 px-6 overflow-hidden"
+      className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="mx-auto w-full max-w-7xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12 text-center lg:mb-16"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#8E96FF]">
+          <span className="text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] text-[#8E96FF]">
             Our Process
           </span>
 
-          <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">
+          <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             From Vision To{" "}
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               Impact
@@ -58,9 +59,9 @@ export default function Approach() {
         {/* Process */}
         <div className="relative">
           {/* Desktop Connector */}
-          <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-[#616CFA]/30 via-[#E46ECC]/50 to-[#616CFA]/30" />
+          <div className="absolute left-[12%] right-[12%] top-9 hidden h-[2px] bg-gradient-to-r from-[#616CFA]/30 via-[#E46ECC]/50 to-[#616CFA]/30 lg:block" />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {steps.map((step, index) => (
               <motion.div
                 key={step.title}
@@ -68,12 +69,12 @@ export default function Approach() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="relative group"
+                className="group relative"
               >
                 {/* Step Number */}
-                <div className="flex justify-center mb-4">
-                  <div className="w-14 h-14 rounded-full bg-[#0F0F14] border border-white/10 flex items-center justify-center backdrop-blur-xl relative z-10">
-                    <span className="text-sm font-bold bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                <div className="mb-5 flex justify-center">
+                  <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-[#0F0F14] backdrop-blur-xl sm:h-16 sm:w-16">
+                    <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-sm font-bold text-transparent sm:text-base">
                       {step.number}
                     </span>
                   </div>
@@ -82,30 +83,30 @@ export default function Approach() {
                 {/* Card */}
                 <div
                   className="
-    rounded-2xl
-    border
-    border-white/10
-    bg-white/[0.03]
-    p-5
-    backdrop-blur-xl
-    text-center
-    transition-all
-    duration-500
-    hover:-translate-y-1
-    hover:border-[#616CFA]/40
-  "
+                    rounded-2xl
+                    border
+                    border-white/10
+                    bg-white/[0.03]
+                    p-6
+                    text-center
+                    backdrop-blur-xl
+                    transition-all
+                    duration-500
+                    hover:-translate-y-2
+                    hover:border-[#616CFA]/40
+                  "
                 >
-                  <h3 className="text-xl font-semibold text-white mb-2 tracking-tight">
+                  <h3 className="mb-3 text-lg font-semibold tracking-tight text-white sm:text-xl">
                     {step.title}
                   </h3>
 
-                  <p className="text-gray-300 text-sm leading-relaxed leading-[1.6]">
+                  <p className="text-sm leading-7 text-gray-300 sm:text-[15px]">
                     {step.description}
                   </p>
                 </div>
 
                 {/* Hover Glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#616CFA]/10 to-[#E46ECC]/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#616CFA]/10 to-[#E46ECC]/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
               </motion.div>
             ))}
           </div>
@@ -113,7 +114,7 @@ export default function Approach() {
       </div>
 
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 w-[320px] h-[320px] -translate-x-1/2 -translate-y-1/2 bg-[#616CFA]/10 blur-[100px] rounded-full" />
+      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#616CFA]/10 blur-[80px] sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:h-[500px] lg:w-[500px] lg:blur-[150px]" />
     </section>
   );
 }

@@ -223,6 +223,7 @@ canvas,
 svg {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 /* ================= TYPOGRAPHY ================= */
@@ -264,37 +265,35 @@ h6,
 }
 
 /* ================= SPACING SYSTEM ================= */
-
 .section-padding {
-  padding-top: clamp(3rem, 6vw, 5rem);
-  padding-bottom: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(3rem, 8vw, 7rem);
 }
 
 .section-padding-sm {
-  padding-top: clamp(2rem, 4vw, 3rem);
-  padding-bottom: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(2rem, 5vw, 4rem);
 }
 
 .section-gap {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .content-gap {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: clamp(1rem, 2vw, 2rem);
 }
 
 /* ================= BACKGROUNDS ================= */
 
 .hero-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
 
-  background-size: 50px 50px;
+  background-size: clamp(24px, 4vw, 50px)
+                   clamp(24px, 4vw, 50px);
 }
 
 /* ================= UTILITIES ================= */
@@ -338,4 +337,98 @@ a {
 
 .chat-scroll {
   scrollbar-width: thin;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+
+
+@media (hover: none) {
+  body {
+    cursor: auto;
+  }
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1280px) {
+
+  .section-title {
+    max-width: 18ch;
+  }
+
+}
+
+@media (max-width: 1024px) {
+
+  .section-title {
+    max-width: 100%;
+  }
+
+  .section-text {
+    max-width: 100%;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .section-padding {
+    padding-block: 4rem;
+  }
+
+  .section-padding-sm {
+    padding-block: 2.5rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+}
+
+@media (max-width: 640px) {
+
+  .section-label {
+    letter-spacing: 0.18em;
+  }
+
+  .section-title {
+    line-height: 1.15;
+  }
+
+  .section-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  body {
+    font-size: 15px;
+  }
+
+  .section-padding {
+    padding-block: 3rem;
+  }
+
 }

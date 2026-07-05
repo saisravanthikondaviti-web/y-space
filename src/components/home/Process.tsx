@@ -31,7 +31,11 @@ const pillars = [
 
 export default function Process() {
   return (
-    <section id="process" data-scroll-section className="relative flex h-screen items-center overflow-hidden">
+    <section
+      id="process"
+      data-scroll-section
+      className="relative flex h-screen items-center overflow-hidden"
+    >
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/4 top-20 h-80 w-80 rounded-full bg-[#616CFA]/10 blur-[120px]" />
@@ -46,7 +50,7 @@ export default function Process() {
               Our Approach
             </p>
 
-            <h2 className="text-3xl font-bold md:text-4xl xl:text-5xl">
+            <h2 className="text-4xl font-bold leading-tight text-white md:text-5xl">
               The Principles Behind
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
                 {" "}
@@ -68,19 +72,19 @@ export default function Process() {
             <FadeUp key={pillar.title}>
               <div
                 className="
-                  group
-                  h-full
-                  rounded-3xl
-                  border
-                  border-white/10
-                  bg-zinc-900/40
-                  backdrop-blur-xl
-                  p-6
-                  transition-all
-                  duration-500
-                  hover:border-[#616CFA]/20
-                  hover:bg-zinc-900/60
-                "
+    group
+    h-full
+    rounded-xl
+    border
+    border-white/10
+    bg-zinc-900/40
+    backdrop-blur-xl
+    p-3
+    transition-all
+    duration-500
+    hover:border-[#616CFA]/20
+    hover:bg-zinc-900/60
+  "
               >
                 <p className="mb-5 text-4xl font-bold text-white/10">
                   {pillar.number}

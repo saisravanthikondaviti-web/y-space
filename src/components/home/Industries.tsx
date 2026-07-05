@@ -93,29 +93,23 @@ export default function Industries() {
         <FadeUp>
           <div className="mx-auto mb-16 max-w-4xl text-center">
             {/* Section Label */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2 backdrop-blur-xl">
-              <div className="h-2 w-2 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC]" />
-              <span className="text-xs font-medium uppercase tracking-[0.3em] text-zinc-400">
-                Industries We Serve
-              </span>
-            </div>
 
             {/* Heading */}
             <h2 className="text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
-              <span className="bg-gradient-to-r from-[#616CFA] via-[#8A7DFF] to-[#E46ECC] bg-clip-text text-transparent">
-                Solutions for Every Industry
+              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                Industries We Serve
               </span>
             </h2>
 
             {/* Description */}
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-zinc-400">
-              From startups to enterprises, we deliver tailored digital
+              From startups to enterprises, we deliver digital
               solutions that strengthen brands, accelerate growth, and create
               meaningful customer experiences.
             </p>
 
             {/* Decorative Divider */}
-            <div className="mx-auto mt-10 h-px w-32 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
+            <div className="mx-auto mt-10 h-px w-52 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
           </div>
         </FadeUp>
 

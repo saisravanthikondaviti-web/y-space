@@ -19,7 +19,7 @@ interface Props {
 
 export default function IndustryCarousel({ industries }: Props) {
   const autoplay = Autoplay({
-    delay: 3500,
+    delay: 2000,
     stopOnInteraction: false,
     stopOnMouseEnter: true,
   });
@@ -28,7 +28,7 @@ export default function IndustryCarousel({ industries }: Props) {
     {
       loop: true,
       align: "start",
-      skipSnaps: false,
+      skipSnaps: true,
       dragFree: false,
     },
     [autoplay]

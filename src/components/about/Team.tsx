@@ -13,12 +13,12 @@ const team = [
   {
     name: "Sravanthi",
     role: "Head of Web Development",
-    image: "/images/team/sravanthi.jpeg",
+    image: "/images/team/sravanthi1.png",
   },
   {
     name: "xxxxxxx",
     role: "Head of Video Production",
-    image: "/images/team/vaikuntam.PNG",
+    image: "/images/team/dummy.avif",
   },
 ];
 
@@ -94,20 +94,6 @@ export default function Philosophy() {
           ))}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <Link
-            href="/team"
-            className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-8 py-4 text-sm font-medium transition-all duration-300 hover:border-[#616CFA]/40 hover:bg-white/[0.05]"
-          >
-            View Complete Team →
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

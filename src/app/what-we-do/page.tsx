@@ -46,7 +46,7 @@ const services: Service[] = [
   {
     slug: "branding",
     title: "Branding",
-    image: "/images/whatwedo/branding.png",
+    image: "/images/whatwedo/cbrand.png",
     description:
       "We help businesses create meaningful identities that communicate who they are and what they stand for.",
     items: [
@@ -75,7 +75,7 @@ const services: Service[] = [
   {
     slug: "design-creative",
     title: "Design & Creative",
-    image: "/images/whatwedo/design-creative.png",
+    image: "/images/whatwedo/cperformance.png",
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
@@ -101,7 +101,7 @@ const services: Service[] = [
   {
     slug: "digital-marketing",
     title: "Digital Marketing",
-    image: "/images/whatwedo/digital-marketing.png",
+    image: "/images/whatwedo/cdm.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -142,7 +142,7 @@ const services: Service[] = [
   {
     slug: "web-development",
     title: "Website Design & Development",
-    image: "/images/whatwedo/web development.png",
+    image: "/images/whatwedo/cweb.png",
     description:
       "We design and develop websites that are visually refined, user-focused, and performance-driven.",
     items: [
@@ -289,7 +289,7 @@ export default function WhatWeDo() {
           </div>
 
           {/* Heading */}
-          <h1 className="mt-8 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl xl:text-7xl">
+          <h1 className="mt-8 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl xl:text-6xl">
             We help ambitious brands
             <span className="mt-2 block bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               become impossible to ignore.
@@ -298,9 +298,9 @@ export default function WhatWeDo() {
 
           {/* Description */}
           <p className="mt-8 max-w-3xl text-lg leading-8 text-white/60 md:text-xl">
-            Through strategy, branding, design, technology, and marketing, we
-            build connected digital experiences that strengthen perception,
-            create trust, and drive meaningful growth.
+            Through strategy, branding, design, technology, and marketing,{" "}
+            <br /> we build connected digital experiences that strengthen
+            perception,<br/> create trust, and drive meaningful growth.
           </p>
         </motion.div>
       </section>
@@ -420,6 +420,17 @@ export default function WhatWeDo() {
 
       {/* SERVICES */}
       <section className="px-6 md:px-16 py-24">
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <h2 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
+            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+              Services we offer...
+            </span>
+          </h2>
+          <div className="mx-auto mt-10 h-px w-72 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
+        </div>
+
+            
+
         <div className="mx-auto max-w-7xl space-y-28">
           {services.map((service) => (
             <div
