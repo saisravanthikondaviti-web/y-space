@@ -2,75 +2,75 @@ import Link from "next/link";
 
 export default function CTA() {
   return (
-    <section
-      id="cta"
-      data-scroll-section
-      className="relative py-40 px-6 overflow-hidden"
-    >
-      {/* background glow */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-[800px] h-[800px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
-      </div>
+    <section id="cta" data-scroll-section className="relative px-6 py-14">
+      <div className="mx-auto max-w-7xl">
+        <div className="relative overflow-hidden border border-white/5 bg-[#090912]">
+          {/* Background Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(97,108,250,0.15),transparent_60%)]" />
 
-      <div className="relative max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT TEXT BLOCK */}
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#8E96FF]">
-              Work With Us
-            </p>
+          {/* LEFT CONTENT */}
+          <div className="relative z-20 px-8 pt-10 pb-16 md:px-14 lg:pt-12 lg:pb-20">
+            <div className="max-w-[620px]">
+              <p className="text-xs uppercase tracking-[0.35em] text-[#7B86FF]">
+                WORK WITH US
+              </p>
 
-            <h2 className="mt-6 text-5xl md:text-7xl font-bold text-white leading-tight">
-              Build Something
-              <br />
-              That Actually{" "}
-              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                Matters
-              </span>
-            </h2>
+              <h2 className="mt-8 text-5xl font-bold leading-[0.95] text-white md:text-7xl">
+                Build{" "}
+                <span className="bg-gradient-to-r from-[#7C7CFF] to-[#EA70D8] bg-clip-text text-transparent">
+                  Something
+                </span>
+                <br />
+                That Actually
+                <br />
+                <span className="bg-gradient-to-r from-[#7C7CFF] to-[#EA70D8] bg-clip-text text-transparent">
+                  Matters
+                </span>
+              </h2>
 
-            <p className="mt-8 text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl">
-              We don’t just design websites. We shape direction, clarity, and
-              identity for brands that want to grow with intention.
-            </p>
-          </div>
+              <p className="mt-10 max-w-md text-xl leading-relaxed text-white/85">
+                We don't just design.
+                <br />
+                We shape direction, clarity and identity
+                <br />
+                for brands that want to grow with intention.
+              </p>
 
-          {/* RIGHT ACTION BLOCK */}
-          <div className="flex flex-col lg:items-end space-y-6">
-            {/* IMAGE */}
-            <div className="relative w-full h-[320px] rounded-3xl overflow-hidden border border-white/10 group">
-              <img
-                src="/images/cta.jpg"
-                alt="Creative work preview"
-                className="w-full h-full object-cover scale-105 group-hover:scale-110 transition duration-700"
-              />
+              {/* CTA BOX */}
+              {/* CTA BOX */}
+              <div className="relative z-20 mt-14 flex w-full max-w-md flex-col items-center bg-black/35 p-8 backdrop-blur-md">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-10 py-4 text-xl font-medium text-white transition-all duration-300 hover:scale-105"
+                >
+                  Start a Project
+                </Link>
 
-              {/* overlay */}
-              <div className="absolute inset-0 bg-black/40" />
-
-              {/* optional label */}
-              <div className="absolute bottom-4 left-4 text-white text-sm tracking-wide">
-                Let us build something that matters for your brand.
+                <p className="mt-5 text-center text-sm text-gray-400">
+                  Response within 24 – 48 hours
+                </p>
               </div>
             </div>
-
-            {/* CTA TEXT */}
-            <p className="text-gray-400 text-lg text-right">
-              No templates. No noise. Just focused execution.
-            </p>
-
-            {/* BUTTON */}
-            <Link
-              href="/contact"
-              className="px-12 py-5 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] text-white font-medium text-lg hover:scale-105 transition-transform duration-300 shadow-lg inline-block"
-            >
-              Start a Project →
-            </Link>
-
-            <p className="text-sm text-gray-500 text-right">
-              Response within 24–48 hours
-            </p>
           </div>
+
+          {/* RIGHT ILLUSTRATION */}
+          <img
+            src="/images/aboutcta.png"
+            alt="Creative Illustration"
+            className="
+              pointer-events-none
+              absolute
+              right-0
+              bottom-16
+              z-10
+              h-[200px]
+              md:h-[440px]
+              lg:h-[560px]
+              xl:h-[620px]
+              w-[1000px]
+              object-contain
+            "
+          />
         </div>
       </div>
     </section>

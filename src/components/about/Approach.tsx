@@ -13,7 +13,7 @@ const steps = [
     number: "02",
     title: "Story",
     description:
-      "Crafting messaging that creates clarity, trust, and differentiation.",
+      "Crafting brand stories that inspire trust, clarity, and meaningful connection.",
   },
   {
     number: "03",

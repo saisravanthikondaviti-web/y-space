@@ -34,72 +34,57 @@ export default function Process() {
     <section
       id="process"
       data-scroll-section
-      className="relative flex h-screen items-center overflow-hidden"
+      className="relative flex min-h-screen lg:h-screen items-center overflow-hidden py-10"
     >
-      {/* Background Glow */}
+      {/* Background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-1/4 top-20 h-80 w-80 rounded-full bg-[#616CFA]/10 blur-[120px]" />
-        <div className="absolute right-1/4 bottom-0 h-80 w-80 rounded-full bg-[#E46ECC]/10 blur-[120px]" />
+        <div className="absolute left-1/4 top-16 h-44 w-44 rounded-full bg-[#616CFA]/10 blur-[80px]" />
+        <div className="absolute right-1/4 bottom-10 h-44 w-44 rounded-full bg-[#E46ECC]/10 blur-[80px]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-8">
-        {/* Header */}
-        <FadeUp>
-          <div className="mb-10 max-w-4xl">
-            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
-              Our Approach
-            </p>
+      <div className="mx-auto w-full max-w-6xl px-5 lg:px-8">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Left */}
+          <FadeUp>
+            <div className="max-w-md">
+              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-zinc-500">
+                Our Approach
+              </p>
 
-            <h2 className="text-4xl font-bold leading-tight text-white md:text-5xl">
-              The Principles Behind
-              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                {" "}
-                Every Project We Create
-              </span>
-            </h2>
+              <h2 className="text-2xl font-bold leading-tight text-white md:text-3xl xl:text-6xl">
+                The Principles Behind{" "}
+                <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                  Every Project
+                </span>
+              </h2>
 
-            <p className="mt-4 text-lg leading-relaxed text-zinc-400">
-              Rather than following a rigid process, we focus on a set of
-              principles that guide every decision—from strategy and design to
-              development and long-term growth.
-            </p>
+              <p className="mt-3 text-[14px] leading-6 text-zinc-400">
+                Every decision is guided by strategy, thoughtful design, scalable
+                technology, and continuous improvement.
+              </p>
+            </div>
+          </FadeUp>
+
+          {/* Right */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {pillars.map((pillar) => (
+              <FadeUp key={pillar.title}>
+                <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 backdrop-blur-xl transition-all duration-500 hover:border-[#616CFA]/20 hover:bg-zinc-900/60">
+                  <p className="mb-2 text-2xl font-bold text-white/10">
+                    {pillar.number}
+                  </p>
+
+                  <h3 className="mb-2 text-base font-semibold text-white">
+                    {pillar.title}
+                  </h3>
+
+                  <p className="text-[13px] leading-5 text-zinc-400">
+                    {pillar.description}
+                  </p>
+                </div>
+              </FadeUp>
+            ))}
           </div>
-        </FadeUp>
-
-        {/* 2x2 Grid */}
-        <div className="grid gap-4 md:grid-cols-2">
-          {pillars.map((pillar) => (
-            <FadeUp key={pillar.title}>
-              <div
-                className="
-    group
-    h-full
-    rounded-xl
-    border
-    border-white/10
-    bg-zinc-900/40
-    backdrop-blur-xl
-    p-3
-    transition-all
-    duration-500
-    hover:border-[#616CFA]/20
-    hover:bg-zinc-900/60
-  "
-              >
-                <p className="mb-5 text-4xl font-bold text-white/10">
-                  {pillar.number}
-                </p>
-
-                <h3 className="mb-4 text-xl font-semibold text-white">
-                  {pillar.title}
-                </h3>
-
-                <p className="leading-relaxed text-zinc-400">
-                  {pillar.description}
-                </p>
-              </div>
-            </FadeUp>
-          ))}
         </div>
       </div>
     </section>

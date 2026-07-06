@@ -13,12 +13,12 @@ const team = [
   {
     name: "Sravanthi",
     role: "Head of Web Development",
-    image: "/images/team/sravanthi1.png",
+    image: "/images/team/sravanthi.png",
   },
   {
     name: "xxxxxxx",
     role: "Head of Video Production",
-    image: "/images/team/dummy.avif",
+    image: "/images/team/dummy.jpg",
   },
 ];
 

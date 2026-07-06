@@ -46,7 +46,7 @@ const services: Service[] = [
   {
     slug: "branding",
     title: "Branding",
-    image: "/images/whatwedo/cbrand.png",
+    image: "/images/whatwedo/cbranding.png",
     description:
       "We help businesses create meaningful identities that communicate who they are and what they stand for.",
     items: [
@@ -73,9 +73,43 @@ const services: Service[] = [
     },
   },
   {
+    slug: "performance-marketing",
+    title: "Performance Marketing",
+    image: "/images/whatwedo/cperform.png",
+    description:
+      "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
+    items: [
+      "Google & META Ads",
+      "Lead Generation",
+      "Conversion Optimization",
+      "Funnel System",
+      "Analytics & Reporting",
+      "Whatsapp Marketing",
+    ],
+    details: {
+      "Google & META Ads":
+        "Launch highly targeted ad campaigns across Google and META platforms to generate qualified traffic, leads, and measurable business growth.",
+
+      "Lead Generation":
+        "Build scalable lead generation systems that consistently attract high-intent prospects and convert them into potential customers.",
+
+      "Conversion Optimization":
+        "Optimize landing pages, ad creatives, and user journeys to improve conversion rates and maximize your return on ad spend.",
+
+      "Funnel System":
+        "Design and automate high-converting sales funnels that guide prospects from awareness to purchase with minimal friction.",
+
+      "Analytics & Reporting":
+        "Monitor campaign performance with detailed analytics and actionable reports to identify opportunities and improve marketing results.",
+
+      "Whatsapp Marketing":
+        "Engage customers through personalized WhatsApp campaigns, automated messaging, and timely follow-ups that drive higher conversions.",
+    },
+  },
+  {
     slug: "design-creative",
     title: "Design & Creative",
-    image: "/images/whatwedo/cperformance.png",
+    image: "/images/whatwedo/cdc.png",
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
@@ -101,48 +135,36 @@ const services: Service[] = [
   {
     slug: "digital-marketing",
     title: "Digital Marketing",
-    image: "/images/whatwedo/cdm.png",
+    image: "/images/whatwedo/cdigim.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
-      "Performance Marketing",
       "Search Engine Optimisation (SEO)",
       "Social Media Marketing (SMM)",
       "Social Media Management",
-      "Google & META Ads",
       "Influencer & Collaboration Marketing",
-      "Analytics & Reporting",
       "Content Strategy",
       "Campaign Planning",
-      "Audience Research",
     ],
     details: {
-      "Performance Marketing":
-        "We focus on data-driven strategies to maximize the effectiveness of your marketing investments.",
       "Search Engine Optimisation (SEO)":
         "Improve your website's visibility in search engine results to attract more organic traffic.",
       "Social Media Marketing (SMM)":
         "Engage with your audience on social media platforms to build brand awareness and drive conversions.",
       "Social Media Management":
         "Manage and optimize your social media presence to maintain a consistent brand voice and strategy.",
-      "Google & META Ads":
-        "Create targeted advertising campaigns across Google and META platforms to reach your ideal customers.",
       "Influencer & Collaboration Marketing":
         "Partner with influencers and other brands to expand your reach and build credibility.",
-      "Analytics & Reporting":
-        "Track and analyze the performance of your marketing efforts to make informed decisions and optimize results.",
       "Content Strategy":
         "Develop a content plan that aligns with your brand values and resonates with your target audience.",
       "Campaign Planning":
         "Design and execute marketing campaigns that achieve specific business objectives.",
-      "Audience Research":
-        "Understand your target audience's needs, preferences, and behaviors to create more effective marketing strategies.",
-    },
+      },
   },
   {
     slug: "web-development",
     title: "Website Design & Development",
-    image: "/images/whatwedo/cweb.png",
+    image: "/images/whatwedo/cwebdev.png",
     description:
       "We design and develop websites that are visually refined, user-focused, and performance-driven.",
     items: [
@@ -186,7 +208,7 @@ const services: Service[] = [
   {
     slug: "video-production",
     title: "Video Production",
-    image: "/images/whatwedo/video.png",
+    image: "/images/whatwedo/video-production.png",
     description:
       "We create compelling visual content designed to engage, educate, and inspire.",
     items: [
@@ -300,7 +322,8 @@ export default function WhatWeDo() {
           <p className="mt-8 max-w-3xl text-lg leading-8 text-white/60 md:text-xl">
             Through strategy, branding, design, technology, and marketing,{" "}
             <br /> we build connected digital experiences that strengthen
-            perception,<br/> create trust, and drive meaningful growth.
+            perception,
+            <br /> create trust, and drive meaningful growth.
           </p>
         </motion.div>
       </section>
@@ -428,8 +451,6 @@ export default function WhatWeDo() {
           </h2>
           <div className="mx-auto mt-10 h-px w-72 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
         </div>
-
-            
 
         <div className="mx-auto max-w-7xl space-y-28">
           {services.map((service) => (

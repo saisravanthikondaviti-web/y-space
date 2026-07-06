@@ -61,17 +61,17 @@ export default function Footer() {
             />
 
             <SocialIcon
-              href="https://linkedin.com"
-              normal="/images/footer/linkedin.png"
-              hover="/images/footer/flinkedin.png"
-              alt="LinkedIn"
-            />
-
-            <SocialIcon
               href="https://facebook.com"
               normal="/images/footer/facebook.png"
               hover="/images/footer/ffacebook.png"
               alt="Facebook"
+            />
+
+            <SocialIcon
+              href="https://linkedin.com"
+              normal="/images/footer/linkedin.png"
+              hover="/images/footer/flinkedin.png"
+              alt="LinkedIn"
             />
 
             <SocialIcon
