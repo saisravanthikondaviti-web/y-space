@@ -45,17 +45,17 @@ const services = [
 export default function Services() {
   return (
     <section
-      id="services"
-      data-scroll-section
-      className="flex h-screen items-center"
-    >
-      <div className="mx-auto max-w-7xl px-8">
-        <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
+  id="services"
+  data-scroll-section
+  className="relative py-20 sm:py-24 lg:py-28"
+>
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 space-y-8">
+        <p className="mb-3 text-xs uppercase tracking-[0.3em] text-zinc-500 sm:text-sm">
           Services
         </p>
 
         <FadeUp>
-          <h2 className="max-w-3xl text-3xl font-bold md:text-4xl xl:text-5xl">
+          <h2 className="max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-6xl">
             Designed
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               {" "}
@@ -65,13 +65,13 @@ export default function Services() {
         </FadeUp>
 
         <FadeUp>
-          <p className="mt-5 max-w-5xl text-base leading-7 text-zinc-400">
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-zinc-400 sm:text-base lg:max-w-5xl">
             We deliver branding, marketing, creative production, and technology
             solutions that help businesses grow with confidence.
           </p>
         </FadeUp>
 
-        <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <FadeUp key={service.title}>
               <Link href={`/what-we-do#${service.slug}`} prefetch={false}>
@@ -88,7 +88,7 @@ export default function Services() {
       border-white/15
       bg-zinc-900/80
       backdrop-blur-xl
-      p-3
+      p-5 lg:p-6
       shadow-[0_10px_30px_rgba(0,0,0,0.25)]
       transition-all
       duration-500
@@ -152,20 +152,12 @@ export default function Services() {
                   {/* Content */}
                   <div className="relative flex-1">
                     <h3
-                      className="
-          mb-2
-          text-lg
-          font-semibold
-          text-white
-          transition-colors
-          duration-300
-          group-hover:text-zinc-100
-        "
+                      className="mb-3 text-lg font-semibold text-white sm:text-xl"
                     >
                       {service.title}
                     </h3>
 
-                    <p className="text-[13px] leading-6 text-zinc-300">
+                    <p className="text-sm leading-6 text-zinc-300 sm:text-[15px]">
                       {service.description}
                     </p>
                   </div>
@@ -174,7 +166,7 @@ export default function Services() {
                   <div
                     className="
         relative
-        mt-3
+        mt-5
         flex
         items-center
         text-zinc-500

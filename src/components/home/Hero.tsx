@@ -39,13 +39,39 @@ export default function Hero() {
     blur-[120px]
   "
       />
-      <div className="relative z-10 text-center">
-        <p className="mb-4 text-sm uppercase tracking-[0.4em] text-zinc-500">
+      <div className="relative z-10 px-6 text-center">
+        <p
+          className="
+      mb-3
+      text-[10px]
+      uppercase
+      tracking-[0.25em]
+      text-zinc-500
+      sm:mb-4
+      sm:text-xs
+      sm:tracking-[0.35em]
+      md:text-sm
+      md:tracking-[0.4em]
+    "
+        >
           A Creative Space
         </p>
 
         <motion.h1
-          className="max-w-5xl text-6xl font-bold leading-tight md:text-8xl"
+          className="
+      mx-auto
+      max-w-xs
+      text-4xl
+      font-bold
+      leading-tight
+      sm:max-w-xl
+      sm:text-5xl
+      md:max-w-3xl
+      md:text-6xl
+      lg:max-w-5xl
+      lg:text-7xl
+      xl:text-8xl
+    "
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -55,23 +81,53 @@ export default function Hero() {
           Own Your Market.
         </motion.h1>
 
-        <p className="mx-auto mt-8 max-w-2xl text-lg text-zinc-400">
+        <p
+          className="
+      mx-auto
+      mt-5
+      max-w-xs
+      text-sm
+      leading-relaxed
+      text-zinc-400
+      sm:mt-6
+      sm:max-w-lg
+      sm:text-base
+      md:mt-7
+      md:max-w-xl
+      md:text-lg
+      lg:mt-8
+      lg:max-w-2xl
+      lg:text-xl
+    "
+        >
           Strategy. Creativity. Performance. Technology.
         </p>
 
-        <div className="mt-10 flex justify-center gap-4">
+        <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-5">
           <Link href="/contact">
             <motion.button
               className="
-        rounded-full
-        px-6
-        py-3
-        font-medium
-        text-white
-        bg-gradient-to-r
-        from-[#616CFA]
-        to-[#E46ECC]
-      "
+      w-full
+      sm:w-auto
+      rounded-full
+      bg-gradient-to-r
+      from-[#616CFA]
+      to-[#E46ECC]
+      px-6
+      py-3
+      text-sm
+      font-medium
+      text-white
+      transition-all
+      duration-300
+      hover:scale-105
+      sm:px-7
+      sm:py-3.5
+      sm:text-base
+      lg:px-8
+      lg:py-4
+      lg:text-lg
+    "
               animate={{
                 boxShadow: [
                   "0 0 10px rgba(97,108,250,0.4)",
@@ -90,7 +146,29 @@ export default function Hero() {
           </Link>
 
           <Link href="/what-we-do">
-            <button className="rounded-full border border-white/20 px-6 py-3">
+            <button
+              className="
+      w-full
+      sm:w-auto
+      rounded-full
+      border
+      border-white/20
+      px-6
+      py-3
+      text-sm
+      font-medium
+      transition-all
+      duration-300
+      hover:border-white/40
+      hover:bg-white/5
+      sm:px-7
+      sm:py-3.5
+      sm:text-base
+      lg:px-8
+      lg:py-4
+      lg:text-lg
+    "
+            >
               Explore Work
             </button>
           </Link>

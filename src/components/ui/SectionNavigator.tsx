@@ -8,36 +8,29 @@ export default function SectionNavigator() {
   const isScrolling = useRef(false);
 
   useEffect(() => {
-    console.log("✅ SectionNavigator Mounted");
-
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>("[data-scroll-section]")
     );
 
-    console.log("Sections Found:", sections.length);
-
-    sections.forEach((section, index) => {
-      console.log(index, section.id);
-    });
-
     if (!sections.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            currentSection.current = sections.indexOf(
-              entry.target as HTMLElement
-            );
-          }
-        });
-      },
-      {
-        threshold: 0.6,
-      }
-    );
+    const updateCurrentSection = () => {
+      const scrollY = window.scrollY + window.innerHeight / 2;
 
-    sections.forEach((section) => observer.observe(section));
+      let current = 0;
+
+      sections.forEach((section, index) => {
+        if (scrollY >= section.offsetTop) {
+          current = index;
+        }
+      });
+
+      currentSection.current = current;
+    };
+
+    updateCurrentSection();
+
+    window.addEventListener("scroll", updateCurrentSection);
 
     const handleWheel = (e: WheelEvent) => {
       if (isScrolling.current) return;
@@ -61,12 +54,12 @@ export default function SectionNavigator() {
       isScrolling.current = true;
 
       lenis?.scrollTo(sections[target], {
-        duration: 1.2,
+        duration: 1.1,
       });
 
       setTimeout(() => {
         isScrolling.current = false;
-      }, 1300);
+      }, 1200);
     };
 
     window.addEventListener("wheel", handleWheel, {
@@ -74,7 +67,7 @@ export default function SectionNavigator() {
     });
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", updateCurrentSection);
       window.removeEventListener("wheel", handleWheel);
     };
   }, []);

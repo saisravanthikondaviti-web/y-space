@@ -9,7 +9,6 @@ import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import GlobalParticles from "@/components/ui/GlobalParticles";
 import SectionNavigator from "@/components/ui/SectionNavigator";
 import Stats from "@/components/home/Stats";
 
@@ -20,7 +19,6 @@ export default function Home() {
       <SmoothScroll />
       <SectionNavigator />
       <ScrollProgress />
-      <GlobalParticles />
       <CustomCursor />
 
       <Navbar />

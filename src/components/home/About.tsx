@@ -26,7 +26,7 @@ export default function About() {
     <section
   id="about"
   data-scroll-section
-  className="relative flex h-screen items-start overflow-hidden pt-24"
+  className="relative flex min-h-screen items-center py-20 sm:py-24 lg:py-28"
 >
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
@@ -34,9 +34,9 @@ export default function About() {
         <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-[#E46ECC]/10 blur-[120px]" />
       </div>
 
-      <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-5 max-w-3xl">
+        <div className="mb-10 max-w-4xl lg:mb-14">
           <FadeUp>
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-zinc-500">
               About VAISPACE
@@ -44,7 +44,7 @@ export default function About() {
           </FadeUp>
 
           <FadeUp>
-           <h2 className="text-3xl font-bold leading-[1.05] text-white md:text-[2.5rem] xl:text-[3rem]">
+           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl xl:text-6xl">
               Building Modern Brands Through
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
                 {" "}
@@ -55,10 +55,10 @@ export default function About() {
         </div>
 
         {/* Main Section */}
-        <div className="grid items-center gap-6 lg:grid-cols-2">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* Image */}
           <FadeUp>
-            <div className="relative h-[260px] md:h-[300px] xl:h-[340px] overflow-hidden rounded-3xl border border-white/10">
+            <div className="relative h-[240px] sm:h-[300px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-3xl border border-white/10">
               <video
                 src="/videos/about-robo.mp4"
                 autoPlay
@@ -75,7 +75,7 @@ export default function About() {
                   Our Vision
                 </p>
 
-                <h3 className="max-w-xs text-xl font-semibold text-white lg:text-2xl">
+                <h3 className="max-w-xs text-lg font-semibold text-white sm:text-xl lg:text-2xl">
                   Creating Digital Experiences That Inspire Growth.
                 </h3>
               </div>
@@ -89,11 +89,11 @@ export default function About() {
                 Who We Are
               </p>
 
-              <h3 className="mb-3 text-xl font-bold text-white lg:text-2xl">
+              <h3 className="mb-4 text-xl font-bold text-white sm:text-2xl lg:text-3xl">
                 A Creative Partner For Ambitious Brands
               </h3>
 
-              <p className="mb-4 text-sm leading-6 text-zinc-400">
+              <p className="mb-6 text-sm leading-7 text-zinc-400 sm:text-base">
                 As we continue to evolve, VAI SPACE is expanding beyond creative
                 services into broader technology solutions, building a
                 future-ready ecosystem where businesses can scale, innovate, and
@@ -108,7 +108,7 @@ export default function About() {
                 Our Mission
               </p>
 
-              <p className="text-sm leading-6 text-zinc-400">
+              <p className="text-sm leading-7 text-zinc-400 sm:text-base">
                 We combine creativity, innovation, and execution to deliver
                 digital solutions that create measurable business impact.
               </p>

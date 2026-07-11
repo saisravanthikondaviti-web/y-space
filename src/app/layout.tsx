@@ -4,7 +4,6 @@ import "./globals.css";
 import GlobalParticles from "@/components/ui/GlobalParticles";
 import ChatLauncher from "@/components/chatbot/ChatLauncher";
 
-
 const headingFont = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-heading",
@@ -41,9 +40,9 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-screen bg-black">
         {children}
-        {/* Global Particles */}
+
         <GlobalParticles />
         <ChatLauncher />
       </body>
