@@ -23,23 +23,44 @@ export async function POST(req: Request) {
 
     const data = await req.json();
 
-    await resend.emails.send({
-      from: "VAISPACE <onboarding@resend.dev>",
-      to: "saisravanthikondaviti@gmail.com",
-      replyTo: data.email,
-      subject: `New VAISPACE Inquiry from ${data.name}`,
-      html: `
-        <h2>New Client Inquiry</h2>
+// ==========================
+// Email to VAISPACE
+// ==========================
+const adminResult = await resend.emails.send({
+  from: "VAISPACE <onboarding@resend.dev>",
+  to: "saisravanthikondaviti@gmail.com",
+  replyTo: data.email,
+  subject: `New VAISPACE Inquiry from ${data.name}`,
+  html: `
+    <h2>New Client Inquiry</h2>
 
-        <p><strong>Name:</strong> ${data.name}</p>
-        <p><strong>Service:</strong> ${data.service}</p>
-        <p><strong>Project:</strong> ${data.project}</p>
-        <p><strong>Additional Details:</strong> ${data.projectDetails}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Phone:</strong> ${data.phone || "Not Provided"}</p>
-        <p><strong>Timeline:</strong> ${data.timeline}</p>
-      `,
-    });
+    <p><strong>Name:</strong> ${data.name}</p>
+    <p><strong>Service:</strong> ${data.service}</p>
+    <p><strong>Project:</strong> ${data.project}</p>
+    <p><strong>Additional Details:</strong> ${data.projectDetails}</p>
+    <p><strong>Email:</strong> ${data.email}</p>
+    <p><strong>Phone:</strong> ${data.phone || "Not Provided"}</p>
+    <p><strong>Timeline:</strong> ${data.timeline}</p>
+  `,
+});
+
+console.log("Admin Result:", adminResult);
+
+// ==========================
+// Confirmation Email to User
+// ==========================
+console.log("User email:", data.email);
+
+const userResult = await resend.emails.send({
+  from: "VAISPACE <onboarding@resend.dev>",
+  to: data.email,
+  subject: "Thank you for contacting VAISPACE",
+  html: `
+    <!-- Your existing HTML goes here -->
+  `,
+});
+
+console.log("User Result:", userResult);
 
     return NextResponse.json({
       success: true,
