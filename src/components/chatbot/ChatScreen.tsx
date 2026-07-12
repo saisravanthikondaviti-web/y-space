@@ -20,7 +20,6 @@ export default function ChatScreen({ onClose }: Props) {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState(0);
-
   const [typing, setTyping] = useState(false);
 
   const [lead, setLead] = useState<LeadData>({
@@ -33,14 +32,12 @@ export default function ChatScreen({ onClose }: Props) {
     projectDetails: "",
   });
 
-  // Auto Scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [messages, typing]);
 
-  // Initial Question
   useEffect(() => {
     askQuestion(0);
   }, []);
@@ -63,11 +60,9 @@ export default function ChatScreen({ onClose }: Props) {
     }, 900);
   };
 
-  // Placeholder (Part 5B)
   const handleAnswer = (answer: string) => {
     const current = conversation[step];
 
-    // Add user's message
     setMessages((prev) => [
       ...prev,
       {
@@ -77,7 +72,6 @@ export default function ChatScreen({ onClose }: Props) {
       },
     ]);
 
-    // Save the answer
     setLead((prev) => ({
       ...prev,
       [current.key]: answer,
@@ -85,10 +79,7 @@ export default function ChatScreen({ onClose }: Props) {
 
     const nextStep = step + 1;
 
-    // Conversation finished
-    // Conversation finished
     if (nextStep >= conversation.length) {
-      // Create the final object with the latest answer included
       const finalLead = {
         ...lead,
         [current.key]: answer,
@@ -116,9 +107,8 @@ export default function ChatScreen({ onClose }: Props) {
 
       return;
     }
-    // Move to next question
-    setStep(nextStep);
 
+    setStep(nextStep);
     setTyping(true);
 
     setTimeout(() => {
@@ -139,26 +129,65 @@ export default function ChatScreen({ onClose }: Props) {
   const currentQuestion = conversation[step];
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-[32px] border border-white/10 bg-[#09090B]/90 backdrop-blur-xl">
+    <div
+      className="
+        flex
+        h-full
+        min-h-0
+        flex-col
+        overflow-hidden
+
+        rounded-2xl
+        sm:rounded-3xl
+
+        border
+        border-white/10
+
+        bg-[#09090B]/90
+        backdrop-blur-xl
+      "
+    >
       {/* Header */}
       <ChatHeader onClose={onClose} />
 
       {/* Messages */}
-      <div className="chat-scroll relative flex-1 overflow-y-auto px-5 py-6">
+      <div
+        className="
+          chat-scroll
+          relative
+          min-h-0
+          flex-1
+          overflow-y-auto
+
+          px-4
+          py-5
+
+          sm:px-5
+          sm:py-6
+
+          lg:px-6
+        "
+      >
         {/* Background Glow */}
         <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-violet-600/10 blur-[120px]" />
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-[120px]" />
 
-        <div className="relative space-y-5">
+        <div className="relative space-y-4 sm:space-y-5">
           {messages.map((msg) => (
             <div key={msg.id}>
-              <MessageBubble role={msg.role} content={msg.content} />
+              <MessageBubble
+                role={msg.role}
+                content={msg.content}
+              />
 
               {msg.options &&
                 msg === messages[messages.length - 1] &&
                 !typing &&
                 step < conversation.length && (
-                  <QuickReplies options={msg.options} onSelect={handleAnswer} />
+                  <QuickReplies
+                    options={msg.options}
+                    onSelect={handleAnswer}
+                  />
                 )}
             </div>
           ))}
@@ -171,7 +200,20 @@ export default function ChatScreen({ onClose }: Props) {
 
       {/* Input */}
       {step < conversation.length && !currentQuestion?.options && (
-        <MessageInput disabled={typing} onSend={handleAnswer} />
+        <div
+          className="
+            shrink-0
+            border-t
+            border-white/10
+            bg-black/20
+            backdrop-blur-md
+          "
+        >
+          <MessageInput
+            disabled={typing}
+            onSend={handleAnswer}
+          />
+        </div>
       )}
     </div>
   );

@@ -17,29 +17,38 @@ export default function ChatLauncher() {
       />
 
       <motion.button
+        onClick={() => setOpen(true)}
         whileHover={{
-          scale: 1.05,
+          scale: 1.04,
         }}
         whileTap={{
-          scale: 0.95,
+          scale: 0.96,
         }}
         animate={{
-          y: [0, -6, 0],
+          y: [0, -5, 0],
         }}
         transition={{
-          repeat: Infinity,
           duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
         }}
-        onClick={() => setOpen(true)}
         className="
           fixed
-          bottom-6
-          right-6
+          bottom-4
+          right-4
+
+          sm:bottom-6
+          sm:right-6
+
           z-[9998]
 
           flex
           items-center
-          gap-3
+          justify-center
+          gap-2
+
+          min-h-12
+          min-w-12
 
           rounded-full
 
@@ -50,18 +59,36 @@ export default function ChatLauncher() {
           from-violet-600
           to-fuchsia-500
 
-          px-5
-          py-4
+          px-4
+          py-3
+
+          sm:px-5
+          sm:py-3.5
 
           text-white
 
-          shadow-xl
-          shadow-violet-700/40
+          shadow-[0_12px_35px_rgba(139,92,246,0.35)]
+
+          transition-all
+          duration-300
+
+          hover:shadow-[0_18px_45px_rgba(139,92,246,0.45)]
         "
       >
-        <Sparkles size={18} />
+        <Sparkles
+          className="h-5 w-5 sm:h-[18px] sm:w-[18px]"
+        />
 
-        <span className="font-medium">
+        <span
+          className="
+            hidden
+            sm:block
+
+            text-sm
+            font-medium
+            tracking-wide
+          "
+        >
           Y Assistant
         </span>
       </motion.button>

@@ -23,13 +23,53 @@ export default function MessageBubble({ role, content }: Props) {
     >
       <div
         className={clsx(
-          "max-w-[82%] rounded-3xl px-5 py-4 text-sm leading-7 shadow-lg",
+          `
+          max-w-[92%]
+          sm:max-w-[85%]
+          md:max-w-[80%]
+
+          break-words
+
+          rounded-2xl
+          sm:rounded-3xl
+
+          px-4
+          py-3
+
+          sm:px-5
+          sm:py-4
+
+          text-[14px]
+          sm:text-[15px]
+
+          leading-6
+          sm:leading-7
+
+          shadow-lg
+          transition-all
+          duration-300
+          `,
           isUser
-            ? "rounded-br-md bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white"
-            : "rounded-bl-md border border-white/10 bg-white/5 text-zinc-100 backdrop-blur-xl"
+            ? `
+              rounded-br-md
+              bg-gradient-to-r
+              from-violet-600
+              to-fuchsia-500
+              text-white
+            `
+            : `
+              rounded-bl-md
+              border
+              border-white/10
+              bg-white/5
+              text-zinc-100
+              backdrop-blur-xl
+            `
         )}
       >
-        <p className="whitespace-pre-line">{content}</p>
+        <p className="whitespace-pre-line break-words">
+          {content}
+        </p>
       </div>
     </motion.div>
   );

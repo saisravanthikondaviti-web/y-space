@@ -22,53 +22,81 @@ export default function ChatModal({ open, onClose }: Props) {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 80,
-            scale: 0.9,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          exit={{
-            opacity: 0,
-            y: 80,
-            scale: 0.9,
-          }}
-          transition={{
-            duration: 0.35,
-            ease: "easeOut",
-          }}
-          className="fixed bottom-24 right-6 z-[9999]"
-        >
-          <div
-            className="
-              h-[700px]
-              w-[420px]
-              overflow-hidden
-              rounded-[32px]
-              border
-              border-white/10
-              bg-black/50
-              shadow-2xl
-              shadow-violet-900/30
-              backdrop-blur-2xl
+        <div
+          className="
+            fixed
+            inset-0
+            z-[9999]
 
-              max-md:h-screen
-              max-md:w-screen
-              max-md:rounded-none
-            "
+            pointer-events-none
+
+            flex
+            items-end
+            justify-end
+
+            p-3
+            sm:p-5
+            lg:p-6
+          "
+        >
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 40,
+              scale: 0.96,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 40,
+              scale: 0.96,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeOut",
+            }}
+            className="pointer-events-auto"
           >
-            {started ? (
-              <ChatScreen onClose={handleClose} />
-            ) : (
-              <WelcomeScreen onStart={() => setStarted(true)} />
-            )}
-          </div>
-        </motion.div>
+            <div
+              className="
+                w-[360px]
+                h-[520px]
+
+                sm:w-[380px]
+                sm:h-[560px]
+
+                md:w-[400px]
+                md:h-[580px]
+
+                lg:w-[420px]
+                lg:h-[600px]
+
+                overflow-hidden
+
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-black/60
+                backdrop-blur-2xl
+
+                shadow-[0_25px_80px_rgba(0,0,0,0.45)]
+                shadow-violet-900/30
+              "
+            >
+              {started ? (
+                <ChatScreen onClose={handleClose} />
+              ) : (
+                <WelcomeScreen onStart={() => setStarted(true)} />
+              )}
+            </div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

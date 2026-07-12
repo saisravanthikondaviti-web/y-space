@@ -1,40 +1,50 @@
 export const conversation = [
   {
     key: "name",
-    question: "Hi 👋 Welcome to VAISPACE.\n\nWhat's your name?",
+    question:
+      "👋 Hi! Welcome to VAI SPACE.\n\nI'm your AI assistant and I'd love to learn more about your project.\n\nFirst, what's your name?",
   },
   {
     key: "service",
-    question: "Nice to meet you! What can we help you build?",
+    question: "Great to meet you! Which service are you looking for?",
     options: [
-      "Website",
+      "Website Development",
       "Mobile App",
-      "AI Solution",
+      "AI Solutions",
       "Branding",
-      "Marketing",
-      "Other",
+      "Digital Marketing",
+      "Not Sure Yet",
     ],
   },
   {
     key: "project",
-    question: "Tell us a little about your project.",
+    question:
+      "Awesome! Could you briefly describe what you're planning to build?",
   },
   {
     key: "email",
-    question: "What's your email address?",
+    question:
+      "Perfect! What's the best email address for us to reach you?",
   },
   {
     key: "phone",
-    question: "Phone number (optional)",
+    question:
+      "Would you like to share your phone number? (Optional)",
   },
   {
     key: "timeline",
-    question: "When are you planning to start?",
-    options: ["Immediately", "This Month", "1–3 Months", "Just Exploring"],
+    question:
+      "When are you hoping to get started?",
+    options: [
+      "Immediately",
+      "Within 1 Month",
+      "1–3 Months",
+      "Just Exploring",
+    ],
   },
   {
     key: "projectDetails",
     question:
-      "Would you like to share any additional details? You can tell us about your goals, features, budget, target audience, inspiration, or anything else that will help us understand your project better. (Optional)",
+      "Anything else you'd like us to know?\n\nYou can mention your goals, required features, budget, target audience, design inspiration, or any other details. (Optional)",
   },
 ];

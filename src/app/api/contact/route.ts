@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: "Auria <onboarding@resend.dev>",
+      from: "vaispace <onboarding@resend.dev>",
       to: ["saisravanthikondaviti@gmail.com"],
       replyTo: email,
       subject: `🚀 New Contact Form Submission from ${name}`,
