@@ -70,7 +70,7 @@ export default function Process() {
             {pillars.map((pillar) => (
               <FadeUp key={pillar.title}>
                 <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 backdrop-blur-xl transition-all duration-500 hover:border-[#616CFA]/20 hover:bg-zinc-900/60">
-                  <p className="mb-2 text-2xl font-bold text-white/10">
+                  <p className="mb-2 text-2xl font-bold text-white/50">
                     {pillar.number}
                   </p>
 

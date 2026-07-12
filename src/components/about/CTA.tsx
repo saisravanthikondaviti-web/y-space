@@ -15,7 +15,7 @@ export default function CTA() {
                 WORK WITH US
               </p>
 
-              <h2 className="mt-8 text-5xl font-bold leading-[0.95] text-white md:text-7xl">
+              <h2 className="mt-8 text-6xl font-bold leading-[0.95] text-white md:text-6xl">
                 Build{" "}
                 <span className="bg-gradient-to-r from-[#7C7CFF] to-[#EA70D8] bg-clip-text text-transparent">
                   Something

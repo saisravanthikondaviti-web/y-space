@@ -70,7 +70,7 @@ export default function Hero() {
       md:text-6xl
       lg:max-w-5xl
       lg:text-7xl
-      xl:text-8xl
+      xl:text-7.5xl
     "
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,8 +124,8 @@ export default function Hero() {
       sm:px-7
       sm:py-3.5
       sm:text-base
-      lg:px-8
-      lg:py-4
+      lg:px-7
+      lg:py-3
       lg:text-lg
     "
               animate={{
@@ -164,8 +164,8 @@ export default function Hero() {
       sm:px-7
       sm:py-3.5
       sm:text-base
-      lg:px-8
-      lg:py-4
+      lg:px-7
+      lg:py-3
       lg:text-lg
     "
             >

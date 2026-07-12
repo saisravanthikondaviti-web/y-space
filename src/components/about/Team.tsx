@@ -49,7 +49,7 @@ export default function Philosophy() {
           <h2 className="mt-4 text-4xl font-bold text-white md:text-4xl">
             Meet the People Behind{" "}
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-              Vai Space
+              VAI SPACE
             </span>
           </h2>
 

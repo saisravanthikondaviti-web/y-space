@@ -5,15 +5,15 @@ import { motion } from "framer-motion";
 const story = [
   {
     title: "A simple belief",
-    text: "VAI SPACE. is a founder-led creative and technology driven hub built built on one belief Every iconic brand begins with a clear vision.  ",
+    text: "VAI SPACE. is a founder-led creative and technology driven hub built on one belief Every iconic brand begins with a clear vision.  ",
   },
   {
     title: "Not chance, but clarity",
-    text: "Clarity, consistency, and vision shape every decision we make.Success follows brands built with intention, not assumptions.",
+    text: "Clarity, consistency, and vision shape every decision we make. Success follows brands built with intention, not assumptions.",
   },
   {
     title: "Since 2017",
-    text: "We’ve worked acroos branding, marketing, design, and film making we helpinf businesses refine how they are seen and remembered.",
+    text: "We’ve worked acroos branding, marketing, design, and film making we helping businesses refine how they are seen and remembered.",
   },
   {
     title: "Not an agency",

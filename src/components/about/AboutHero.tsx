@@ -178,11 +178,11 @@ export default function AboutHero() {
             leading-[1.05]
             tracking-[-0.04em]
 
-            text-[2.75rem]
+            text-[2.05rem]
             sm:text-[4rem]
             md:text-[5rem]
             lg:text-[6rem]
-            xl:text-[7rem]
+            xl:text-[5rem]
 
             bg-gradient-to-r
             from-[#616CFA]

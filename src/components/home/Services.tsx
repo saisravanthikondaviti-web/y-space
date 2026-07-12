@@ -55,7 +55,7 @@ export default function Services() {
         </p>
 
         <FadeUp>
-          <h2 className="max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-6xl">
+          <h2 className="max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-5xl">
             Designed
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               {" "}
@@ -83,12 +83,12 @@ export default function Services() {
       h-full
       flex-col
       overflow-hidden
-      rounded-2xl
+      rounded-xl
       border
       border-white/15
       bg-zinc-900/80
       backdrop-blur-xl
-      p-5 lg:p-6
+      p-3.5 lg:p-4
       shadow-[0_10px_30px_rgba(0,0,0,0.25)]
       transition-all
       duration-500
@@ -152,12 +152,12 @@ export default function Services() {
                   {/* Content */}
                   <div className="relative flex-1">
                     <h3
-                      className="mb-3 text-lg font-semibold text-white sm:text-xl"
+                      className="mb-2 text-base font-semibold text-white sm:text-lg"
                     >
                       {service.title}
                     </h3>
 
-                    <p className="text-sm leading-6 text-zinc-300 sm:text-[15px]">
+                    <p className="text-[13px] leading-5 text-zinc-400 sm:text-sm">
                       {service.description}
                     </p>
                   </div>
