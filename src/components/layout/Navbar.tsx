@@ -1,12 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show at top
+      if (currentScrollY < 50) {
+        setShowNavbar(true);
+      }
+      // Scroll down - hide
+      else if (currentScrollY > lastScrollY) {
+        setShowNavbar(false);
+        setMenuOpen(false);
+      }
+      // Scroll up - show
+      else {
+        setShowNavbar(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const navLinks = [
     { href: "/what-we-do", label: "WHAT WE DO" },
@@ -17,7 +48,11 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-xl">
+    <header
+      className={`fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-xl transition-transform duration-500 ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
         {/* Logo */}
         <Link href="/">
@@ -35,7 +70,10 @@ export default function Navbar() {
         <ul className="hidden md:flex items-center gap-8 text-sm font-[Lexend] text-gray-200">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} className="transition hover:text-white">
+              <Link
+                href={link.href}
+                className="transition hover:text-white"
+              >
                 {link.label}
               </Link>
             </li>
