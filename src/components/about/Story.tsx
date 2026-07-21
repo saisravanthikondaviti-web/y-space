@@ -13,7 +13,7 @@ const story = [
   },
   {
     title: "Since 2017",
-    text: "We’ve worked acroos branding, marketing, design, and film making we helping businesses refine how they are seen and remembered.",
+    text: "We’ve worked across branding, marketing, design, and film making we helping businesses refine how they are seen and remembered.",
   },
   {
     title: "Not an agency",
@@ -54,7 +54,7 @@ export default function Story() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-bold mt-6 leading-tight text-white"
+            className="text-5xl md:text-5xl font-bold mt-4 leading-tight text-white"
           >
             Built on{" "}
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">

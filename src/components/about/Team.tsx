@@ -57,7 +57,7 @@ export default function Philosophy() {
         </motion.div>
 
         {/* Team Grid */}
-        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {team.map((member, index) => (
             <motion.div
               key={member.name}
@@ -65,11 +65,11 @@ export default function Philosophy() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
-              whileHover={{ y: -8 }}
-              className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl"
+              whileHover={{ y: -6 }}
+              className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl"
             >
               {/* Image */}
-              <div className="relative h-[320px] overflow-hidden">
+              <div className="relative h-[240px] overflow-hidden">
                 <Image
                   src={member.image}
                   alt={member.name}
@@ -81,19 +81,18 @@ export default function Philosophy() {
               </div>
 
               {/* Content */}
-              <div className="p-5">
-                <h3 className="text-xl font-semibold text-white">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-white">
                   {member.name}
                 </h3>
 
-                <p className="mt-1 text-[15px] text-white/60">{member.role}</p>
+                <p className="mt-1 text-sm text-white/60">{member.role}</p>
 
-                <div className="mt-5 h-[2px] w-12 bg-gradient-to-r from-[#616CFA] to-[#E46ECC] transition-all duration-500 group-hover:w-20" />
+                <div className="mt-4 h-[2px] w-10 bg-gradient-to-r from-[#616CFA] to-[#E46ECC] transition-all duration-500 group-hover:w-16" />
               </div>
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

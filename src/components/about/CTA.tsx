@@ -1,76 +1,100 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function CTA() {
   return (
-    <section id="cta" data-scroll-section className="relative px-6 py-14">
-      <div className="mx-auto max-w-7xl">
-        <div className="relative overflow-hidden border border-white/5 bg-[#090912]">
-          {/* Background Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(97,108,250,0.15),transparent_60%)]" />
+    <section
+      id="cta"
+      data-scroll-section
+      className="relative overflow-hidden bg-black py-24 lg:py-32"
+    >
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute left-[-150px] top-20 h-[420px] w-[420px] rounded-full bg-[#616CFA]/12 blur-[140px]" />
+        <div className="absolute right-[-120px] bottom-0 h-[500px] w-[500px] rounded-full bg-[#E46ECC]/12 blur-[160px]" />
+
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,0.02),transparent)]" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
 
           {/* LEFT CONTENT */}
-          <div className="relative z-20 px-8 pt-10 pb-16 md:px-14 lg:pt-12 lg:pb-20">
-            <div className="max-w-[620px]">
-              <p className="text-xs uppercase tracking-[0.35em] text-[#7B86FF]">
-                WORK WITH US
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="order-1"
+          >
+            <p className="text-sm uppercase tracking-[0.35em] text-[#7B86FF]">
+              WORK WITH US
+            </p>
 
-              <h2 className="mt-8 text-6xl font-bold leading-[0.95] text-white md:text-6xl">
-                Build{" "}
-                <span className="bg-gradient-to-r from-[#7C7CFF] to-[#EA70D8] bg-clip-text text-transparent">
-                  Something
-                </span>
-                <br />
-                That Actually
-                <br />
-                <span className="bg-gradient-to-r from-[#7C7CFF] to-[#EA70D8] bg-clip-text text-transparent">
-                  Matters
-                </span>
-              </h2>
+            <h2 className="mt-8 text-4xl font-bold leading-[0.95] text-white sm:text-5xl lg:text-5xl">
+              Build Something That
+              <br />
+              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                Actually Matters
+              </span>
+            </h2>
 
-              <p className="mt-10 max-w-md text-xl leading-relaxed text-white/85">
-                We don't just design.
-                <br />
-                We shape direction, clarity and identity
-                <br />
-                for brands that want to grow with intention.
-              </p>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-zinc-400 lg:text-xl">
+              Great brands don't happen by chance. They are built through
+              thoughtful strategy, purposeful design, and consistent execution.
+              Let's create something that lasts.
+            </p>
+          </motion.div>
 
-              {/* CTA BOX */}
-              {/* CTA BOX */}
-              <div className="relative z-20 mt-14 flex w-full max-w-md flex-col items-center bg-black/35 p-8 backdrop-blur-md">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-10 py-4 text-xl font-medium text-white transition-all duration-300 hover:scale-105"
-                >
-                  Start a Project
-                </Link>
-
-                <p className="mt-5 text-center text-sm text-gray-400">
-                  Response within 24 – 48 hours
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* RIGHT ILLUSTRATION */}
-          <img
-            src="/images/aboutcta.png"
-            alt="Creative Illustration"
-            className="
-              pointer-events-none
-              absolute
-              right-0
-              bottom-16
-              z-10
-              h-[200px]
-              md:h-[440px]
-              lg:h-[560px]
-              xl:h-[620px]
-              w-[1000px]
-              object-contain
-            "
-          />
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative order-2 flex justify-center lg:order-2 lg:justify-end"
+          >
+            {/* Glow */}
+            <div className="absolute h-[420px] w-[420px] rounded-full bg-gradient-to-r from-[#616CFA]/20 to-[#E46ECC]/20 blur-[120px]" />
+
+            {/* Floating Illustration */}
+            <motion.img
+              src="/images/aboutcta.png"
+              alt="Creative Illustration"
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="relative z-10 w-full max-w-md object-contain sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl"
+            />
+          </motion.div>
+
+
+          {/* CTA BUTTON */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="order-3 lg:col-start-1 lg:row-start-2"
+          >
+            <Link
+              href="/contact"
+              className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] px-8 text-lg font-semibold leading-none text-white transition-all duration-300 hover:scale-105"
+            >
+              Start a Project
+            </Link>
+
+            <p className="mt-5 text-sm text-zinc-500">
+              We'll get back to you within 24–48 hours.
+            </p>
+          </motion.div>
+
         </div>
       </div>
     </section>
