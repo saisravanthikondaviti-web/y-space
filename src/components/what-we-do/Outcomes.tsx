@@ -58,26 +58,21 @@ export default function Outcomes() {
 
                 sm:text-5xl
 
-                md:text-6xl
+                md:text-5xl
               "
             >
-              What success
+              What ? success
               <span
                 className="
-                  block
-
-                  bg-gradient-to-r
-
-                  from-[#616CFA]
-
-                  to-[#E46ECC]
-
-                  bg-clip-text
-
-                  text-transparent
-                "
+    ml-2
+    bg-gradient-to-r
+    from-[#616CFA]
+    to-[#E46ECC]
+    bg-clip-text
+    text-transparent
+  "
               >
-                looks like
+                looks like..
               </span>
             </h2>
 
