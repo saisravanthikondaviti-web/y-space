@@ -20,7 +20,6 @@ export default function Navbar() {
     { href: "/contact", label: "CONTACT" },
   ];
 
-  // Handle same page navigation
   const handleNavClick = (href: string) => {
     setMenuOpen(false);
 
@@ -32,26 +31,18 @@ export default function Navbar() {
     }
   };
 
-  // Hide/show navbar on scroll
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Always show at top
       if (currentScrollY < 50) {
         setShowNavbar(true);
-      }
-
-      // Scrolling down
-      else if (currentScrollY > lastScrollY) {
+      } else if (currentScrollY > lastScrollY) {
         setShowNavbar(false);
         setMenuOpen(false);
-      }
-
-      // Scrolling up
-      else {
+      } else {
         setShowNavbar(true);
       }
 
@@ -60,23 +51,40 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-xl transition-transform duration-500 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-      }`}
+      className={`
+        fixed top-0 left-0 z-50 w-full
+        border-b border-white/10
+        bg-black/40 backdrop-blur-xl
+        transition-transform duration-500
+        ${showNavbar ? "translate-y-0" : "-translate-y-full"}
+      `}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
+      <nav
+        className="
+          mx-auto
+          flex
+          max-w-7xl
+          items-center
+          justify-between
 
+          px-5
+          py-1.5
+
+          sm:px-6
+          md:py-2
+        "
+      >
         {/* Logo */}
+
         <Link
           href="/"
           onClick={() => handleNavClick("/")}
+          className="flex items-center"
         >
           <Image
             src="/images/hlogo.png"
@@ -84,19 +92,40 @@ export default function Navbar() {
             width={150}
             height={50}
             priority
-            className="h-8 md:h-9 lg:h-10 w-auto"
+            className="
+    w-35
+    h-auto
+
+    sm:w-35
+    md:w-40
+    lg:w-48
+    xl:w-52
+  "
           />
         </Link>
 
-
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-8 text-sm font-[Lexend] text-gray-200">
+
+        <ul
+          className="
+            hidden
+            md:flex
+            items-center
+            gap-8
+            text-sm
+            font-[Lexend]
+            text-gray-200
+          "
+        >
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="transition hover:text-white"
+                className="
+                  transition
+                  hover:text-white
+                "
               >
                 {link.label}
               </Link>
@@ -104,64 +133,126 @@ export default function Navbar() {
           ))}
         </ul>
 
-
         {/* Desktop CTA */}
+
         <Link
           href="/contact"
           onClick={() => handleNavClick("/contact")}
-          className="hidden md:inline-flex rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:brightness-110 hover:shadow-[0_0_35px_rgba(99,102,241,0.45)]"
+          className="
+            hidden
+            md:inline-flex
+            rounded-full
+            bg-gradient-to-r
+            from-indigo-500
+            to-fuchsia-500
+            px-5
+            py-2
+            text-sm
+            font-semibold
+            text-white
+            transition-all
+            duration-300
+            hover:scale-105
+          "
         >
           Let's Talk
         </Link>
 
+        {/* Mobile Menu Button */}
 
-        {/* Mobile Hamburger */}
         <button
-          className="md:hidden text-white"
+          className="
+            flex
+            items-center
+            justify-center
+            text-white
+
+            md:hidden
+          "
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle Menu"
         >
-          {menuOpen ? <X size={30} /> : <Menu size={30} />}
+          {menuOpen ? (
+            <X size={22} strokeWidth={2} />
+          ) : (
+            <Menu size={22} strokeWidth={2} />
+          )}
         </button>
-
       </nav>
 
-
       {/* Mobile Menu */}
+
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          menuOpen ? "max-h-[500px]" : "max-h-0"
-        }`}
+        className={`
+          md:hidden
+          overflow-hidden
+          transition-all
+          duration-300
+
+          ${menuOpen ? "max-h-[450px]" : "max-h-0"}
+        `}
       >
-        <div className="border-t border-white/10 bg-[#080808]/95 backdrop-blur-xl">
-
-          <div className="flex flex-col px-6 py-6">
-
+        <div
+          className="
+            border-t
+            border-white/10
+            bg-[#080808]/95
+            backdrop-blur-xl
+          "
+        >
+          <div
+            className="
+              flex
+              flex-col
+              px-5
+              py-4
+            "
+          >
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="border-b border-white/5 py-4 text-white transition hover:text-indigo-400"
+                className="
+                  border-b
+                  border-white/5
+
+                  py-3
+
+                  text-sm
+                  text-white
+
+                  transition
+                  hover:text-indigo-400
+                "
               >
                 {link.label}
               </Link>
             ))}
 
-
             <Link
               href="/contact"
               onClick={() => handleNavClick("/contact")}
-              className="mt-6 rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 py-3 text-center font-semibold text-white transition hover:scale-[1.02]"
+              className="
+                mt-4
+                rounded-full
+                bg-gradient-to-r
+                from-indigo-500
+                to-fuchsia-500
+
+                py-2.5
+
+                text-center
+                text-sm
+                font-semibold
+                text-white
+              "
             >
               Let's Talk
             </Link>
-
           </div>
-
         </div>
       </div>
-
     </header>
   );
 }

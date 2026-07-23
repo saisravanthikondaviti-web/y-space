@@ -102,7 +102,17 @@ ${message}`;
 
             <h2 className="mt-4 text-3xl md:text-4xl font-semibold leading-snug">
               Let’s Build Something{" "}
-              <span className="text-white/60">Meaningful</span>
+              <span
+                className="
+    bg-gradient-to-r
+    from-[#616CFA]
+    to-[#E46ECC]
+    bg-clip-text
+    text-transparent
+  "
+              >
+                Meaningful
+              </span>
             </h2>
 
             <p className="mt-6 text-white/50 leading-relaxed max-w-md">
