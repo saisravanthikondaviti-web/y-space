@@ -8,16 +8,26 @@ export default function Outcomes() {
     <section
       data-scroll-section
       id="outcomes"
-      className="px-6 py-24 md:px-12 lg:px-20"
+      className="
+        px-6
+        py-20
+
+        md:px-12
+        lg:px-20
+      "
     >
       <div className="mx-auto max-w-7xl">
         <div
           className="
             grid
+
             gap-12
-            lg:grid-cols-2
+
+            lg:grid-cols-[0.9fr_1fr]
+
             lg:items-center
-            lg:gap-20
+
+            lg:gap-12
           "
         >
           {/* LEFT CONTENT */}
@@ -37,10 +47,16 @@ export default function Outcomes() {
             <h2
               className="
                 mt-5
-                max-w-lg
-                text-5xl
+
+                max-w-md
+
+                text-4xl
+
                 font-bold
+
                 leading-[1.05]
+
+                sm:text-5xl
 
                 md:text-6xl
               "
@@ -49,10 +65,15 @@ export default function Outcomes() {
               <span
                 className="
                   block
+
                   bg-gradient-to-r
+
                   from-[#616CFA]
+
                   to-[#E46ECC]
+
                   bg-clip-text
+
                   text-transparent
                 "
               >
@@ -63,10 +84,16 @@ export default function Outcomes() {
             <p
               className="
                 mt-6
+
                 max-w-md
-                text-lg
+
+                text-base
+
                 leading-relaxed
+
                 text-white/50
+
+                md:text-lg
               "
             >
               Every strategy we create is designed to create measurable growth,
@@ -78,11 +105,18 @@ export default function Outcomes() {
 
           <div
             className="
-    grid
-    gap-8
-    sm:grid-cols-2
-    place-items-center
-  "
+              grid
+
+              grid-cols-1
+
+              gap-8
+
+              sm:grid-cols-2
+
+              sm:gap-8
+
+              place-items-center
+            "
           >
             {outcomes.map((item, index) => (
               <motion.div
@@ -96,137 +130,215 @@ export default function Outcomes() {
                   scale: 1,
                 }}
                 viewport={{
-                  once: true,
+                  once: false,
+                  amount: 0.3,
                 }}
                 transition={{
                   duration: 0.6,
                   delay: index * 0.12,
                 }}
                 className="
-        group
-        relative
-        flex
-        aspect-square
-        w-full
-        max-w-[240px]
-        items-center
-        justify-center
-        rounded-full
+                  group
 
-        border
-        border-white/10
+                  relative
 
-        bg-white/[0.03]
+                  flex
 
-        backdrop-blur-xl
+                  aspect-square
 
-        transition-all
-        duration-500
+                  w-[220px]
 
-        hover:-translate-y-2
-        hover:border-[#616CFA]/50
-      "
+                  sm:w-[190px]
+
+                  lg:w-[230px]
+
+
+                  items-center
+
+                  justify-center
+
+
+                  rounded-full
+
+
+                  border
+
+                  border-white/10
+
+
+                  bg-white/[0.03]
+
+
+                  backdrop-blur-xl
+
+
+                  transition-all
+
+                  duration-500
+
+
+                  hover:-translate-y-2
+
+                  hover:border-[#616CFA]/50
+                "
               >
-                {/* Outer Glow */}
+                {/* OUTER GLOW */}
 
                 <div
                   className="
-          absolute
-          inset-0
-          rounded-full
-          bg-gradient-to-br
-          from-[#616CFA]/20
-          to-[#E46ECC]/20
-          opacity-0
-          blur-2xl
-          transition
-          duration-500
-          group-hover:opacity-100
-        "
+                    absolute
+
+                    inset-0
+
+                    rounded-full
+
+
+                    bg-gradient-to-br
+
+                    from-[#616CFA]/20
+
+                    to-[#E46ECC]/20
+
+
+                    opacity-0
+
+
+                    blur-2xl
+
+
+                    transition
+
+                    duration-500
+
+
+                    group-hover:opacity-100
+                  "
                 />
 
-                {/* Gradient Ring */}
+                {/* INNER RING */}
 
                 <div
                   className="
-          absolute
-          inset-3
-          rounded-full
-          border
-          border-white/5
-        "
+                    absolute
+
+                    inset-3
+
+
+                    rounded-full
+
+
+                    border
+
+                    border-white/5
+                  "
                 />
 
-                {/* Content */}
+                {/* CONTENT */}
 
                 <div
                   className="
-          relative
-          z-10
-          px-8
-          text-center
-        "
+                    relative
+
+                    z-10
+
+
+                    px-8
+
+
+                    text-center
+                  "
                 >
                   <span
                     className="
-            block
-            text-sm
-            font-bold
-            text-white/40
-          "
+                      block
+
+
+                      text-xs
+
+                      sm:text-sm
+
+
+                      font-bold
+
+
+                      text-white/40
+                    "
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
                   <h3
                     className="
-            mt-4
-            text-lg
-            font-bold
-            leading-tight
-          "
+                      mt-3
+
+
+                      text-base
+
+
+                      sm:text-lg
+
+
+                      font-bold
+
+
+                      leading-tight
+                    "
                   >
                     {item.title}
                   </h3>
 
                   <p
                     className="
-            mt-3
-            hidden
-            text-xs
-            leading-relaxed
-            text-white/50
+                      mt-3
 
-            md:block
-          "
+
+                      text-xs
+
+
+                      leading-relaxed
+
+
+                      text-white/50
+                    "
                   >
                     {item.description}
                   </p>
                 </div>
 
-                {/* Hover Border Animation */}
+                {/* GRADIENT BORDER */}
 
                 <div
                   className="
-          absolute
-          inset-0
-          rounded-full
-          border
-          border-transparent
+                    absolute
 
-          bg-gradient-to-r
-          from-[#616CFA]
-          to-[#E46ECC]
+                    inset-0
 
-          opacity-0
 
-          transition
-          duration-500
+                    rounded-full
 
-          group-hover:opacity-40
 
-          [mask-image:linear-gradient(#fff_0_0)]
-        "
+                    border
+
+                    border-transparent
+
+
+                    bg-gradient-to-r
+
+                    from-[#616CFA]
+
+                    to-[#E46ECC]
+
+
+                    opacity-0
+
+
+                    transition
+
+                    duration-500
+
+
+                    group-hover:opacity-40
+                  "
                 />
               </motion.div>
             ))}
