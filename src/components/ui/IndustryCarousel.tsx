@@ -53,6 +53,7 @@ export default function IndustryCarousel({ industries }: Props) {
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
+
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
@@ -99,6 +100,7 @@ export default function IndustryCarousel({ industries }: Props) {
           <ChevronLeft className="h-5 w-5 text-white" />
         </button>
 
+
         <button
           onClick={scrollNext}
           className="
@@ -124,8 +126,10 @@ export default function IndustryCarousel({ industries }: Props) {
 
       </div>
 
-            {/* Carousel Wrapper */}
+
+      {/* Carousel Wrapper */}
       <div className="relative">
+
 
         {/* Left Fade */}
         <div
@@ -136,12 +140,13 @@ export default function IndustryCarousel({ industries }: Props) {
             top-0
             z-20
             h-full
-            w-20
+            w-10
             bg-gradient-to-r
-            from-black
+            from-black/40
             to-transparent
           "
         />
+
 
         {/* Right Fade */}
         <div
@@ -152,21 +157,28 @@ export default function IndustryCarousel({ industries }: Props) {
             top-0
             z-20
             h-full
-            w-20
+            w-10
             bg-gradient-to-l
-            from-black
+            from-black/40
             to-transparent
           "
         />
 
+
         {/* Embla */}
         <div
           ref={emblaRef}
-          className="overflow-hidden px-2"
+          className="
+            overflow-hidden
+            -mx-8
+            px-8
+          "
         >
+
           <div className="flex">
 
             {industries.map((industry, index) => (
+
               <div
                 key={industry.title}
                 className="
@@ -178,62 +190,71 @@ export default function IndustryCarousel({ industries }: Props) {
 
                   lg:flex-[0_0_33.333%]
 
-                  xl:flex-[0_0_23%]
+                  xl:flex-[0_0_26%]
 
-                  2xl:flex-[0_0_22%]
+                  2xl:flex-[0_0_25%]
                 "
               >
+
                 <div
                   className={`
                     transition-all
                     duration-500
+
                     ${
                       selectedIndex === index
                         ? "scale-100 opacity-100"
-                        : "scale-[0.96] opacity-80"
+                        : "scale-[0.96] opacity-85"
                     }
                   `}
                 >
+
                   <IndustryCard {...industry} />
+
                 </div>
+
               </div>
+
             ))}
 
           </div>
+
         </div>
+
       </div>
+
 
       {/* Progress */}
-      <div className="mt-12 flex justify-center gap-3">
+<div className="mt-12 flex justify-center gap-2 overflow-hidden px-4">
 
-        {industries.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => scrollTo(index)}
-            className="
-              group
-              flex
-              items-center
-            "
-          >
-            <div
-              className={`
-                h-[4px]
-                rounded-full
-                transition-all
-                duration-500
+  {industries.map((_, index) => (
 
-                ${
-                  selectedIndex === index
-                    ? "w-16 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]"
-                    : "w-8 bg-white/15 group-hover:bg-white/30"
-                }
-              `}
-            />
-          </button>
-        ))}
+    <button
+      key={index}
+      onClick={() => scrollTo(index)}
+      className="group flex items-center"
+    >
 
-      </div>
+      <div
+        className={`
+          h-[4px]
+          rounded-full
+          transition-all
+          duration-500
+
+          ${
+            selectedIndex === index
+              ? "w-10 sm:w-16 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]"
+              : "w-5 sm:w-8 bg-white/15 group-hover:bg-white/30"
+          }
+        `}
+      />
+
+    </button>
+
+  ))}
+
+</div>
 
     </div>
   );

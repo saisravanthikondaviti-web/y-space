@@ -81,35 +81,37 @@ export default function Industries() {
     <section
       id="industries"
       data-scroll-section
-      className="relative flex h-screen items-center overflow-hidden py-4"
+      className="relative flex min-h-screen items-center overflow-hidden py-12 sm:py-8"
     >
       {/* Background Glow */}
       <div className="absolute left-0 top-0 h-[300px] w-[300px] rounded-full bg-[#616CFA]/10 blur-[100px]" />
 
       <div className="absolute right-0 bottom-0 h-[300px] w-[300px] rounded-full bg-[#E46ECC]/10 blur-[100px]" />
-     
-      <div className="relative mx-auto w-full max-w-6xl px-6 lg:px-8">
+
+      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <FadeUp>
           <div className="mx-auto mb-6 max-w-2xl text-center">
             {/* Section Label */}
 
             {/* Heading */}
-            <h2 className="text-2xl font-bold leading-tight text-white md:text-3xl xl:text-5xl">
+            <h2 className="max-w-4xl text-2xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-5xl">
+              Industries
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-                Industries We Serve
+                {" "}
+                We Serve
               </span>
             </h2>
 
             {/* Description */}
-            <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-zinc-400">
+            <p className="mx-auto mt-3 max-w-lg px-2 text-xs leading-5 text-zinc-400 sm:text-sm sm:leading-6">
               From startups to enterprises, we deliver digital solutions that
               strengthen brands, accelerate growth, and create meaningful
               customer experiences.
             </p>
 
             {/* Decorative Divider */}
-            <div className="mx-auto mt-5 h-px w-28 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
+            <div className="mx-auto mt-5 h-px w-20 sm:w-24 md:w-28 bg-gradient-to-r from-transparent via-[#616CFA] to-transparent" />
           </div>
         </FadeUp>
 
