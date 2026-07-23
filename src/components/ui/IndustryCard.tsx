@@ -73,7 +73,7 @@ export default function IndustryCard({
         </h3>
 
         {/* Description */}
-        <p className="mt-3 text-[13px] leading-6 text-zinc-400">
+        <p className="mt-2 text-[13px] leading-[1.35rem] text-zinc-400">
           {description}
         </p>
       </div>

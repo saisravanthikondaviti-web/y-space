@@ -104,7 +104,7 @@ export default function Industries() {
             </h2>
 
             {/* Description */}
-            <p className="mx-auto mt-3 max-w-lg px-2 text-xs leading-5 text-zinc-400 sm:text-sm sm:leading-6">
+            <p className="mx-auto mt-3 max-w-xl px-2 text-xs leading-5 text-zinc-400 sm:text-sm sm:leading-6">
               From startups to enterprises, we deliver digital solutions that
               strengthen brands, accelerate growth, and create meaningful
               customer experiences.

@@ -78,7 +78,7 @@ export default function Process() {
                     {pillar.title}
                   </h3>
 
-                  <p className="text-[13px] leading-5 text-zinc-400">
+                  <p className="mt-3 text-[13px] leading-5 text-zinc-400">
                     {pillar.description}
                   </p>
                 </div>

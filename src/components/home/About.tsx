@@ -24,10 +24,10 @@ const values = [
 export default function About() {
   return (
     <section
-  id="about"
-  data-scroll-section
-  className="relative flex min-h-screen items-center py-20 sm:py-24 lg:py-28"
->
+      id="about"
+      data-scroll-section
+      className="relative flex min-h-screen items-center py-20 sm:py-24 lg:py-28"
+    >
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-[#616CFA]/10 blur-[120px]" />
@@ -44,7 +44,7 @@ export default function About() {
           </FadeUp>
 
           <FadeUp>
-           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl xl:text-5xl">
+            <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl xl:text-5xl">
               Building Modern Brands Through
               <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
                 {" "}
@@ -75,7 +75,7 @@ export default function About() {
                   Our Vision
                 </p>
 
-                <h3 className="max-w-xs text-lg font-semibold text-white sm:text-xl lg:text-2xl">
+                <h3 className="max-w-xs text-lg text-zinc-400 sm:text-xl lg:text-xl">
                   Creating Digital Experiences That Inspire Growth.
                 </h3>
               </div>

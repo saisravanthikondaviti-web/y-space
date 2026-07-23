@@ -103,7 +103,7 @@ export default function Hero() {
           Strategy. Creativity. Performance. Technology.
         </p>
 
-        <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-5">
+        {/* <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-5">
           <Link href="/contact">
             <motion.button
               className="
@@ -172,7 +172,8 @@ export default function Hero() {
               Explore Work
             </button>
           </Link>
-        </div>
+        </div> */}
+        
       </div>
     </section>
   );

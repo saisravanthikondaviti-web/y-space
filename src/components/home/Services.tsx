@@ -45,31 +45,33 @@ const services = [
 export default function Services() {
   return (
     <section
-  id="services"
-  data-scroll-section
-  className="relative py-20 sm:py-24 lg:py-28"
->
+      id="services"
+      data-scroll-section
+      className="relative py-20 sm:py-24 lg:py-28"
+    >
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 space-y-8">
         <p className="mb-3 text-xs uppercase tracking-[0.3em] text-zinc-500 sm:text-sm">
           Services
         </p>
 
-        <FadeUp>
-          <h2 className="max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-5xl">
-            Designed
-            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
-              {" "}
-              For Digital Growth
-            </span>
-          </h2>
-        </FadeUp>
+        <div className="space-y-3">
+          <FadeUp>
+            <h2 className="max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl xl:text-5xl">
+              Designed
+              <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+                {" "}
+                For Digital Growth
+              </span>
+            </h2>
+          </FadeUp>
 
-        <FadeUp>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-zinc-400 sm:text-base lg:max-w-5xl">
-            We deliver branding, marketing, creative production, and technology
-            solutions that help businesses grow with confidence.
-          </p>
-        </FadeUp>
+          <FadeUp>
+            <p className="max-w-3xl text-base leading-7 text-zinc-400 sm:text-lg lg:max-w-6xl">
+              We deliver branding, marketing, creative production, and
+              technology solutions that help businesses grow with confidence.
+            </p>
+          </FadeUp>
+        </div>
 
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
@@ -151,13 +153,11 @@ export default function Services() {
 
                   {/* Content */}
                   <div className="relative flex-1">
-                    <h3
-                      className="mb-2 text-base font-semibold text-white sm:text-lg"
-                    >
+                    <h3 className="mb-2 text-base font-semibold text-white sm:text-lg">
                       {service.title}
                     </h3>
 
-                    <p className="text-[13px] leading-5 text-zinc-400 sm:text-sm">
+                    <p className="text-[11px] leading-5 text-zinc-400 sm:text-sm">
                       {service.description}
                     </p>
                   </div>

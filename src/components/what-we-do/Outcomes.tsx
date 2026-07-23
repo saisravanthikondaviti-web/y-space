@@ -8,69 +8,226 @@ export default function Outcomes() {
     <section
       data-scroll-section
       id="outcomes"
-      className="px-6 py-32 md:px-16"
+      className="px-6 py-24 md:px-12 lg:px-20"
     >
       <div className="mx-auto max-w-7xl">
-        {/* Heading */}
-        <div className="mb-20 text-center">
-          <span className="text-sm uppercase tracking-[0.25em] text-white/40">
-            Outcomes
-          </span>
+        <div
+          className="
+            grid
+            gap-12
+            lg:grid-cols-2
+            lg:items-center
+            lg:gap-20
+          "
+        >
+          {/* LEFT CONTENT */}
 
-          <h2 className="mt-4 text-4xl font-bold md:text-5xl">
-            What success looks like
-          </h2>
-        </div>
+          <div>
+            <span
+              className="
+                text-sm
+                uppercase
+                tracking-[0.3em]
+                text-white/40
+              "
+            >
+              Outcomes
+            </span>
 
-        <div className="relative">
-          {/* Timeline */}
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-[#616CFA] via-[#E46ECC] to-[#616CFA] lg:block" />
+            <h2
+              className="
+                mt-5
+                max-w-lg
+                text-5xl
+                font-bold
+                leading-[1.05]
 
-          <div className="space-y-20">
+                md:text-6xl
+              "
+            >
+              What success
+              <span
+                className="
+                  block
+                  bg-gradient-to-r
+                  from-[#616CFA]
+                  to-[#E46ECC]
+                  bg-clip-text
+                  text-transparent
+                "
+              >
+                looks like
+              </span>
+            </h2>
+
+            <p
+              className="
+                mt-6
+                max-w-md
+                text-lg
+                leading-relaxed
+                text-white/50
+              "
+            >
+              Every strategy we create is designed to create measurable growth,
+              stronger positioning, and long-term business impact.
+            </p>
+          </div>
+
+          {/* RIGHT CIRCULAR OUTCOMES */}
+
+          <div
+            className="
+    grid
+    gap-8
+    sm:grid-cols-2
+    place-items-center
+  "
+          >
             {outcomes.map((item, index) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.8,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                viewport={{
+                  once: true,
+                }}
                 transition={{
                   duration: 0.6,
-                  delay: index * 0.15,
+                  delay: index * 0.12,
                 }}
-                className={`relative grid items-center gap-10 lg:grid-cols-2 ${
-                  index % 2 === 0
-                    ? ""
-                    : "lg:[&>*:first-child]:order-2"
-                }`}
+                className="
+        group
+        relative
+        flex
+        aspect-square
+        w-full
+        max-w-[240px]
+        items-center
+        justify-center
+        rounded-full
+
+        border
+        border-white/10
+
+        bg-white/[0.03]
+
+        backdrop-blur-xl
+
+        transition-all
+        duration-500
+
+        hover:-translate-y-2
+        hover:border-[#616CFA]/50
+      "
               >
-                {/* Content */}
+                {/* Outer Glow */}
+
                 <div
-                  className={
-                    index % 2 === 0
-                      ? "lg:pr-24 lg:text-right"
-                      : "lg:pl-24 lg:text-left"
-                  }
+                  className="
+          absolute
+          inset-0
+          rounded-full
+          bg-gradient-to-br
+          from-[#616CFA]/20
+          to-[#E46ECC]/20
+          opacity-0
+          blur-2xl
+          transition
+          duration-500
+          group-hover:opacity-100
+        "
+                />
+
+                {/* Gradient Ring */}
+
+                <div
+                  className="
+          absolute
+          inset-3
+          rounded-full
+          border
+          border-white/5
+        "
+                />
+
+                {/* Content */}
+
+                <div
+                  className="
+          relative
+          z-10
+          px-8
+          text-center
+        "
                 >
-                  <h3 className="text-3xl font-bold">
+                  <span
+                    className="
+            block
+            text-sm
+            font-bold
+            text-white/40
+          "
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <h3
+                    className="
+            mt-4
+            text-lg
+            font-bold
+            leading-tight
+          "
+                  >
                     {item.title}
                   </h3>
 
-                  <p className="mt-4 leading-relaxed text-white/60">
+                  <p
+                    className="
+            mt-3
+            hidden
+            text-xs
+            leading-relaxed
+            text-white/50
+
+            md:block
+          "
+                  >
                     {item.description}
                   </p>
                 </div>
 
-                {/* Empty Side */}
-                <div />
+                {/* Hover Border Animation */}
 
-                {/* Timeline Node */}
-                <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:flex items-center justify-center">
-                  <div className="absolute h-20 w-20 rounded-full bg-[#616CFA]/20 blur-2xl" />
+                <div
+                  className="
+          absolute
+          inset-0
+          rounded-full
+          border
+          border-transparent
 
-                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-black text-lg font-bold">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-                </div>
+          bg-gradient-to-r
+          from-[#616CFA]
+          to-[#E46ECC]
+
+          opacity-0
+
+          transition
+          duration-500
+
+          group-hover:opacity-40
+
+          [mask-image:linear-gradient(#fff_0_0)]
+        "
+                />
               </motion.div>
             ))}
           </div>
