@@ -46,33 +46,30 @@ export default function Outcomes() {
 
             <h2
               className="
-                mt-5
-
-                max-w-md
-
-                text-4xl
-
-                font-bold
-
-                leading-[1.05]
-
-                sm:text-5xl
-
-                md:text-5xl
-              "
-            >
-              What ? success
-              <span
-                className="
-    ml-2
-    bg-gradient-to-r
-    from-[#616CFA]
-    to-[#E46ECC]
-    bg-clip-text
-    text-transparent
+    mt-5
+    max-w-md
+    text-4xl
+    font-bold
+    leading-[1.05]
+    sm:text-5xl
+    md:text-5xl
   "
-              >
-                looks like..
+            >
+              What ?
+              <span className="block">
+                <span
+                  className="
+        bg-gradient-to-r
+        from-[#616CFA]
+        to-[#E46ECC]
+        bg-clip-text
+        text-transparent
+      "
+                >
+                  success
+                </span>
+
+                <span className="ml-2">looks like..</span>
               </span>
             </h2>
 

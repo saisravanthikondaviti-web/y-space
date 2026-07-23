@@ -5,19 +5,15 @@ import { motion } from "framer-motion";
 const story = [
   {
     title: "A simple belief",
-    text: "VAI SPACE. is a founder-led creative and technology driven hub built on one belief Every iconic brand begins with a clear vision.  ",
-  },
-  {
-    title: "Not chance, but clarity",
-    text: "Clarity, consistency, and vision shape every decision we make. Success follows brands built with intention, not assumptions.",
+    text: "VAI SPACE. is a founder-led creative and technology driven hub built on one belief Every iconic brand begins with a clear vision.",
   },
   {
     title: "Since 2017",
-    text: "We’ve worked across branding, marketing, design, and film making we helping businesses refine how they are seen and remembered.",
+    text: "We’ve worked across branding, marketing, design, and film making helping businesses refine how they are seen and remembered.",
   },
   {
     title: "Not an agency",
-    text: "VAI SPACE was never meant to be another agency, We create impact, not just deliver services.",
+    text: "VAI SPACE was never meant to be another agency. We create impact, not just deliver services.",
   },
   {
     title: "A creative system",
@@ -30,56 +26,184 @@ export default function Story() {
     <section
       id="story"
       data-scroll-section
-      className="relative py-40 px-6 lg:px-12 bg-black overflow-hidden"
+      className="
+        relative
+        min-h-screen
+        flex
+        items-center
+        py-20
+        px-6
+        lg:px-12
+        bg-black
+        overflow-hidden
+      "
     >
       {/* Background Glow */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[180px] rounded-full" />
+
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="
+            absolute
+            top-1/3
+            left-1/4
+            w-[500px]
+            h-[500px]
+            bg-[#616CFA]/10
+            blur-[160px]
+            rounded-full
+          "
+        />
+
+        <div
+          className="
+            absolute
+            bottom-1/4
+            right-1/4
+            w-[500px]
+            h-[500px]
+            bg-[#E46ECC]/10
+            blur-[180px]
+            rounded-full
+          "
+        />
       </div>
 
-      <div className="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-20">
+      <div
+        className="
+          relative
+          max-w-6xl
+          mx-auto
+          grid
+          lg:grid-cols-2
+          gap-12
+          lg:gap-16
+          w-full
+        "
+      >
         {/* LEFT COLUMN */}
+
         <div>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[#E46ECC] uppercase tracking-[0.35em] text-sm"
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            className="
+              text-[#E46ECC]
+              uppercase
+              tracking-[0.35em]
+              text-xs
+              md:text-sm
+            "
           >
             Our Story
           </motion.p>
 
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-5xl md:text-5xl font-bold mt-4 leading-tight text-white"
+            initial={{
+              opacity: 0,
+              y: 30,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            className="
+              mt-4
+              text-4xl
+              md:text-5xl
+              font-bold
+              leading-tight
+              text-white
+            "
           >
             Built on{" "}
-            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+            <span
+              className="
+                bg-gradient-to-r
+                from-[#616CFA]
+                to-[#E46ECC]
+                bg-clip-text
+                text-transparent
+              "
+            >
               Intent
             </span>{" "}
             Not by Chance
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mt-8 text-zinc-400 text-lg leading-relaxed max-w-md"
+            initial={{
+              opacity: 0,
+            }}
+            whileInView={{
+              opacity: 1,
+            }}
+            viewport={{
+              once: true,
+            }}
+            className="
+              mt-6
+              max-w-xl
+              text-base
+              lg:text-lg
+              leading-relaxed
+              text-zinc-400
+            "
           >
-            Every great brand begins with a vision. Ours began with a simple
-            conviction — design should create meaning, not just visuals. From
-            day one, VAI SPACE was built to help businesses grow through
-            purposeful branding, thoughtful creativity, and impactful digital
-            experiences.
+            Every iconic brand starts with a vision. At VAI SPACE, we believe
+            design must create meaning—not just visuals. We elevate businesses
+            through purposeful strategy, sharp clarity, and high-impact digital
+            experiences built with absolute intention.
           </motion.p>
 
           {/* VIDEO */}
-          <div className="mt-12 relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_0_70px_rgba(0,0,0,0.6)]">
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            className="
+              mt-8
+              relative
+              w-full
+              aspect-video
+              max-h-[280px]
+              rounded-2xl
+              overflow-hidden
+              border
+              border-white/10
+              bg-white/5
+              backdrop-blur-xl
+              shadow-[0_0_70px_rgba(0,0,0,0.6)]
+            "
+          >
             <video
-              className="absolute inset-0 w-full h-full object-contain"
+              className="
+                absolute
+                inset-0
+                w-full
+                h-full
+                object-cover
+              "
               autoPlay
               muted
               loop
@@ -89,26 +213,91 @@ export default function Story() {
               <source src="/videos/roadmap.mp4" type="video/mp4" />
             </video>
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-          </div>
+            <div
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-black/40
+                via-transparent
+                to-transparent
+              "
+            />
+          </motion.div>
         </div>
 
         {/* RIGHT TIMELINE */}
-        <div className="relative border-l border-white/10 pl-10">
+
+        <div
+          className="
+    relative
+    border-l
+    border-white/10
+    pl-8
+    lg:pl-10
+
+    mt-8
+    lg:mt-14
+  "
+        >
           {story.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-              className="mb-14 relative"
+              initial={{
+                opacity: 0,
+                x: 30,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                delay: index * 0.15,
+              }}
+              className="
+                mb-8
+                relative
+              "
             >
-              <div className="absolute -left-[22px] top-2 w-3 h-3 rounded-full bg-gradient-to-r from-[#616CFA] to-[#E46ECC] shadow-[0_0_20px_rgba(97,108,250,0.6)]" />
+              {/* Dot */}
 
-              <h3 className="text-white text-lg font-semibold">{item.title}</h3>
+              <div
+                className="
+                  absolute
+                  -left-[22px]
+                  top-2
+                  w-3
+                  h-3
+                  rounded-full
+                  bg-gradient-to-r
+                  from-[#616CFA]
+                  to-[#E46ECC]
+                  shadow-[0_0_20px_rgba(97,108,250,0.6)]
+                "
+              />
 
-              <p className="mt-2 text-zinc-400 text-base leading-relaxed">
+              <h3
+                className="
+                  text-white
+                  text-lg
+                  font-semibold
+                "
+              >
+                {item.title}
+              </h3>
+
+              <p
+                className="
+                  mt-2
+                  text-zinc-400
+                  text-sm
+                  lg:text-base
+                  leading-relaxed
+                "
+              >
                 {item.text}
               </p>
             </motion.div>

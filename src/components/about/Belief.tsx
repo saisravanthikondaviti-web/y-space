@@ -51,7 +51,7 @@ export default function Belief() {
             Our Approach
           </p>
 
-          <h2 className="mt-4 text-5xl md:text-6xl font-bold leading-[1.05] text-white">
+          <h2 className="mt-4 text-5xl md:text-5xl font-bold leading-[1.05] text-white">
             Every Decision Starts With{" "}
             <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
               Belief

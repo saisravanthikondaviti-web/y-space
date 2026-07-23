@@ -24,8 +24,7 @@ const steps = [
   {
     number: "04",
     title: "Growth",
-    description:
-      "Optimizing, scaling, and continuously improving performance.",
+    description: "Optimizing, scaling, and continuously improving performance.",
   },
 ];
 
@@ -96,7 +95,22 @@ export default function Approach() {
                     hover:border-[#616CFA]/40
                   "
                 >
-                  <h3 className="mb-3 text-lg font-semibold tracking-tight text-white sm:text-xl">
+                  <h3
+                    className="
+    mb-3
+    text-lg
+    font-semibold
+    tracking-tight
+
+    bg-gradient-to-r
+    from-[#616CFA]
+    to-[#E46ECC]
+    bg-clip-text
+    text-transparent
+
+    sm:text-xl
+  "
+                  >
                     {step.title}
                   </h3>
 

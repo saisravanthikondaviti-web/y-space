@@ -210,7 +210,7 @@ lg:w-[600px]
               duration: 0.8,
             }}
             className="
-mt-8
+mt-3
 text-4xl
 font-black
 leading-tight

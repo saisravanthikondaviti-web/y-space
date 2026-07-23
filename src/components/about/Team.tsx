@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 
 const team = [
   {
@@ -36,59 +35,172 @@ export default function Philosophy() {
 
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}
+
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
           className="mx-auto mb-16 max-w-3xl text-center"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#8E96FF]">
+          <span className="text-[14px] uppercase tracking-[0.3em] text-[#8E96FF]">
             Our Team
           </span>
 
           <h2 className="mt-4 text-4xl font-bold text-white md:text-4xl">
             Meet the People Behind{" "}
-            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+            <span
+              className="
+                bg-gradient-to-r
+                from-[#616CFA]
+                to-[#E46ECC]
+                bg-clip-text
+                text-transparent
+              "
+            >
               VAI SPACE
             </span>
           </h2>
 
-          <div className="mx-auto mt-8 h-[2px] w-20 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]" />
+          <div
+            className="
+              mx-auto
+              mt-8
+              h-[2px]
+              w-20
+              bg-gradient-to-r
+              from-[#616CFA]
+              to-[#E46ECC]
+            "
+          />
         </motion.div>
 
         {/* Team Grid */}
-        <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+        <div
+          className="
+            mx-auto
+            grid
+            max-w-4xl
+            gap-5
+
+            md:grid-cols-2
+            lg:grid-cols-3
+          "
+        >
           {team.map((member, index) => (
             <motion.div
               key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-              whileHover={{ y: -6 }}
-              className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl"
+              initial={{
+                opacity: 0,
+                y: 30,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                delay: index * 0.15,
+              }}
+              whileHover={{
+                y: -6,
+              }}
+              className="
+                group
+                overflow-hidden
+                rounded-xl
+                border
+                border-white/10
+                bg-white/[0.03]
+                backdrop-blur-xl
+              "
             >
               {/* Image */}
-              <div className="relative h-[240px] overflow-hidden">
+
+              <div
+                className="
+                  relative
+                  h-[240px]
+                  overflow-hidden
+                "
+              >
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
-                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  sizes="
+                    (max-width: 768px) 100vw,
+                    (max-width: 1280px) 50vw,
+                    33vw
+                  "
+                  priority={index === 0}
+                  className="
+                    object-cover
+                    object-top
+                    transition-transform
+                    duration-700
+                    group-hover:scale-105
+                  "
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    bg-gradient-to-t
+                    from-black
+                    via-black/20
+                    to-transparent
+                  "
+                />
               </div>
 
               {/* Content */}
+
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-white">
+                <h3
+                  className="
+                    text-lg
+                    font-semibold
+                    text-white
+                  "
+                >
                   {member.name}
                 </h3>
 
-                <p className="mt-1 text-sm text-white/60">{member.role}</p>
+                <p
+                  className="
+                    mt-1
+                    text-sm
+                    text-white/60
+                  "
+                >
+                  {member.role}
+                </p>
 
-                <div className="mt-4 h-[2px] w-10 bg-gradient-to-r from-[#616CFA] to-[#E46ECC] transition-all duration-500 group-hover:w-16" />
+                <div
+                  className="
+                    mt-4
+                    h-[2px]
+                    w-10
+                    bg-gradient-to-r
+                    from-[#616CFA]
+                    to-[#E46ECC]
+                    transition-all
+                    duration-500
+                    group-hover:w-16
+                  "
+                />
               </div>
             </motion.div>
           ))}

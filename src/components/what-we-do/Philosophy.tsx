@@ -130,7 +130,7 @@ export default function Philosophy() {
             </span>
 
             <span>
-              {" "}before execution.
+              {" "}before Execution.
             </span>
 
           </h2>

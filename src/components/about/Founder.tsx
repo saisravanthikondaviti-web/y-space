@@ -51,7 +51,7 @@ export default function Founder() {
           transition={{ delay: 0.2 }}
           className="mt-6 text-lg md:text-xl text-gray-300 leading-relaxed"
         >
-          VAI Space is not a layered agency system.
+          VAI SPACE is not a layered agency system.
           It’s a direct extension of one vision — where strategy, design, and execution stay unified.
         </motion.p>
 
