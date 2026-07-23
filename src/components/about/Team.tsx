@@ -12,7 +12,7 @@ const team = [
   {
     name: "Sravanthi",
     role: "Head of Web Development",
-    image: "/images/team/sravanthi.png",
+    image: "/images/team/sravanthi.PNG",
   },
   {
     name: "xxxxxxx",
