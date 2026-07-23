@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import FadeUp from "../ui/FadeUp";
 
 const pillars = [
@@ -28,6 +29,32 @@ const pillars = [
       "We analyze performance and continuously refine solutions to maximize results.",
   },
 ];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.25,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
 
 export default function Process() {
   return (
@@ -59,32 +86,43 @@ export default function Process() {
               </h2>
 
               <p className="mt-3 text-[14px] leading-6 text-zinc-400">
-                Every decision is guided by strategy, thoughtful design, scalable
-                technology, and continuous improvement.
+                Every decision is guided by strategy, thoughtful design,
+                scalable technology, and continuous improvement.
               </p>
             </div>
           </FadeUp>
 
           {/* Right */}
-          <div className="grid gap-3 sm:grid-cols-2">
+          <motion.div
+            className="grid gap-3 sm:grid-cols-2"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: false,
+              amount: 0.25,
+            }}
+          >
             {pillars.map((pillar) => (
-              <FadeUp key={pillar.title}>
-                <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 backdrop-blur-xl transition-all duration-500 hover:border-[#616CFA]/20 hover:bg-zinc-900/60">
-                  <p className="mb-2 text-2xl font-bold text-white/50">
-                    {pillar.number}
-                  </p>
+              <motion.div
+                key={pillar.title}
+                variants={cardVariants}
+                className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 backdrop-blur-xl transition-all duration-500 hover:border-[#616CFA]/20 hover:bg-zinc-900/60"
+              >
+                <p className="mb-2 text-2xl font-bold text-white/50">
+                  {pillar.number}
+                </p>
 
-                  <h3 className="mb-2 text-base font-semibold text-white">
-                    {pillar.title}
-                  </h3>
+                <h3 className="mb-2 text-base font-semibold text-white">
+                  {pillar.title}
+                </h3>
 
-                  <p className="mt-3 text-[13px] leading-5 text-zinc-400">
-                    {pillar.description}
-                  </p>
-                </div>
-              </FadeUp>
+                <p className="mt-3 text-[13px] leading-5 text-zinc-400">
+                  {pillar.description}
+                </p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const philosophy = [
   {
@@ -26,6 +26,33 @@ const philosophy = [
   },
 ];
 
+const cardContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const cardAnimation: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+  },
+
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function Philosophy() {
   return (
     <section
@@ -43,6 +70,7 @@ export default function Philosophy() {
       "
     >
       <div className="mx-auto max-w-7xl">
+
         {/* Heading */}
         <div
           className="
@@ -69,41 +97,55 @@ export default function Philosophy() {
             What Drives Our Work
           </span>
 
+
           <h2
             className="
-    mt-3
-    max-w-xs
-    text-xl
-    font-bold
-    leading-tight
-    tracking-tight
+              mt-3
+              max-w-xs
+              text-2xl
+              font-bold
+              leading-tight
+              tracking-tight
 
-    sm:max-w-xl
-    sm:text-4xl
+              sm:max-w-xl
+              sm:text-4xl
 
-    md:max-w-5xl
-    md:text-5xl
-  "
+              md:max-w-5xl
+              md:text-5xl
+            "
           >
             Every project begins with
+
             <span
               className="
-      bg-gradient-to-r
-      from-[#616CFA]
-      to-[#E46ECC]
-      bg-clip-text
-      text-transparent
-    "
+                ml-2
+                bg-gradient-to-r
+                from-[#616CFA]
+                to-[#E46ECC]
+                bg-clip-text
+                text-transparent
+              "
             >
-              {" "}
-              understanding, 
+              understanding,
             </span>
-             before execution.
+
+            <span>
+              {" "}before execution.
+            </span>
+
           </h2>
         </div>
 
+
         {/* Cards */}
-        <div
+        <motion.div
+          variants={cardContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once:false,
+            amount:0.25,
+          }}
           className="
             grid
             gap-3
@@ -113,75 +155,87 @@ export default function Philosophy() {
             md:grid-cols-3
           "
         >
-          {philosophy.map((item, index) => (
+
+          {philosophy.map((item)=>(
             <motion.div
+
               key={item.title}
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.15,
-              }}
+
+              variants={cardAnimation}
+
               whileHover={{
-                y: -8,
-                borderColor: "rgba(97,108,250,0.35)",
+                y:-8,
+                borderColor:"rgba(97,108,250,0.35)",
               }}
+
               className="
-                rounded-3xl
+                rounded-2xl
                 border
                 border-white/10
                 bg-white/[0.03]
-                p-4
+                p-3
                 backdrop-blur-xl
                 transition-all
                 duration-300
 
+                sm:rounded-3xl
                 sm:p-7
 
                 md:p-8
               "
             >
+
               <span
                 className="
-                  text-xs
+                  text-[11px]
                   font-medium
 
                   sm:text-sm
                 "
-                style={{ color: item.color }}
+
+                style={{
+                  color:item.color
+                }}
               >
                 {item.number}
               </span>
 
+
               <h3
                 className="
-                  mt-4
-                  text-xl
+                  mt-3
+                  text-lg
                   font-semibold
 
+                  sm:mt-4
                   sm:text-2xl
                 "
               >
                 {item.title}
               </h3>
 
+
               <p
                 className="
-                  mt-3
-                  text-sm
-                  leading-6
+                  mt-2
+                  text-xs
+                  leading-5
                   text-white/60
 
+                  sm:mt-3
                   sm:text-base
                   sm:leading-7
                 "
               >
                 {item.description}
               </p>
+
+
             </motion.div>
           ))}
-        </div>
+
+        </motion.div>
+
       </div>
     </section>
   );
