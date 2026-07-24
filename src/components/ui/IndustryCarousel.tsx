@@ -29,7 +29,7 @@ export default function IndustryCarousel({ industries }: Props) {
       loop: true,
       align: "start",
       skipSnaps: true,
-      dragFree: false,
+      dragFree: true,
     },
     [autoplay]
   );
@@ -54,28 +54,57 @@ export default function IndustryCarousel({ industries }: Props) {
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
 
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+    setSelectedIndex(
+      emblaApi.selectedScrollSnap()
+    );
   }, [emblaApi]);
+
 
   useEffect(() => {
     if (!emblaApi) return;
 
     onSelect();
 
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
+    emblaApi.on(
+      "select",
+      onSelect
+    );
+
+    emblaApi.on(
+      "reInit",
+      onSelect
+    );
 
     return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
+      emblaApi.off(
+        "select",
+        onSelect
+      );
+
+      emblaApi.off(
+        "reInit",
+        onSelect
+      );
     };
   }, [emblaApi, onSelect]);
+
 
   return (
     <div className="relative mt-10">
 
-      {/* Navigation */}
-      <div className="absolute -top-16 right-0 z-30 flex gap-4">
+
+      {/* Navigation - Desktop Only */}
+      <div
+        className="
+          absolute
+          -top-16
+          right-0
+          z-30
+          hidden
+          gap-4
+          sm:flex
+        "
+      >
 
         <button
           onClick={scrollPrev}
@@ -127,6 +156,7 @@ export default function IndustryCarousel({ industries }: Props) {
       </div>
 
 
+
       {/* Carousel Wrapper */}
       <div className="relative">
 
@@ -165,25 +195,29 @@ export default function IndustryCarousel({ industries }: Props) {
         />
 
 
+
         {/* Embla */}
         <div
           ref={emblaRef}
           className="
             overflow-hidden
-            -mx-8
-            px-8
+            -mx-4
+            px-4
+            sm:-mx-8
+            sm:px-8
           "
         >
 
           <div className="flex">
 
-            {industries.map((industry, index) => (
+            {industries.map(
+              (industry, index) => (
 
               <div
                 key={industry.title}
                 className="
                   min-w-0
-                  flex-[0_0_100%]
+                  flex-[0_0_85%]
                   px-2
 
                   sm:flex-[0_0_50%]
@@ -209,7 +243,9 @@ export default function IndustryCarousel({ industries }: Props) {
                   `}
                 >
 
-                  <IndustryCard {...industry} />
+                  <IndustryCard
+                    {...industry}
+                  />
 
                 </div>
 
@@ -224,37 +260,54 @@ export default function IndustryCarousel({ industries }: Props) {
       </div>
 
 
-      {/* Progress */}
-<div className="mt-12 flex justify-center gap-2 overflow-hidden px-4">
 
-  {industries.map((_, index) => (
-
-    <button
-      key={index}
-      onClick={() => scrollTo(index)}
-      className="group flex items-center"
-    >
-
+      {/* Progress - Desktop / Tablet Only */}
       <div
-        className={`
-          h-[4px]
-          rounded-full
-          transition-all
-          duration-500
+        className="
+          mt-12
+          hidden
+          justify-center
+          gap-2
+          overflow-hidden
+          px-4
+          sm:flex
+        "
+      >
 
-          ${
-            selectedIndex === index
-              ? "w-10 sm:w-16 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]"
-              : "w-5 sm:w-8 bg-white/15 group-hover:bg-white/30"
-          }
-        `}
-      />
+        {industries.map(
+          (_, index) => (
 
-    </button>
+          <button
+            key={index}
+            onClick={() => scrollTo(index)}
+            className="
+              group
+              flex
+              items-center
+            "
+          >
 
-  ))}
+            <div
+              className={`
+                h-[4px]
+                rounded-full
+                transition-all
+                duration-500
 
-</div>
+                ${
+                  selectedIndex === index
+                    ? "w-10 sm:w-16 bg-gradient-to-r from-[#616CFA] to-[#E46ECC]"
+                    : "w-5 sm:w-8 bg-white/15 group-hover:bg-white/30"
+                }
+              `}
+            />
+
+          </button>
+
+        ))}
+
+      </div>
+
 
     </div>
   );
