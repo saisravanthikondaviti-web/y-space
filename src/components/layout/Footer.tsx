@@ -39,7 +39,7 @@ export default function Footer() {
 
           <div className="mt-5 space-y-3 text-zinc-400 text-base">
             <p>
-              Phone: +91 9951737226
+              Phone: +91 99597 49993
             </p>
 
             <p>

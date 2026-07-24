@@ -7,7 +7,7 @@ const team = [
   {
     name: "Sravani",
     role: "Head of Digital Marketing",
-    image: "/images/team/sravani.PNG",
+    image: "/images/team/Sravani.PNG",
   },
   {
     name: "Sravanthi",
@@ -15,9 +15,9 @@ const team = [
     image: "/images/team/sravanthi.PNG",
   },
   {
-    name: "xxxxxxx",
+    name: "Raju",
     role: "Head of Video Production",
-    image: "/images/team/dummy.jpg",
+    image: "/images/team/raju.png",
   },
 ];
 

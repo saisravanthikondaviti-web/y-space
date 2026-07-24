@@ -16,19 +16,18 @@ const pillars = [
     description:
       "Every design is created to balance aesthetics, usability, and measurable business impact.",
   },
+   {
+    number: "03",
+    title: "Build For Growth",
+    description:
+      "We build scalable, high-performance digital products that support long-term business growth.",
+  },
   {
     number: "04",
     title: "Measure & Improve",
     description:
       "We analyze performance and continuously refine solutions to maximize results.",
   },
-  {
-    number: "03",
-    title: "Build For Growth",
-    description:
-      "We build scalable, high-performance digital products that support long-term business growth.",
-  },
-  
 ];
 
 

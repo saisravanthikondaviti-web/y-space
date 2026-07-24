@@ -50,7 +50,7 @@ export default function ContactPage() {
       // Replace with your number
       // Example: 919876543210
       // ==========================
-      const whatsappNumber = "918341804447";
+      const whatsappNumber = "919959749993";
 
       const whatsappMessage = `Hello VAISPACE,
 

@@ -236,8 +236,8 @@ export default function Story() {
     pl-8
     lg:pl-10
 
-    mt-8
-    lg:mt-14
+    mt-16
+    lg:mt-28
   "
         >
           {story.map((item, index) => (

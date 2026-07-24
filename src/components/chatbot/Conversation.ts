@@ -8,12 +8,14 @@ export const conversation = [
     key: "service",
     question: "Great to meet you! Which service are you looking for?",
     options: [
-      "Website Development",
-      "Mobile App",
-      "AI Solutions",
       "Branding",
       "Digital Marketing",
-      "Not Sure Yet",
+      "Performance Marketing",
+      "Web Development",
+      "App Development",
+      "AI Solutions",
+      "Video Production",
+      "Other",
     ],
   },
   {
