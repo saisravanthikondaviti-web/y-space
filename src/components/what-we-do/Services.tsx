@@ -10,33 +10,53 @@ import { services } from "./data";
 export default function Services() {
   const router = useRouter();
 
-  const cardsPerPage = 4;
-
   const [page, setPage] = useState(0);
+
+  const cardsPerPage = 4;
 
   const totalPages = Math.ceil(services.length / cardsPerPage);
 
   const visibleServices = services.slice(
     page * cardsPerPage,
-    page * cardsPerPage + cardsPerPage,
+    page * cardsPerPage + cardsPerPage
   );
+
+
+  const previousPage = () => {
+    setPage(page === 0 ? totalPages - 1 : page - 1);
+  };
+
+
+  const nextPage = () => {
+    setPage(page === totalPages - 1 ? 0 : page + 1);
+  };
+
 
   return (
     <section
       data-scroll-section
       id="services"
-      className="px-6 py-24 md:px-16"
+      className="
+        px-5
+        py-16
+        sm:px-8
+        sm:py-20
+        md:px-16
+        md:py-24
+      "
     >
+
       {/* Heading */}
 
-      <div className="mx-auto mb-14 max-w-3xl text-center">
+      <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-14">
+
         <h2
           className="
             text-3xl
             font-bold
             leading-tight
             text-white
-            md:text-4xl
+            sm:text-4xl
             lg:text-5xl
           "
         >
@@ -52,24 +72,30 @@ export default function Services() {
           >
             we offer...
           </span>
+
         </h2>
+
 
         <div
           className="
             mx-auto
-            mt-10
+            mt-6
             h-px
-            w-72
+            w-48
+            sm:mt-10
+            sm:w-72
             bg-gradient-to-r
             from-transparent
             via-[#616CFA]
             to-transparent
           "
         />
+
       </div>
 
 
-      {/* Cards Container */}
+
+      {/* Cards Wrapper */}
 
       <div
         className="
@@ -77,20 +103,20 @@ export default function Services() {
           flex
           max-w-7xl
           items-center
-          gap-6
+          gap-3
+          sm:gap-5
         "
       >
 
-        {/* Left Navigation */}
+
+        {/* Desktop Previous */}
 
         <button
-          onClick={() =>
-            setPage(page === 0 ? totalPages - 1 : page - 1)
-          }
+          onClick={previousPage}
           className="
             hidden
-            h-12
-            w-12
+            h-11
+            w-11
             shrink-0
             items-center
             justify-center
@@ -105,8 +131,9 @@ export default function Services() {
             md:flex
           "
         >
-          <ChevronLeft size={22} />
+          <ChevronLeft size={20}/>
         </button>
+
 
 
         {/* Cards */}
@@ -116,51 +143,55 @@ export default function Services() {
             grid
             flex-1
             grid-cols-1
-            gap-5
+            gap-4
             sm:grid-cols-2
             lg:grid-cols-4
           "
         >
 
-          {visibleServices.map((service, index) => (
+          {visibleServices.map((service,index)=>(
 
             <motion.div
+
               key={service.title}
 
               onClick={() =>
                 router.push(`/services?service=${service.slug}`)
               }
 
+
               initial={{
-                opacity: 0,
-                y: 30,
+                opacity:0,
+                y:25
               }}
 
               animate={{
-                opacity: 1,
-                y: 0,
+                opacity:1,
+                y:0
               }}
 
               transition={{
-                duration: 0.5,
-                delay: index * 0.08,
+                duration:.4,
+                delay:index*.07
               }}
 
               whileHover={{
-                y: -8,
+                y:-8
               }}
 
               className="
                 group
                 relative
                 cursor-pointer
-                h-[320px]
+                min-h-[260px]
+                sm:min-h-[300px]
                 overflow-hidden
-                rounded-[24px]
+                rounded-2xl
                 border
                 border-white/10
                 bg-white/[0.03]
-                p-6
+                p-5
+                sm:p-6
                 backdrop-blur-xl
                 transition-all
                 duration-300
@@ -168,6 +199,7 @@ export default function Services() {
                 hover:bg-white/[0.06]
               "
             >
+
 
               {/* Top */}
 
@@ -182,7 +214,7 @@ export default function Services() {
                 <div
                   className="
                     h-1
-                    w-12
+                    w-10
                     rounded-full
                     bg-gradient-to-r
                     from-[#616CFA]
@@ -190,11 +222,12 @@ export default function Services() {
                   "
                 />
 
+
                 <div
                   className="
                     flex
-                    h-14
-                    w-14
+                    h-12
+                    w-12
                     items-center
                     justify-center
                     rounded-full
@@ -207,8 +240,8 @@ export default function Services() {
                   <Image
                     src={service.image}
                     alt={service.title}
-                    width={25}
-                    height={25}
+                    width={22}
+                    height={22}
                   />
 
                 </div>
@@ -216,15 +249,17 @@ export default function Services() {
               </div>
 
 
+
               {/* Content */}
 
-              <div className="mt-10">
+              <div className="mt-8">
 
                 <h3
                   className="
-                    text-xl
+                    text-lg
                     font-bold
                     text-white
+                    sm:text-xl
                   "
                 >
                   {service.title}
@@ -233,10 +268,12 @@ export default function Services() {
 
                 <p
                   className="
-                    mt-4
-                    text-sm
-                    leading-6
+                    mt-3
+                    text-xs
+                    leading-5
                     text-white/60
+                    sm:text-sm
+                    sm:leading-6
                   "
                 >
                   {service.description}
@@ -251,17 +288,14 @@ export default function Services() {
               <span
                 className="
                   absolute
-                  bottom-5
-                  right-6
-                  text-lg
+                  bottom-4
+                  right-5
+                  text-base
                   font-bold
                   text-white/20
                 "
               >
-                {String(page * cardsPerPage + index + 1).padStart(
-                  2,
-                  "0"
-                )}
+                {String(page * cardsPerPage + index + 1).padStart(2,"0")}
               </span>
 
 
@@ -271,10 +305,10 @@ export default function Services() {
               <div
                 className="
                   absolute
-                  -right-12
-                  -top-12
-                  h-32
-                  w-32
+                  -right-10
+                  -top-10
+                  h-28
+                  w-28
                   rounded-full
                   bg-[#616CFA]/20
                   blur-3xl
@@ -285,24 +319,24 @@ export default function Services() {
                 "
               />
 
+
             </motion.div>
 
           ))}
+
 
         </div>
 
 
 
-        {/* Right Navigation */}
+        {/* Desktop Next */}
 
         <button
-          onClick={() =>
-            setPage(page === totalPages - 1 ? 0 : page + 1)
-          }
+          onClick={nextPage}
           className="
             hidden
-            h-12
-            w-12
+            h-11
+            w-11
             shrink-0
             items-center
             justify-center
@@ -317,11 +351,65 @@ export default function Services() {
             md:flex
           "
         >
-          <ChevronRight size={22} />
+          <ChevronRight size={20}/>
         </button>
 
 
       </div>
+
+
+
+      {/* Mobile Navigation */}
+
+      <div
+        className="
+          mt-6
+          flex
+          justify-center
+          gap-4
+          md:hidden
+        "
+      >
+
+        <button
+          onClick={previousPage}
+          className="
+            flex
+            h-10
+            w-10
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-white/10
+            bg-white/5
+            text-white
+          "
+        >
+          <ChevronLeft size={18}/>
+        </button>
+
+
+        <button
+          onClick={nextPage}
+          className="
+            flex
+            h-10
+            w-10
+            items-center
+            justify-center
+            rounded-full
+            bg-gradient-to-r
+            from-[#616CFA]
+            to-[#E46ECC]
+            text-white
+          "
+        >
+          <ChevronRight size={18}/>
+        </button>
+
+      </div>
+
 
     </section>
   );
