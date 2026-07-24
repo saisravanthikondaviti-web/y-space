@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
@@ -16,7 +18,9 @@ export default function ServicesPage() {
       <Navbar />
 
       <main className="min-h-screen bg-black">
-        <ServicesStepper />
+        <Suspense fallback={null}>
+          <ServicesStepper />
+        </Suspense>
       </main>
 
       <Footer />
