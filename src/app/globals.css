@@ -209,8 +209,6 @@ body {
 
   font-family: var(--font-body), sans-serif;
 
-  cursor: none;
-
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -347,11 +345,6 @@ body {
 
 
 
-@media (hover: none) {
-  body {
-    cursor: auto;
-  }
-}
 
 button,
 input,
@@ -429,4 +422,34 @@ button {
     padding-block: 3rem;
   }
 
+}
+
+/* ================= CUSTOM CURSOR ================= */
+
+/* Desktop only */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: none;
+  }
+}
+
+
+/* Mobile / Touch devices */
+@media (pointer: coarse) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: auto;
+  }
 }
