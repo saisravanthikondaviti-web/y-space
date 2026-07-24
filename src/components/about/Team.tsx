@@ -7,7 +7,7 @@ const team = [
   {
     name: "Sravani",
     role: "Head of Digital Marketing",
-    image: "/images/team/Sravani.PNG",
+    image: "/images/team/IMG_1709.jpg",
   },
   {
     name: "Sravanthi",
