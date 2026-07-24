@@ -76,7 +76,7 @@ export default function Services() {
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <FadeUp key={service.title}>
-              <Link href={`/what-we-do#${service.slug}`} prefetch={false}>
+              <Link href={`/services?service=${service.slug}`} prefetch={false}>
                 <div
                   className="
       group

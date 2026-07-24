@@ -18,79 +18,62 @@ export default function ChatLauncher() {
 
       <motion.button
         onClick={() => setOpen(true)}
-        whileHover={{
-          scale: 1.04,
-        }}
-        whileTap={{
-          scale: 0.96,
-        }}
-        animate={{
-          y: [0, -5, 0],
-        }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
+        animate={{ y: [0, -4, 0] }}
         transition={{
           duration: 3,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="
-          fixed
-          bottom-4
-          right-4
-
-          sm:bottom-6
-          sm:right-6
-
-          z-[9998]
-
-          flex
-          items-center
-          justify-center
-          gap-2
-
-          min-h-12
-          min-w-12
-
-          rounded-full
-
-          border
-          border-violet-500/30
-
-          bg-gradient-to-r
-          from-violet-600
-          to-fuchsia-500
-
-          px-4
-          py-3
-
-          sm:px-5
-          sm:py-3.5
-
-          text-white
-
-          shadow-[0_12px_35px_rgba(139,92,246,0.35)]
-
-          transition-all
-          duration-300
-
-          hover:shadow-[0_18px_45px_rgba(139,92,246,0.45)]
-        "
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9998]"
       >
-        <Sparkles
-          className="h-5 w-5 sm:h-[18px] sm:w-[18px]"
-        />
-
-        <span
+        {/* Outer Ring */}
+        <div
           className="
-            hidden
-            sm:block
-
-            text-sm
-            font-medium
-            tracking-wide
+            relative
+            flex
+            h-[56px]
+            w-[56px]
+            sm:h-[64px]
+            sm:w-[64px]
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-white/10
+            bg-[#0b0b14]
+            shadow-[0_0_24px_rgba(139,92,246,0.12)]
           "
         >
-          Y Assistant
-        </span>
+          {/* Inner Gradient Circle */}
+          <div
+            className="
+              flex
+              h-[34px]
+              w-[34px]
+              sm:h-[40px]
+              sm:w-[40px]
+              items-center
+              justify-center
+              rounded-full
+              bg-gradient-to-br
+              from-pink-500
+              via-violet-500
+              to-indigo-500
+              shadow-[0_6px_16px_rgba(168,85,247,0.4)]
+              transition-transform
+              duration-300
+              hover:scale-110
+            "
+          >
+            <Sparkles
+              className="h-[14px] w-[14px] sm:h-[16px] sm:w-[16px] text-white"
+              fill="currentColor"
+              strokeWidth={2}
+            />
+          </div>
+        </div>
       </motion.button>
     </>
   );
