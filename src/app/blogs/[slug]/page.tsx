@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import LikeButton from "@/components/LikeButton";
 import ViewTracker from "@/components/ViewTracker";
-import { getBlogViews, getBlogLikes } from "@/lib/blog";
+import { getBlogViews } from "@/lib/blog";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import Image from "next/image";
 import RelatedBlogs from "@/components/RelatedBlogs";
@@ -28,7 +28,6 @@ export default async function BlogPage({
     .maybeSingle();
 
   const views = blog ? await getBlogViews(blog.id) : 0;
-  const likes = blog ? await getBlogLikes(blog.id) : 0;
 
   console.log("SLUG:", slug);
   console.log("BLOG:", blog);
@@ -38,7 +37,9 @@ export default async function BlogPage({
     return (
       <div className="p-10 text-center">
         <h1 className="text-xl font-bold">Blog not found</h1>
-        <p className="text-gray-500">Check your slug or Supabase data</p>
+        <p className="text-gray-500">
+          Check your slug or Supabase data
+        </p>
       </div>
     );
   }
@@ -50,57 +51,73 @@ export default async function BlogPage({
       <CustomCursor />
       <Navbar />
 
-      <div className="pt-36 px-10 max-w-4xl mx-auto">
+      <main className="max-w-4xl mx-auto px-6 lg:px-10 pt-36 pb-20">
         <Link
           href="/blogs"
           className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full
-             border border-white/10 bg-white/5 backdrop-blur-md
-             hover:bg-white/10 hover:border-violet-500
-             transition-all duration-300 group"
+          border border-white/10 bg-white/5 backdrop-blur-md
+          hover:bg-white/10 hover:border-violet-500
+          transition-all duration-300 group"
         >
           <span className="transition-transform duration-300 group-hover:-translate-x-1">
             ←
           </span>
-
           <span className="font-medium">Back to Blogs</span>
         </Link>
 
         <ViewTracker blogId={blog.id} />
 
-        <>
-          {blog.cover_image && (
-            <div className="relative w-full h-[400px] rounded-3xl overflow-hidden mb-8">
-              <Image
-                src={blog.cover_image}
-                alt={blog.title}
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-          )}
+        {blog.cover_image && (
+          <div className="relative w-full h-[400px] rounded-3xl overflow-hidden mb-8">
+            <Image
+              src={blog.cover_image}
+              alt={blog.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+          </div>
+        )}
 
-          <h1 className="text-4xl font-bold">{blog.title}</h1>
-        </>
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+          {blog.title}
+        </h1>
 
-        <div className="flex gap-6 mt-4 text-sm text-gray-500">
+        {/* Views */}
+        <div className="flex items-center gap-6 mt-5 text-sm text-gray-400">
           <span>👁 {views} Views</span>
-          <span>❤️ {likes} Likes</span>
         </div>
 
-        <div className="mt-8">{blog.content}</div>
+        {/* Blog Content */}
+        <article className="mt-8 whitespace-pre-wrap leading-8 text-gray-300">
+          {blog.content}
+        </article>
 
-        <div className="flex items-center gap-4 mt-8">
-          <LikeButton blogId={blog.id} />
+        {/* Actions */}
+        <div className="flex items-center gap-4 mt-10">
+          <LikeButton />
           <ShareButton slug={blog.slug} />
         </div>
 
-        <Comments blogId={blog.id} />
+        {/* Comments */}
+        <div className="mt-16">
+          <Comments blogId={blog.id} />
+        </div>
 
-        <RecentlyViewed />
+        {/* Related Blogs */}
+        <div className="mt-20">
+          <RelatedBlogs
+            category={blog.category}
+            currentBlogId={blog.id}
+          />
+        </div>
 
-        <RelatedBlogs category={blog.category} currentBlogId={blog.id} />
-      </div>
+        {/* Recently Viewed */}
+        <div className="mt-20">
+          <RecentlyViewed />
+        </div>
+      </main>
 
       <Footer />
     </>
