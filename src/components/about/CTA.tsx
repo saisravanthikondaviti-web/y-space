@@ -231,7 +231,7 @@ export default function CTA() {
             />
 
             <motion.img
-              src="/images/abtcta.PNG"
+              src="/images/abtcta.png"
               alt="Creative Illustration"
               animate={{
                 y: [0, -12, 0],

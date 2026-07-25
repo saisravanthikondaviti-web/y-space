@@ -1,70 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 
-export default function LikeButton({ blogId }: { blogId: string }) {
+export default function LikeButton() {
   const [liked, setLiked] = useState(false);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    loadLikes();
-  }, [blogId]);
-
-  async function loadLikes() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const { data: likes } = await supabase
-      .from("blog_likes")
-      .select("*")
-      .eq("blog_id", blogId);
-
-    setCount(likes?.length || 0);
-
-    const userLike = likes?.find((like) => like.user_id === user?.id);
-
-    setLiked(!!userLike);
-  }
-
-  async function toggleLike() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please login to like blogs");
-      return;
-    }
-
-    if (liked) {
-      await supabase
-        .from("blog_likes")
-        .delete()
-        .eq("blog_id", blogId)
-        .eq("user_id", user.id);
-
-      setLiked(false);
-      setCount((prev) => prev - 1);
-    } else {
-      await supabase.from("blog_likes").insert({
-        blog_id: blogId,
-        user_id: user.id,
-      });
-
-      setLiked(true);
-      setCount((prev) => prev + 1);
-    }
-  }
 
   return (
-    <button
-      onClick={toggleLike}
-      className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/20 px-6 transition-all duration-300 hover:bg-white/10"
+    <motion.button
+      whileTap={{ scale: 0.8 }}
+      onClick={() => setLiked(!liked)}
+      className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-md transition-all duration-300 hover:border-[#ff4d6d]/50 hover:bg-white/10"
     >
-      ❤️
-      <span>{count}</span>
-    </button>
+      <motion.div
+        animate={
+          liked
+            ? {
+                scale: [1, 1.35, 1],
+                rotate: [0, -10, 10, 0],
+              }
+            : {
+                scale: 1,
+                rotate: 0,
+              }
+        }
+        transition={{
+          duration: 0.4,
+          ease: "easeOut",
+        }}
+      >
+        <Heart
+          size={22}
+          className={`transition-all duration-300 ${
+            liked
+              ? "fill-red-500 text-red-500"
+              : "text-white group-hover:text-red-400"
+          }`}
+        />
+      </motion.div>
+    </motion.button>
   );
 }

@@ -3,32 +3,23 @@
 import { useMemo, useState } from "react";
 import BlogCard from "@/components/BlogCard";
 
-export default function BlogSearch({
-  blogs,
-}: {
-  blogs: any[];
-}) {
+export default function BlogSearch({ blogs }: { blogs: any[] }) {
   const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] =
-    useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = useMemo(() => {
-    const cats = blogs
-      .map((blog) => blog.category)
-      .filter(Boolean);
+    const cats = blogs.map((blog) => blog.category).filter(Boolean);
 
     return ["All", ...new Set(cats)];
   }, [blogs]);
 
   const filteredBlogs = blogs.filter((blog) => {
-    const matchesSearch =
-      `${blog.title} ${blog.excerpt} ${blog.content}`
-        .toLowerCase()
-        .includes(query.toLowerCase());
+    const matchesSearch = `${blog.title} ${blog.excerpt} ${blog.content}`
+      .toLowerCase()
+      .includes(query.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === "All" ||
-      blog.category === selectedCategory;
+      selectedCategory === "All" || blog.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -47,17 +38,15 @@ export default function BlogSearch({
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-3 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8">
         {categories.map((category) => (
           <button
             key={category}
-            onClick={() =>
-              setSelectedCategory(category)
-            }
-            className={`px-4 py-2 rounded-full border transition ${
+            onClick={() => setSelectedCategory(category)}
+            className={`px-3 py-1.5 text-sm rounded-full border transition-all duration-300 ${
               selectedCategory === category
-                ? "bg-white text-black"
-                : "bg-transparent"
+                ? "bg-white text-black border-white"
+                : "bg-transparent border-white/20 text-white hover:border-white/40 hover:bg-white/5"
             }`}
           >
             {category}
@@ -68,10 +57,7 @@ export default function BlogSearch({
       {/* Blog Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredBlogs.map((blog) => (
-          <BlogCard
-            key={blog.id}
-            blog={blog}
-          />
+          <BlogCard key={blog.id} blog={blog} />
         ))}
       </div>
     </>
