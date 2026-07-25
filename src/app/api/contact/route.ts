@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   try {
     const apiKey = process.env.RESEND_API_KEY;
@@ -33,12 +35,12 @@ export async function POST(req: Request) {
       );
     }
 
-    await resend.emails.send({
-      from: "vaispace <onboarding@resend.dev>",
-      to: ["saisravanthikondaviti@gmail.com"],
-      replyTo: email,
-      subject: `🚀 New Contact Form Submission from ${name}`,
-      html: `
+    const emailResponse = await resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: ["saisravanthikondaviti@gmail.com"],
+  replyTo: email,
+  subject: `🚀 New Contact Form Submission from ${name}`,
+  html: `
         <div style="
           font-family: Arial, Helvetica, sans-serif;
           max-width: 650px;
@@ -107,12 +109,17 @@ export async function POST(req: Request) {
       `,
     });
 
+    console.log("RESEND RESPONSE:", emailResponse);
+
     return NextResponse.json({
       success: true,
       message: "Email sent successfully.",
     });
   } catch (error) {
-    console.error("Contact Form Error:", error);
+    console.error(
+  "Contact Form Error:",
+  JSON.stringify(error, null, 2)
+);
 
     return NextResponse.json(
       {
