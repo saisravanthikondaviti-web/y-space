@@ -5,23 +5,18 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-
     const apiKey = process.env.RESEND_API_KEY;
 
-
     if (!apiKey) {
-
-      console.error(
-        "RESEND_API_KEY is missing"
-      );
+      console.error("RESEND_API_KEY is missing");
 
       return NextResponse.json(
         {
-          success:false,
-          message:"Email service is not configured."
+          success: false,
+          message: "Email service is not configured.",
         },
         {
-          status:500
+          status: 500,
         }
       );
     }
@@ -39,22 +34,19 @@ export async function POST(req: Request) {
     );
 
 
-
+    // Matching your contact form
     const {
       name,
       email,
-      phone,
-      service,
-      project,
-      projectDetails,
-      timeline,
+      projectType,
+      message,
     } = data;
 
 
 
-    // =====================================
-    // ADMIN EMAIL
-    // =====================================
+    // ==========================
+    // EMAIL TO VAISPACE
+    // ==========================
 
     const adminResult =
       await resend.emails.send({
@@ -75,87 +67,110 @@ export async function POST(req: Request) {
           `🚀 New VAISPACE Inquiry from ${name}`,
 
 
-        html:`
+        html: `
 
-        <div style="
-          font-family:Arial;
-          padding:20px;
-        ">
-
-        <div style="
-          background:linear-gradient(
-          135deg,
-          #616CFA,
-          #E46ECC
-          );
-          padding:25px;
-          color:white;
-          text-align:center;
-          border-radius:12px;
-        ">
-
-        <h1>
-        VAISPACE
-        </h1>
-
-        <p>
-        New Client Inquiry
-        </p>
-
-        </div>
+<div style="
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f7ff;
+padding:30px;
+">
 
 
+<!-- Banner -->
 
-        <h3>
-        Client Details
-        </h3>
-
-
-        <p>
-        <b>Name:</b>
-        ${name}
-        </p>
-
-
-        <p>
-        <b>Email:</b>
-        ${email}
-        </p>
+<div style="
+background:linear-gradient(
+135deg,
+#616CFA,
+#E46ECC
+);
+padding:35px;
+border-radius:18px;
+text-align:center;
+color:white;
+">
 
 
-        <p>
-        <b>Phone:</b>
-        ${phone || "Not Provided"}
-        </p>
+<h1 style="
+margin:0;
+">
+VAISPACE
+</h1>
 
 
-        <p>
-        <b>Service:</b>
-        ${service || "Not Provided"}
-        </p>
+<p>
+New Client Inquiry
+</p>
 
 
-        <p>
-        <b>Project:</b>
-        ${project || "Not Provided"}
-        </p>
+</div>
 
 
-        <p>
-        <b>Project Details:</b>
-        ${projectDetails || "Not Provided"}
-        </p>
+
+<!-- Client Details -->
 
 
-        <p>
-        <b>Timeline:</b>
-        ${timeline || "Not Provided"}
-        </p>
+<div style="
+background:white;
+padding:30px;
+margin-top:25px;
+border-radius:18px;
+">
 
 
-        </div>
+<h2>
+Client Details
+</h2>
 
-        `,
+
+<p>
+<strong>Name:</strong>
+${name}
+</p>
+
+
+<p>
+<strong>Email:</strong>
+${email}
+</p>
+
+
+<p>
+<strong>Project Type:</strong>
+${projectType}
+</p>
+
+
+<p>
+<strong>Project Details:</strong>
+</p>
+
+
+<p>
+${message}
+</p>
+
+
+</div>
+
+
+
+
+<div style="
+text-align:center;
+padding:20px;
+color:#777;
+font-size:13px;
+">
+
+© ${new Date().getFullYear()} VAISPACE
+
+</div>
+
+
+</div>
+
+`,
       });
 
 
@@ -169,9 +184,9 @@ export async function POST(req: Request) {
 
 
 
-    // =====================================
-    // USER THANK YOU EMAIL
-    // =====================================
+    // ==========================
+    // THANK YOU EMAIL TO USER
+    // ==========================
 
 
     const userResult =
@@ -190,17 +205,18 @@ export async function POST(req: Request) {
 
 
 
-        html:`
+        html: `
 
 <div style="
 margin:0;
-padding:0;
+padding:30px;
 background:#f5f7ff;
 font-family:Arial,Helvetica,sans-serif;
 ">
 
 
 <!-- Banner -->
+
 
 <div style="
 background:linear-gradient(
@@ -209,6 +225,7 @@ background:linear-gradient(
 #E46ECC
 );
 padding:40px 20px;
+border-radius:18px;
 text-align:center;
 color:white;
 ">
@@ -232,6 +249,7 @@ Where Strategy Meets Creative Instinct
 
 
 
+
 <!-- Content -->
 
 
@@ -240,7 +258,7 @@ background:white;
 max-width:600px;
 margin:30px auto;
 padding:35px;
-border-radius:16px;
+border-radius:18px;
 ">
 
 
@@ -257,22 +275,54 @@ VAISPACE
 </p>
 
 
+
 <p>
-We have received your enquiry for:
+We have successfully received your enquiry
+for:
 </p>
+
 
 
 <h3 style="
 color:#616CFA;
 ">
-${service || "your project"}
+
+${projectType}
+
 </h3>
+
+
+
+<div style="
+background:#f5f7ff;
+padding:20px;
+border-radius:12px;
+margin:20px 0;
+">
+
+
+<p>
+<strong>
+Your message:
+</strong>
+</p>
+
+
+<p>
+${message}
+</p>
+
+
+</div>
+
+
 
 
 <p>
 Our team will review your requirements
 and get back to you shortly.
 </p>
+
 
 
 
@@ -301,6 +351,7 @@ Visit VAISPACE
 
 
 
+
 <p>
 Regards,
 <br/>
@@ -310,7 +361,6 @@ VAISPACE Team
 </strong>
 
 </p>
-
 
 
 </div>
@@ -335,8 +385,7 @@ All rights reserved.
 
 </div>
 
-`
-
+`,
       });
 
 
@@ -348,20 +397,22 @@ All rights reserved.
 
 
 
-    return NextResponse.json({
 
-      success:true,
+    return NextResponse.json(
+      {
+        success:true,
 
-      message:
-      "Thank you for contacting VAISPACE. We will get back to you shortly."
+        message:
+        "Thank you for contacting VAISPACE. We will get back to you shortly.",
+      },
+      {
+        status:200,
+      }
+    );
 
-    });
 
+  } catch(error) {
 
-
-  }
-
-  catch(error){
 
     console.error(
       "Contact Route Error:",
@@ -372,11 +423,12 @@ All rights reserved.
     return NextResponse.json(
       {
         success:false,
+
         message:
-        "Failed to send email."
+        "Failed to send email.",
       },
       {
-        status:500
+        status:500,
       }
     );
 
