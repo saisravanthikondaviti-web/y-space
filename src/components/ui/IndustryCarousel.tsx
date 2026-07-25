@@ -31,7 +31,7 @@ export default function IndustryCarousel({ industries }: Props) {
       skipSnaps: true,
       dragFree: true,
     },
-    [autoplay]
+    [autoplay],
   );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -48,52 +48,34 @@ export default function IndustryCarousel({ industries }: Props) {
     (index: number) => {
       emblaApi?.scrollTo(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
 
-    setSelectedIndex(
-      emblaApi.selectedScrollSnap()
-    );
+    setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
-
 
   useEffect(() => {
     if (!emblaApi) return;
 
     onSelect();
 
-    emblaApi.on(
-      "select",
-      onSelect
-    );
+    emblaApi.on("select", onSelect);
 
-    emblaApi.on(
-      "reInit",
-      onSelect
-    );
+    emblaApi.on("reInit", onSelect);
 
     return () => {
-      emblaApi.off(
-        "select",
-        onSelect
-      );
+      emblaApi.off("select", onSelect);
 
-      emblaApi.off(
-        "reInit",
-        onSelect
-      );
+      emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
 
-
   return (
     <div className="relative mt-10">
-
-
-      {/* Navigation - Desktop Only */}
+      {/* Navigation */}
       <div
         className="
           absolute
@@ -105,7 +87,6 @@ export default function IndustryCarousel({ industries }: Props) {
           sm:flex
         "
       >
-
         <button
           onClick={scrollPrev}
           className="
@@ -121,14 +102,13 @@ export default function IndustryCarousel({ industries }: Props) {
             backdrop-blur-xl
             transition-all
             duration-300
-            hover:scale-105
+            hover:scale-110
             hover:border-[#616CFA]/50
             hover:shadow-[0_0_25px_rgba(97,108,250,.35)]
           "
         >
           <ChevronLeft className="h-5 w-5 text-white" />
         </button>
-
 
         <button
           onClick={scrollNext}
@@ -145,24 +125,19 @@ export default function IndustryCarousel({ industries }: Props) {
             backdrop-blur-xl
             transition-all
             duration-300
-            hover:scale-105
+            hover:scale-110
             hover:border-[#E46ECC]/50
             hover:shadow-[0_0_25px_rgba(228,110,204,.35)]
           "
         >
           <ChevronRight className="h-5 w-5 text-white" />
         </button>
-
       </div>
 
-
-
-      {/* Carousel Wrapper */}
+      {/* Carousel */}
       <div className="relative">
-
-
-        {/* Left Fade */}
-        <div
+        {/* Left Animated Black Shade */}
+        {/* <div
           className="
             pointer-events-none
             absolute
@@ -170,16 +145,20 @@ export default function IndustryCarousel({ industries }: Props) {
             top-0
             z-20
             h-full
-            w-10
+            w-24
             bg-gradient-to-r
-            from-black/40
+            from-black
+            via-black/80
             to-transparent
+            opacity-90
+            animate-[pulse_4s_ease-in-out_infinite]
+            sm:w-32
+            lg:w-44
           "
-        />
+        /> */}
 
-
-        {/* Right Fade */}
-        <div
+        {/* Right Animated Black Shade */}
+        {/* <div
           className="
             pointer-events-none
             absolute
@@ -187,49 +166,58 @@ export default function IndustryCarousel({ industries }: Props) {
             top-0
             z-20
             h-full
-            w-10
+            w-24
             bg-gradient-to-l
-            from-black/40
+            from-black
+            via-black/80
             to-transparent
+            opacity-90
+            animate-[pulse_4s_ease-in-out_infinite]
+            sm:w-32
+            lg:w-44
           "
-        />
+        /> */}
 
-
-
-        {/* Embla */}
+        {/* Embla Viewport */}
         <div
           ref={emblaRef}
           className="
             overflow-hidden
-            -mx-4
-            px-4
-            sm:-mx-8
-            sm:px-8
+
+            -mx-6
+            px-6
+
+            sm:-mx-10
+            sm:px-10
+
+            lg:-mx-16
+            lg:px-16
+
+            xl:-mx-20
+            xl:px-20
           "
         >
-
           <div className="flex">
-
-            {industries.map(
-              (industry, index) => (
-
+            {industries.map((industry, index) => (
               <div
                 key={industry.title}
                 className="
                   min-w-0
-                  flex-[0_0_85%]
-                  px-2
+                  px-3
 
-                  sm:flex-[0_0_50%]
+                  flex-[0_0_88%]
 
-                  lg:flex-[0_0_33.333%]
+                  sm:flex-[0_0_55%]
 
-                  xl:flex-[0_0_26%]
+                  md:flex-[0_0_45%]
 
-                  2xl:flex-[0_0_25%]
+                  lg:flex-[0_0_36%]
+
+                  xl:flex-[0_0_30%]
+
+                  2xl:flex-[0_0_27%]
                 "
               >
-
                 <div
                   className={`
                     transition-all
@@ -238,30 +226,19 @@ export default function IndustryCarousel({ industries }: Props) {
                     ${
                       selectedIndex === index
                         ? "scale-100 opacity-100"
-                        : "scale-[0.96] opacity-85"
+                        : "scale-[0.96] opacity-80"
                     }
                   `}
                 >
-
-                  <IndustryCard
-                    {...industry}
-                  />
-
+                  <IndustryCard {...industry} />
                 </div>
-
               </div>
-
             ))}
-
           </div>
-
         </div>
-
       </div>
 
-
-
-      {/* Progress - Desktop / Tablet Only */}
+      {/* Progress Indicators */}
       <div
         className="
           mt-12
@@ -273,10 +250,7 @@ export default function IndustryCarousel({ industries }: Props) {
           sm:flex
         "
       >
-
-        {industries.map(
-          (_, index) => (
-
+        {industries.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollTo(index)}
@@ -286,7 +260,6 @@ export default function IndustryCarousel({ industries }: Props) {
               items-center
             "
           >
-
             <div
               className={`
                 h-[4px]
@@ -301,14 +274,9 @@ export default function IndustryCarousel({ industries }: Props) {
                 }
               `}
             />
-
           </button>
-
         ))}
-
       </div>
-
-
     </div>
   );
 }
