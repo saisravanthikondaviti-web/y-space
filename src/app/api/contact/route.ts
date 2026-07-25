@@ -4,41 +4,25 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  console.log("CONTACT API HIT");
-
   try {
-    const body = await req.json();
-
-    console.log("REQUEST BODY:", body);
-
-    const {
-      name,
-      email,
-      projectType,
-      message,
-    } = body;
-
-
-    // Validate fields
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Please fill all required fields",
-        },
-        {
-          status: 400,
-        }
-      );
-    }
-
 
     const apiKey = process.env.RESEND_API_KEY;
 
 
     if (!apiKey) {
-      throw new Error(
+
+      console.error(
         "RESEND_API_KEY is missing"
+      );
+
+      return NextResponse.json(
+        {
+          success:false,
+          message:"Email service is not configured."
+        },
+        {
+          status:500
+        }
       );
     }
 
@@ -46,193 +30,353 @@ export async function POST(req: Request) {
     const resend = new Resend(apiKey);
 
 
+    const data = await req.json();
 
-    // ===============================
-    // EMAIL TO VAI SPACE ADMIN
-    // ===============================
 
-    const adminEmail =
+    console.log(
+      "CONTACT DATA:",
+      data
+    );
+
+
+
+    const {
+      name,
+      email,
+      phone,
+      service,
+      project,
+      projectDetails,
+      timeline,
+    } = data;
+
+
+
+    // =====================================
+    // ADMIN EMAIL
+    // =====================================
+
+    const adminResult =
       await resend.emails.send({
 
         from:
-          "onboarding@resend.dev",
+          "VAISPACE <onboarding@resend.dev>",
 
-        to: [
+
+        to:
           "saisravanthikondaviti@gmail.com",
-        ],
+
 
         replyTo:
           email,
 
+
         subject:
-          `🚀 New VAI SPACE Enquiry from ${name}`,
+          `🚀 New VAISPACE Inquiry from ${name}`,
 
 
-        html: `
+        html:`
+
         <div style="
-          font-family:Arial,sans-serif;
+          font-family:Arial;
           padding:20px;
-          color:#111;
         ">
 
-          <h2>
-            New Contact Form Submission
-          </h2>
+        <div style="
+          background:linear-gradient(
+          135deg,
+          #616CFA,
+          #E46ECC
+          );
+          padding:25px;
+          color:white;
+          text-align:center;
+          border-radius:12px;
+        ">
+
+        <h1>
+        VAISPACE
+        </h1>
+
+        <p>
+        New Client Inquiry
+        </p>
+
+        </div>
 
 
-          <p>
-            <strong>Name:</strong>
-            ${name}
-          </p>
+
+        <h3>
+        Client Details
+        </h3>
 
 
-          <p>
-            <strong>Email:</strong>
-            ${email}
-          </p>
+        <p>
+        <b>Name:</b>
+        ${name}
+        </p>
 
 
-          <p>
-            <strong>Project Type:</strong>
-            ${projectType || "Not specified"}
-          </p>
+        <p>
+        <b>Email:</b>
+        ${email}
+        </p>
 
 
-          <p>
-            <strong>Message:</strong>
-          </p>
+        <p>
+        <b>Phone:</b>
+        ${phone || "Not Provided"}
+        </p>
 
 
-          <p>
-            ${message}
-          </p>
+        <p>
+        <b>Service:</b>
+        ${service || "Not Provided"}
+        </p>
+
+
+        <p>
+        <b>Project:</b>
+        ${project || "Not Provided"}
+        </p>
+
+
+        <p>
+        <b>Project Details:</b>
+        ${projectDetails || "Not Provided"}
+        </p>
+
+
+        <p>
+        <b>Timeline:</b>
+        ${timeline || "Not Provided"}
+        </p>
 
 
         </div>
+
         `,
       });
 
 
 
     console.log(
-      "ADMIN EMAIL SENT:",
-      adminEmail
+      "Admin Result:",
+      adminResult
     );
 
 
 
 
-    // ===============================
-    // THANK YOU EMAIL TO USER
-    // ===============================
 
-    const thankYouEmail =
+    // =====================================
+    // USER THANK YOU EMAIL
+    // =====================================
+
+
+    const userResult =
       await resend.emails.send({
 
         from:
-          "onboarding@resend.dev",
+          "VAISPACE <onboarding@resend.dev>",
 
-        to:[
+
+        to:
           email,
-        ],
+
 
         subject:
-          "Thank you for contacting VAI SPACE 🚀",
+          "Thank you for contacting VAISPACE 🚀",
 
 
-        html: `
-        <div style="
-          font-family:Arial,sans-serif;
-          padding:25px;
-          color:#111;
-        ">
+
+        html:`
+
+<div style="
+margin:0;
+padding:0;
+background:#f5f7ff;
+font-family:Arial,Helvetica,sans-serif;
+">
 
 
-          <h2>
-            Hi ${name} 👋
-          </h2>
+<!-- Banner -->
+
+<div style="
+background:linear-gradient(
+135deg,
+#616CFA,
+#E46ECC
+);
+padding:40px 20px;
+text-align:center;
+color:white;
+">
 
 
-          <p>
-            Thank you for contacting 
-            <strong>VAI SPACE</strong>.
-          </p>
+<h1 style="
+margin:0;
+font-size:32px;
+">
+VAISPACE
+</h1>
 
 
-          <p>
-            We have successfully received
-            your enquiry.
-          </p>
+<p>
+Where Strategy Meets Creative Instinct
+</p>
 
 
-          <p>
-            Our team will review your
-            requirements and get back to
-            you shortly.
-          </p>
+</div>
 
 
-          <br/>
 
 
-          <p>
-            Regards,
-          </p>
+<!-- Content -->
 
 
-          <p>
-            <strong>
-              VAI SPACE Team
-            </strong>
-          </p>
+<div style="
+background:white;
+max-width:600px;
+margin:30px auto;
+padding:35px;
+border-radius:16px;
+">
 
 
-        </div>
-        `,
+<h2>
+Hi ${name} 👋
+</h2>
+
+
+<p>
+Thank you for contacting
+<strong>
+VAISPACE
+</strong>.
+</p>
+
+
+<p>
+We have received your enquiry for:
+</p>
+
+
+<h3 style="
+color:#616CFA;
+">
+${service || "your project"}
+</h3>
+
+
+<p>
+Our team will review your requirements
+and get back to you shortly.
+</p>
+
+
+
+<div style="
+text-align:center;
+margin:30px 0;
+">
+
+
+<a href="https://vaispace.vercel.app"
+style="
+background:#616CFA;
+color:white;
+padding:14px 30px;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+">
+
+Visit VAISPACE
+
+</a>
+
+
+</div>
+
+
+
+<p>
+Regards,
+<br/>
+
+<strong>
+VAISPACE Team
+</strong>
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<div style="
+text-align:center;
+padding:20px;
+font-size:13px;
+color:#777;
+">
+
+© ${new Date().getFullYear()} VAISPACE.
+All rights reserved.
+
+</div>
+
+
+
+</div>
+
+`
+
       });
 
 
 
     console.log(
-      "THANK YOU EMAIL SENT:",
-      thankYouEmail
+      "User Result:",
+      userResult
     );
 
 
 
-    // Response returned to frontend
+    return NextResponse.json({
 
-    return NextResponse.json(
-      {
-        success: true,
+      success:true,
 
-        message:
-          "Thank you for contacting VAI SPACE. We will get back to you shortly.",
-      },
-      {
-        status:200,
-      }
-    );
+      message:
+      "Thank you for contacting VAISPACE. We will get back to you shortly."
+
+    });
 
 
-  } catch(error:any) {
 
+  }
+
+  catch(error){
 
     console.error(
-      "CONTACT FORM ERROR:",
-      error?.message || error
+      "Contact Route Error:",
+      error
     );
 
 
     return NextResponse.json(
       {
         success:false,
-
         message:
-          "Something went wrong. Please try again.",
+        "Failed to send email."
       },
       {
-        status:500,
+        status:500
       }
     );
 
