@@ -71,11 +71,11 @@ export default function About() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
               <div className="absolute bottom-6 left-6">
-                <p className="mb-2 text-sm uppercase tracking-[0.3em] text-zinc-300">
+                <p className="mb-2 text-sm uppercase tracking-[0.3em] text-zinc-500">
                   Our Vision
                 </p>
 
-                <h3 className="max-w-xs text-lg text-zinc-400 sm:text-xl lg:text-xl">
+                <h3 className="max-w-xs text-lg text-white sm:text-xl lg:text-xl">
                   Creating Digital Experiences That Inspire Growth.
                 </h3>
               </div>

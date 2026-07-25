@@ -65,7 +65,6 @@ function Counter({
 export default function Stats() {
   return (
     <section
-      data-scroll-section
       id="stats"
       className="
   min-h-screen

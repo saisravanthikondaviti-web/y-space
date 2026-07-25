@@ -20,25 +20,41 @@ export default function IndustryCard({
         relative
         h-[260px]
         w-full
+
         overflow-hidden
         rounded-2xl
-        border
-        border-white/10
+        border border-white/10
+
         bg-gradient-to-b
         from-white/[0.05]
         to-white/[0.02]
+
         backdrop-blur-xl
-        transition-all
-        duration-500
+        transition-all duration-500
+
         hover:-translate-y-1
+        hover:scale-[1.02]
         hover:border-white/20
+        hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]
       "
     >
-      {/* Glow */}
+      {/* Glow Effect */}
       <div
-        className="absolute -top-14 -right-14 h-32 w-32 rounded-full blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="
+          pointer-events-none
+          absolute
+          -top-16
+          -right-16
+          h-40
+          w-40
+          rounded-full
+          blur-3xl
+          opacity-0
+          transition-opacity duration-500
+          group-hover:opacity-100
+        "
         style={{
-          background: `${color}30`,
+          background: `${color}40`,
         }}
       />
 
@@ -55,9 +71,8 @@ export default function IndustryCard({
             rounded-xl
             border
             text-xl
-            transition-all
-            duration-500
-            group-hover:scale-105
+            transition-all duration-500
+            group-hover:scale-110
           "
           style={{
             borderColor: `${color}70`,
@@ -73,7 +88,7 @@ export default function IndustryCard({
         </h3>
 
         {/* Description */}
-        <p className="mt-2 text-[13px] leading-[1.35rem] text-zinc-400">
+        <p className="mt-2 text-[13px] leading-relaxed text-zinc-400">
           {description}
         </p>
       </div>
