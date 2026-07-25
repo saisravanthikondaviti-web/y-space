@@ -59,26 +59,45 @@ export default function Hero() {
 
         <motion.h1
           className="
-      mx-auto
-      max-w-xs
-      text-4xl
-      font-bold
-      leading-tight
-      sm:max-w-xl
-      sm:text-5xl
-      md:max-w-3xl
-      md:text-6xl
-      lg:max-w-5xl
-      lg:text-7xl
-      xl:text-7.5xl
-    "
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+    mx-auto
+    max-w-xs
+    text-4xl
+    font-bold
+    leading-tight
+    sm:max-w-xl
+    sm:text-5xl
+    md:max-w-3xl
+    md:text-6xl
+    lg:max-w-5xl
+    lg:text-7xl
+    xl:text-8xl
+    overflow-hidden
+  "
         >
-          Build Your Space.
+          {/* Left Animation */}
+          <motion.span
+            className="inline-block text-white"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Build Your Space.
+          </motion.span>
+
           <br />
-          Own Your Market.
+
+          {/* Right Animation */}
+          <motion.span
+            className="inline-block"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <span className="text-white">Own Your </span>
+            <span className="bg-gradient-to-r from-[#616CFA] to-[#E46ECC] bg-clip-text text-transparent">
+              Market.
+            </span>
+          </motion.span>
         </motion.h1>
 
         <p
@@ -100,7 +119,7 @@ export default function Hero() {
       lg:text-xl
     "
         >
-          Strategy. Creativity. Performance. Technology.
+          Strategy. Design. Technology. Growth.
         </p>
 
         {/* <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-5">
@@ -173,7 +192,6 @@ export default function Hero() {
             </button>
           </Link>
         </div> */}
-        
       </div>
     </section>
   );
