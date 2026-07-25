@@ -64,28 +64,47 @@ function Counter({
 
 export default function Stats() {
   return (
-    <section className="bg-black px-6 py-24 md:px-16">
-      <div className="mx-auto max-w-7xl">
+    <section
+      data-scroll-section
+      id="stats"
+      className="
+  min-h-screen
+  flex
+  items-center
+  bg-black
+  px-6
+  py-24
+  md:px-16
+"
+    >
+      <div
+        className="
+mx-auto
+w-full
+max-w-7xl
+"
+      >
         <div
           className="
-            overflow-hidden
-            rounded-3xl
-
-            border
-            border-white/10
-
-            bg-white/5
-
-            backdrop-blur-xl
-          "
+overflow-hidden
+rounded-3xl
+border
+border-white/10
+bg-white/5
+backdrop-blur-xl
+"
         >
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4"
+            className="
+grid
+grid-cols-2
+md:grid-cols-4
+"
             initial="hidden"
             whileInView="show"
             viewport={{
-              once: false,
-              amount: 0.3,
+              once: true,
+              amount: 0.5,
             }}
             variants={{
               hidden: {},
@@ -97,9 +116,9 @@ export default function Stats() {
               },
             }}
           >
-            {stats.map((stat, index) => {
-              return <StatCard key={stat.label} stat={stat} index={index} />;
-            })}
+            {stats.map((stat, index) => (
+              <StatCard key={stat.label} stat={stat} index={index} />
+            ))}
           </motion.div>
         </div>
       </div>
@@ -109,6 +128,7 @@ export default function Stats() {
 
 function StatCard({
   stat,
+
   index,
 }: {
   stat: {
@@ -116,6 +136,7 @@ function StatCard({
     suffix: string;
     label: string;
   };
+
   index: number;
 }) {
   const [visible, setVisible] = useState(false);
@@ -126,6 +147,7 @@ function StatCard({
       variants={{
         hidden: {
           opacity: 0,
+
           y: 40,
         },
 
@@ -136,57 +158,49 @@ function StatCard({
 
           transition: {
             duration: 0.6,
+
             ease: "easeOut",
           },
         },
       }}
       className={`
-        relative
-        flex
-        flex-col
-        items-center
-        justify-center
+relative
+flex
+flex-col
+items-center
+justify-center
+py-14
 
-        py-14
+${index !== stats.length - 1 ? "md:border-r md:border-white/10" : ""}
 
-        ${index !== stats.length - 1 ? "md:border-r md:border-white/10" : ""}
 
-        ${index < 2 ? "border-b border-white/10 md:border-b-0" : ""}
+${index < 2 ? "border-b border-white/10 md:border-b-0" : ""}
 
-      `}
+`}
     >
       <h3
         className="
-          bg-gradient-to-r
-          from-[#616CFA]
-          to-[#E46ECC]
-
-          bg-clip-text
-
-          text-5xl
-
-          font-bold
-
-          text-transparent
-
-          md:text-6xl
-        "
+bg-gradient-to-r
+from-[#616CFA]
+to-[#E46ECC]
+bg-clip-text
+text-5xl
+font-bold
+text-transparent
+md:text-6xl
+"
       >
         <Counter value={stat.value} suffix={stat.suffix} start={visible} />
       </h3>
 
       <p
         className="
-          mt-3
-
-          text-center
-
-          text-sm
-
-          text-gray-400
-
-          md:text-base
-        "
+mt-3
+text-center
+text-sm
+text-gray-400
+md:text-base
+"
       >
         {stat.label}
       </p>

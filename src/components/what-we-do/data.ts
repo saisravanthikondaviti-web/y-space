@@ -27,7 +27,7 @@ export const services: Service[] = [
   {
     slug: "branding",
     title: "Branding",
-    image: "/images/whatwedo/cbranding.png",
+    image: "/images/whatwedo/branding_.png",
     description:
       "We help businesses create meaningful identities that communicate who they are and what they stand for.",
     items: [
@@ -57,7 +57,7 @@ export const services: Service[] = [
   {
     slug: "performance-marketing",
     title: "Performance Marketing",
-    image: "/images/whatwedo/cperform.png",
+    image: "/images/whatwedo/performance_marketing.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -87,7 +87,7 @@ export const services: Service[] = [
   {
     slug: "design-creative",
     title: "Design & Creative",
-    image: "/images/whatwedo/cdc.png",
+    image: "/images/whatwedo/create_design.png",
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
@@ -114,7 +114,7 @@ export const services: Service[] = [
   {
     slug: "digital-marketing",
     title: "Digital Marketing",
-    image: "/images/whatwedo/cdigim.png",
+    image: "/images/whatwedo/digital_marketing.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -144,7 +144,7 @@ export const services: Service[] = [
   {
     slug: "web-development",
     title: "Website Design & Development",
-    image: "/images/whatwedo/cwebdev.png",
+    image: "/images/whatwedo/web_development.png",
     description:
       "We design and develop websites that are visually refined, user-focused, and performance-driven.",
     items: [
@@ -189,7 +189,7 @@ export const services: Service[] = [
   {
     slug: "video-production",
     title: "Video Production",
-    image: "/images/whatwedo/video-production.png",
+    image: "/images/whatwedo/video_production.png",
     description:
       "We create compelling visual content designed to engage, educate, and inspire.",
     items: [
