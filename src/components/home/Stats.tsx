@@ -67,38 +67,36 @@ export default function Stats() {
     <section
       id="stats"
       className="
-  min-h-screen
-  flex
-  items-center
-  bg-black
-  px-6
-  py-24
-  md:px-16
-"
+        w-full
+        px-6
+        pb-24
+        md:px-16
+      "
     >
       <div
         className="
-mx-auto
-w-full
-max-w-7xl
-"
+          mx-auto
+          w-full
+          max-w-7xl
+        "
       >
         <div
           className="
-overflow-hidden
-rounded-3xl
-border
-border-white/10
-bg-white/5
-backdrop-blur-xl
-"
+            overflow-hidden
+            rounded-3xl
+            border
+            border-white/[0.08]
+            bg-white/[0.035]
+            shadow-[0_8px_40px_rgba(0,0,0,0.2)]
+            backdrop-blur-xl
+          "
         >
           <motion.div
             className="
-grid
-grid-cols-2
-md:grid-cols-4
-"
+              grid
+              grid-cols-2
+              md:grid-cols-4
+            "
             initial="hidden"
             whileInView="show"
             viewport={{
@@ -116,7 +114,11 @@ md:grid-cols-4
             }}
           >
             {stats.map((stat, index) => (
-              <StatCard key={stat.label} stat={stat} index={index} />
+              <StatCard
+                key={stat.label}
+                stat={stat}
+                index={index}
+              />
             ))}
           </motion.div>
         </div>
@@ -127,7 +129,6 @@ md:grid-cols-4
 
 function StatCard({
   stat,
-
   index,
 }: {
   stat: {
@@ -146,60 +147,59 @@ function StatCard({
       variants={{
         hidden: {
           opacity: 0,
-
           y: 40,
         },
 
         show: {
           opacity: 1,
-
           y: 0,
 
           transition: {
             duration: 0.6,
-
             ease: "easeOut",
           },
         },
       }}
       className={`
-relative
-flex
-flex-col
-items-center
-justify-center
-py-14
+        relative
+        flex
+        flex-col
+        items-center
+        justify-center
+        py-14
 
-${index !== stats.length - 1 ? "md:border-r md:border-white/10" : ""}
+        ${index !== stats.length - 1 ? "md:border-r md:border-white/10" : ""}
 
-
-${index < 2 ? "border-b border-white/10 md:border-b-0" : ""}
-
-`}
+        ${index < 2 ? "border-b border-white/10 md:border-b-0" : ""}
+      `}
     >
       <h3
         className="
-bg-gradient-to-r
-from-[#616CFA]
-to-[#E46ECC]
-bg-clip-text
-text-5xl
-font-bold
-text-transparent
-md:text-6xl
-"
+          bg-gradient-to-r
+          from-[#616CFA]
+          to-[#E46ECC]
+          bg-clip-text
+          text-5xl
+          font-bold
+          text-transparent
+          md:text-6xl
+        "
       >
-        <Counter value={stat.value} suffix={stat.suffix} start={visible} />
+        <Counter
+          value={stat.value}
+          suffix={stat.suffix}
+          start={visible}
+        />
       </h3>
 
       <p
         className="
-mt-3
-text-center
-text-sm
-text-gray-400
-md:text-base
-"
+          mt-3
+          text-center
+          text-sm
+          text-gray-400
+          md:text-base
+        "
       >
         {stat.label}
       </p>
