@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     // ==================================
 
     const adminResult = await resend.emails.send({
-      from: "VAISPACE <onboarding@resend.dev>",
+      from: "VAISPACE <noreply@vaispace.com>",
 
       to: "saisravanthikondaviti@gmail.com",
 
@@ -211,7 +211,7 @@ font-size:13px;
     // ==================================
 
     const userResult = await resend.emails.send({
-      from: "VAISPACE <onboarding@resend.dev>",
+      from: "VAISPACE <noreply@vaispace.com>",
 
       to: email,
 

@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import Services from "@/components/home/Services";
@@ -11,25 +15,37 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import SectionNavigator from "@/components/ui/SectionNavigator";
 import Stats from "@/components/home/Stats";
-
+import IntroVideo from "@/components/ui/IntroVideo"; // ✅ make sure path is correct
 
 export default function Home() {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <>
-      <SmoothScroll />
-      <SectionNavigator />
-      <ScrollProgress />
-      <CustomCursor />
+      {/* ✅ Show intro video first */}
+      {showIntro && (
+        <IntroVideo onFinish={() => setShowIntro(false)} />
+      )}
 
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Stats />
-      <Industries />
-      <Process />
-      <CTA />
-      <Footer />
+      {/* ✅ Show website AFTER intro finishes */}
+      {!showIntro && (
+        <>
+          <SmoothScroll />
+          <SectionNavigator />
+          <ScrollProgress />
+          <CustomCursor />
+
+          <Navbar />
+          <Hero />
+          <About />
+          <Services />
+          <Stats />
+          <Industries />
+          <Process />
+          <CTA />
+          <Footer />
+        </>
+      )}
     </>
   );
 }

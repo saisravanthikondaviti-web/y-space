@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       await resend.emails.send({
 
         from:
-          "VAISPACE <onboarding@resend.dev>",
+          "VAISPACE <noreply@vaispace.com>",
 
 
         to:
@@ -193,7 +193,7 @@ font-size:13px;
       await resend.emails.send({
 
         from:
-          "VAISPACE <onboarding@resend.dev>",
+          "VAISPACE <noreply@vaispace.com>",
 
 
         to:

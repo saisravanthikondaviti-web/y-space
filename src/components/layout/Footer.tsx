@@ -61,28 +61,28 @@ export default function Footer() {
 
           <div className="mt-6 flex items-center gap-6">
             <SocialIcon
-              href="https://instagram.com"
+              href="https://www.instagram.com/vaispaceofficial/"
               normal="/images/footer/instagram.png"
               hover="/images/footer/finsta.png"
               alt="Instagram"
             />
 
             <SocialIcon
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=61592134574057"
               normal="/images/footer/facebook.png"
               hover="/images/footer/ffacebook.png"
               alt="Facebook"
             />
 
             <SocialIcon
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/company/vaispace/ "
               normal="/images/footer/linkedin.png"
               hover="/images/footer/flinkedin.png"
               alt="LinkedIn"
             />
 
             <SocialIcon
-              href="https://youtube.com"
+              href="https://www.youtube.com/@vaispaceofficial"
               normal="/images/footer/youtube.png"
               hover="/images/footer/fyoutube.png"
               alt="YouTube"
