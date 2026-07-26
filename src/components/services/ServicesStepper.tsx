@@ -18,19 +18,27 @@ export default function ServicesStepper() {
   useEffect(() => {
     if (!serviceSlug) return;
 
-    const index = services.findIndex((item) => item.slug === serviceSlug);
+    const index = services.findIndex(
+      (item) => item.slug === serviceSlug
+    );
 
     if (index !== -1) {
       setActiveIndex(index);
     }
   }, [serviceSlug]);
 
+  // Go to next service
   const nextService = () => {
-    setActiveIndex((prev) => (prev === services.length - 1 ? 0 : prev + 1));
+    setActiveIndex((prev) =>
+      prev === services.length - 1 ? 0 : prev + 1
+    );
   };
 
+  // Go to previous service
   const previousService = () => {
-    setActiveIndex((prev) => (prev === 0 ? services.length - 1 : prev - 1));
+    setActiveIndex((prev) =>
+      prev === 0 ? services.length - 1 : prev - 1
+    );
   };
 
   return (
@@ -46,7 +54,10 @@ export default function ServicesStepper() {
       "
     >
       <div className="w-full max-w-6xl">
-        {/* Service Title */}
+
+        {/* =========================
+            SERVICE TITLE
+        ========================== */}
 
         <AnimatePresence mode="wait">
           <motion.h2
@@ -86,7 +97,9 @@ export default function ServicesStepper() {
           </motion.h2>
         </AnimatePresence>
 
-        {/* Service Items */}
+        {/* =========================
+            SERVICE ITEMS
+        ========================== */}
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -100,6 +113,9 @@ export default function ServicesStepper() {
             exit={{
               opacity: 0,
             }}
+            transition={{
+              duration: 0.25,
+            }}
             className="
               grid
               grid-cols-1
@@ -108,24 +124,30 @@ export default function ServicesStepper() {
               gap-4
             "
           >
-            {service.items.map((item: string, index: number) => (
-              <motion.div
-                key={item}
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  delay: index * 0.06,
-                }}
-                className="
+            {service.items.map((item: string, index: number) => {
+              const description =
+                service.details?.[item] ||
+                "Create impactful solutions with strategic thinking and creative execution.";
+
+              return (
+                <motion.div
+                  key={item}
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    delay: index * 0.06,
+                    duration: 0.35,
+                  }}
+                  className="
                     group
                     relative
-                    min-h-[140px]
+                    min-h-[170px]
                     rounded-xl
                     border
                     border-white/15
@@ -138,9 +160,10 @@ export default function ServicesStepper() {
                     hover:border-[#616CFA]/60
                     hover:bg-white/[0.08]
                   "
-              >
-                <div
-                  className="
+                >
+                  {/* Gradient Accent */}
+                  <div
+                    className="
                       mb-5
                       h-[3px]
                       w-12
@@ -148,38 +171,49 @@ export default function ServicesStepper() {
                       bg-gradient-to-r
                       from-[#616CFA]
                       to-[#E46ECC]
+                      transition-all
+                      duration-300
+                      group-hover:w-16
                     "
-                />
+                  />
 
-                <h3
-                  className="
+                  {/* Item Title */}
+                  <h3
+                    className="
+                      mb-2
                       text-base
                       sm:text-lg
                       font-semibold
+                      leading-snug
                       text-white
-                      mb-2
                     "
-                >
-                  {item}
-                </h3>
+                  >
+                    {item}
+                  </h3>
 
-                <p
-                  className="
+                  {/* Item Description */}
+                  <p
+                    className="
                       text-xs
                       sm:text-sm
                       leading-relaxed
                       text-white/50
+                      transition-colors
+                      duration-300
+                      group-hover:text-white/70
                     "
-                >
-                  Create impactful solutions with strategic thinking and
-                  creative execution.
-                </p>
-              </motion.div>
-            ))}
+                  >
+                    {description}
+                  </p>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </AnimatePresence>
 
-        {/* Navigation */}
+        {/* =========================
+            NAVIGATION
+        ========================== */}
 
         <div
           className="
@@ -189,23 +223,27 @@ export default function ServicesStepper() {
             gap-4
           "
         >
+          {/* Back */}
           <button
             onClick={() => window.history.back()}
             className="
-    rounded-full
-    border
-    border-white/20
-    px-6
-    py-2.5
-    text-sm
-    text-white
-    transition
-    hover:bg-white/10
-  "
+              rounded-full
+              border
+              border-white/20
+              px-6
+              py-2.5
+              text-sm
+              text-white
+              transition-all
+              duration-300
+              hover:border-white/40
+              hover:bg-white/10
+            "
           >
             Back
           </button>
 
+          {/* Next */}
           <button
             onClick={nextService}
             className="
@@ -216,11 +254,14 @@ export default function ServicesStepper() {
               px-8
               py-2.5
               text-sm
+              font-medium
               text-white
               shadow-lg
               shadow-[#616CFA]/20
-              transition
+              transition-all
+              duration-300
               hover:scale-105
+              hover:shadow-[#616CFA]/30
             "
           >
             Next
