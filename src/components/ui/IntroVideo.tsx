@@ -8,37 +8,45 @@ interface IntroVideoProps {
 
 export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [started, setStarted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // 📱 Detect mobile screen
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
     checkMobile();
+
     window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
-  const handleStart = () => {
-    if (videoRef.current) {
+  const handleStart = async () => {
+    if (!videoRef.current || started) return;
+
+    try {
       videoRef.current.muted = false;
-      videoRef.current.play();
+
+      await videoRef.current.play();
+
       setStarted(true);
+    } catch (error) {
+      console.error("Unable to play intro video:", error);
     }
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black flex items-center justify-center cursor-pointer"
+      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center cursor-pointer"
       onClick={handleStart}
     >
-      {/* Tap text */}
       {!started && (
-        <div className="absolute z-50 text-white text-lg">
+        <div className="absolute z-50 text-white text-lg pointer-events-none">
           Tap anywhere to start
         </div>
       )}
@@ -47,11 +55,12 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         ref={videoRef}
         src={
           isMobile
-            ? "/videos/introvideomob.mp4"   // 📱 mobile video
-            : "/videos/IntroVideo.mp4"          // 💻 desktop video
+            ? "/videos/introvideomob.mp4"
+            : "/videos/IntroVideo.mp4"
         }
         playsInline
         muted
+        preload="auto"
         className="w-full h-full object-cover"
         onEnded={onFinish}
       />
