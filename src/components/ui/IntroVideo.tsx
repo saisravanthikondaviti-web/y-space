@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface IntroVideoProps {
   onFinish: () => void;
@@ -9,11 +9,24 @@ interface IntroVideoProps {
 export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 📱 Detect mobile screen
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleStart = () => {
     if (videoRef.current) {
-      videoRef.current.muted = false; // 🔊 enable sound
-      videoRef.current.play();        // ▶ start video
+      videoRef.current.muted = false;
+      videoRef.current.play();
       setStarted(true);
     }
   };
@@ -21,9 +34,9 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
   return (
     <div
       className="fixed inset-0 z-50 bg-black flex items-center justify-center cursor-pointer"
-      onClick={handleStart} // 👈 tap anywhere
+      onClick={handleStart}
     >
-      {/* Tap instruction (optional) */}
+      {/* Tap text */}
       {!started && (
         <div className="absolute z-50 text-white text-lg">
           Tap anywhere to start
@@ -32,7 +45,11 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
 
       <video
         ref={videoRef}
-        src="/videos/IntroVideo.mp4"
+        src={
+          isMobile
+            ? "/videos/introvideomob.mp4"   // 📱 mobile video
+            : "/videos/IntroVideo.mp4"          // 💻 desktop video
+        }
         playsInline
         muted
         className="w-full h-full object-cover"
