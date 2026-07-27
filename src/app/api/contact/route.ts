@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 
 
         to:
-          "saisravanthikondaviti@gmail.com",
+          "contact@vaispace.com",
 
 
         replyTo:
