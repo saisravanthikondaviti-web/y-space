@@ -17,73 +17,152 @@ export async function POST(req: Request) {
         },
         {
           status: 500,
-        }
+        },
       );
     }
 
-
     const resend = new Resend(apiKey);
-
 
     const data = await req.json();
 
-
-    console.log(
-      "CONTACT DATA:",
-      data
-    );
-
+    console.log("CONTACT DATA:", data);
 
     // Matching your contact form
-    const {
-      name,
-      email,
-      projectType,
-      message,
-    } = data;
-
-
+    const { name, email, projectType, message } = data;
 
     // ==========================
     // EMAIL TO VAISPACE
     // ==========================
 
-const adminResult = await resend.emails.send({
-  from: "VAISPACE <noreply@vaispace.com>",
-  to: "saisravanthikondaviti@gmail.com",
-  subject: "TEST RESEND TO GMAIL",
-  html: `
-    <h1>Resend Test</h1>
-    <p>This is a test email from Resend.</p>
-  `,
-});
+    const adminResult = await resend.emails.send({
+      from: "VAISPACE <noreply@vaispace.com>",
 
-console.log("ADMIN RESULT:", adminResult);
+      to: "contact@vaispace.com",
+
+      replyTo: email,
+
+      subject: `🚀 New VAISPACE Inquiry from ${name}`,
+
+      html: `
+
+<div style="
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f7ff;
+padding:30px;
+">
 
 
+<!-- Banner -->
+
+<div style="
+background:linear-gradient(
+135deg,
+#616CFA,
+#E46ECC
+);
+padding:35px;
+border-radius:18px;
+text-align:center;
+color:white;
+">
+
+
+<h1 style="
+margin:0;
+">
+VAISPACE
+</h1>
+
+
+<p>
+New Client Inquiry
+</p>
+
+
+</div>
+
+
+
+<!-- Client Details -->
+
+
+<div style="
+background:white;
+padding:30px;
+margin-top:25px;
+border-radius:18px;
+">
+
+
+<h2>
+Client Details
+</h2>
+
+
+<p>
+<strong>Name:</strong>
+${name}
+</p>
+
+
+<p>
+<strong>Email:</strong>
+${email}
+</p>
+
+
+<p>
+<strong>Project Type:</strong>
+${projectType}
+</p>
+
+
+<p>
+<strong>Project Details:</strong>
+</p>
+
+
+<p>
+${message}
+</p>
+
+
+</div>
+
+
+
+
+<div style="
+text-align:center;
+padding:20px;
+color:#777;
+font-size:13px;
+">
+
+© ${new Date().getFullYear()} VAISPACE
+
+</div>
+
+
+</div>
+
+`,
+    });
+
+    console.log("ADMIN RESULT:", adminResult);
 
     // ==========================
     // THANK YOU EMAIL TO USER
     // ==========================
 
+    const userResult = await resend.emails.send({
+      from: "VAISPACE <noreply@vaispace.com>",
 
-    const userResult =
-      await resend.emails.send({
+      to: email,
 
-        from:
-          "VAISPACE <noreply@vaispace.com>",
+      subject: "Thank you for contacting VAISPACE 🚀",
 
-
-        to:
-          email,
-
-
-        subject:
-          "Thank you for contacting VAISPACE 🚀",
-
-
-
-        html: `
+      html: `
 
 <div style="
 margin:0;
@@ -264,51 +343,33 @@ All rights reserved.
 </div>
 
 `,
-      });
+    });
 
-
-
-    console.log(
-      "User Result:",
-      userResult
-    );
-
-
-
+    console.log("User Result:", userResult);
 
     return NextResponse.json(
       {
-        success:true,
+        success: true,
 
         message:
-        "Thank you for contacting VAISPACE. We will get back to you shortly.",
+          "Thank you for contacting VAISPACE. We will get back to you shortly.",
       },
       {
-        status:200,
-      }
+        status: 200,
+      },
     );
-
-
-  } catch(error) {
-
-
-    console.error(
-      "Contact Route Error:",
-      error
-    );
-
+  } catch (error) {
+    console.error("Contact Route Error:", error);
 
     return NextResponse.json(
       {
-        success:false,
+        success: false,
 
-        message:
-        "Failed to send email.",
+        message: "Failed to send email.",
       },
       {
-        status:500,
-      }
+        status: 500,
+      },
     );
-
   }
 }
