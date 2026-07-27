@@ -48,10 +48,10 @@ export async function POST(req: Request) {
     // EMAIL TO VAISPACE
     // ==========================
 
-  const adminResult = await resend.emails.send({
+const adminResult = await resend.emails.send({
   from: "VAISPACE <noreply@vaispace.com>",
-  to: "contact@vaispace.com",
-  subject: "TEST RESEND TO HOSTINGER",
+  to: "saisravanthikondaviti@gmail.com",
+  subject: "TEST RESEND TO GMAIL",
   html: `
     <h1>Resend Test</h1>
     <p>This is a test email from Resend.</p>
@@ -59,8 +59,6 @@ export async function POST(req: Request) {
 });
 
 console.log("ADMIN RESULT:", adminResult);
-
-
 
 
 
