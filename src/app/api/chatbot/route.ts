@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const adminResult = await resend.emails.send({
       from: "VAISPACE <noreply@vaispace.com>",
 
-      to: "saisravanthikondaviti@gmail.com",
+      to: "contact@vaispace.com",
 
       replyTo: email,
 
@@ -337,7 +337,7 @@ margin:30px 0;
 ">
 
 
-<a href="https://vaispace.vercel.app"
+<a href="https://vaispace.com"
 style="
 background:#616CFA;
 color:white;
