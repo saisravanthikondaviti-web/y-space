@@ -48,137 +48,17 @@ export async function POST(req: Request) {
     // EMAIL TO VAISPACE
     // ==========================
 
-    const adminResult =
-      await resend.emails.send({
+  const adminResult = await resend.emails.send({
+  from: "VAISPACE <noreply@vaispace.com>",
+  to: "contact@vaispace.com",
+  subject: "TEST RESEND TO HOSTINGER",
+  html: `
+    <h1>Resend Test</h1>
+    <p>This is a test email from Resend.</p>
+  `,
+});
 
-        from:
-          "VAISPACE <noreply@vaispace.com>",
-
-
-        to:
-          "contact@vaispace.com",
-
-
-        replyTo:
-          email,
-
-
-        subject:
-          `🚀 New VAISPACE Inquiry from ${name}`,
-
-
-        html: `
-
-<div style="
-font-family:Arial,Helvetica,sans-serif;
-background:#f5f7ff;
-padding:30px;
-">
-
-
-<!-- Banner -->
-
-<div style="
-background:linear-gradient(
-135deg,
-#616CFA,
-#E46ECC
-);
-padding:35px;
-border-radius:18px;
-text-align:center;
-color:white;
-">
-
-
-<h1 style="
-margin:0;
-">
-VAISPACE
-</h1>
-
-
-<p>
-New Client Inquiry
-</p>
-
-
-</div>
-
-
-
-<!-- Client Details -->
-
-
-<div style="
-background:white;
-padding:30px;
-margin-top:25px;
-border-radius:18px;
-">
-
-
-<h2>
-Client Details
-</h2>
-
-
-<p>
-<strong>Name:</strong>
-${name}
-</p>
-
-
-<p>
-<strong>Email:</strong>
-${email}
-</p>
-
-
-<p>
-<strong>Project Type:</strong>
-${projectType}
-</p>
-
-
-<p>
-<strong>Project Details:</strong>
-</p>
-
-
-<p>
-${message}
-</p>
-
-
-</div>
-
-
-
-
-<div style="
-text-align:center;
-padding:20px;
-color:#777;
-font-size:13px;
-">
-
-© ${new Date().getFullYear()} VAISPACE
-
-</div>
-
-
-</div>
-
-`,
-      });
-
-
-
-    console.log(
-      "Admin Result:",
-      adminResult
-    );
+console.log("ADMIN RESULT:", adminResult);
 
 
 
