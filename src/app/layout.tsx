@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: "VAI SPACE | Creative Growth Organization",
   description:
     "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+
   keywords: [
     "Digital Marketing Agency",
     "Branding Agency",
@@ -26,14 +27,22 @@ export const metadata: Metadata = {
     "Performance Marketing",
     "VAI SPACE",
   ],
+
   authors: [{ name: "VAI SPACE" }],
+
+  // ✅ FIXED FAVICON (force refresh)
+  icons: {
+    icon: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+    apple: "/favicon.ico?v=2",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="en"
