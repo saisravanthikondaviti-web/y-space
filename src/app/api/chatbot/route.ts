@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const smtpHost = process.env.SMTP_HOST;
     const smtpPort = Number(process.env.SMTP_PORT || 465);
     const smtpUser = process.env.SMTP_USER;
-    const smtpPassword = process.env.SMTP_PASSWORD;
+    const smtpPassword = process.env.SMTP_PASS;
 
     // ==================================
     // CHECK SMTP CONFIGURATION
