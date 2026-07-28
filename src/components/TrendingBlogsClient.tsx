@@ -2,21 +2,26 @@
 
 import { useState } from "react";
 import BlogCard from "@/components/BlogCard";
+import type { Blog } from "@/types/blog";
+interface TrendingBlogsClientProps {
+  blogs: Blog[];
+}
 
 export default function TrendingBlogsClient({
   blogs,
-}: {
-  blogs: any[];
-}) {
+}: TrendingBlogsClientProps) {
   const [showTrending, setShowTrending] = useState(false);
 
-  if (!blogs.length) return null;
+  if (blogs.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-12">
       <button
-        onClick={() => setShowTrending(!showTrending)}
-        className="px-6 py-3 rounded-xl border border-white/10 hover:border-white/30 transition"
+        type="button"
+        onClick={() => setShowTrending((prev) => !prev)}
+        className="rounded-xl border border-white/10 px-6 py-3 transition hover:border-white/30"
       >
         {showTrending
           ? "Hide Trending Blogs"
@@ -25,11 +30,11 @@ export default function TrendingBlogsClient({
 
       {showTrending && (
         <div className="mt-8">
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="mb-6 text-3xl font-bold">
             Trending Blogs
           </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {blogs.map((blog) => (
               <BlogCard
                 key={blog.id}

@@ -1,37 +1,60 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { Bookmark } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-export default function SaveButton({ blogId }: { blogId: string }) {
+interface SaveButtonProps {
+  blogId: string;
+}
+
+export default function SaveButton({ blogId }: SaveButtonProps) {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkSaved();
-  }, []);
+    let ignore = false;
 
-  async function checkSaved() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const loadSavedStatus = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+        if (!user) {
+          if (!ignore) setLoading(false);
+          return;
+        }
 
-    const { data } = await supabase
-      .from("blog_saved")
-      .select("id")
-      .eq("blog_id", blogId)
-      .eq("user_id", user.id)
-      .maybeSingle();
+        const { data, error } = await supabase
+          .from("blog_saved")
+          .select("id")
+          .eq("blog_id", blogId)
+          .eq("user_id", user.id)
+          .maybeSingle();
 
-    setSaved(!!data);
-    setLoading(false);
-  }
+        if (error) {
+          console.error(error);
+        }
+
+        if (!ignore) {
+          setSaved(Boolean(data));
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+  loadSavedStatus();
+
+    return () => {
+      ignore = true;
+    };
+  }, [blogId]);
 
   async function toggleSave() {
     const {
@@ -40,28 +63,39 @@ export default function SaveButton({ blogId }: { blogId: string }) {
 
     if (!user) return;
 
-    if (saved) {
-      await supabase
-        .from("blog_saved")
-        .delete()
-        .eq("blog_id", blogId)
-        .eq("user_id", user.id);
+    try {
+      if (saved) {
+        const { error } = await supabase
+          .from("blog_saved")
+          .delete()
+          .eq("blog_id", blogId)
+          .eq("user_id", user.id);
 
-      setSaved(false);
-    } else {
-      await supabase.from("blog_saved").insert({
-        blog_id: blogId,
-        user_id: user.id,
-      });
+        if (error) throw error;
 
-      setSaved(true);
+        setSaved(false);
+      } else {
+        const { error } = await supabase.from("blog_saved").insert({
+          blog_id: blogId,
+          user_id: user.id,
+        });
+
+        if (error) throw error;
+
+        setSaved(true);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
-  if (loading) return null;
+  if (loading) {
+    return null;
+  }
 
   return (
     <button
+      type="button"
       onClick={toggleSave}
       className={`flex h-12 items-center justify-center gap-2 rounded-full border px-6 transition-all duration-300 ${
         saved
@@ -69,8 +103,13 @@ export default function SaveButton({ blogId }: { blogId: string }) {
           : "border-white/20 bg-transparent text-white hover:bg-white/10"
       }`}
     >
-      <Bookmark size={18} fill={saved ? "currentColor" : "none"} />
-      <span className="font-medium">{saved ? "Saved" : "Save"}</span>
+      <Bookmark
+        size={18}
+        fill={saved ? "currentColor" : "none"}
+      />
+      <span className="font-medium">
+        {saved ? "Saved" : "Save"}
+      </span>
     </button>
   );
 }

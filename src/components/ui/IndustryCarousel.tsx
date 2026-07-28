@@ -16,7 +16,9 @@ interface Props {
   industries: Industry[];
 }
 
-export default function IndustryCarousel({ industries }: Props) {
+export default function IndustryCarousel({
+  industries,
+}: Props) {
   const autoplay = Autoplay({
     delay: 2000,
     stopOnInteraction: false,
@@ -42,30 +44,50 @@ export default function IndustryCarousel({ industries }: Props) {
     [emblaApi],
   );
 
-  const onSelect = useCallback(() => {
+  const updateSelectedIndex = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+
+    setSelectedIndex(
+      emblaApi.selectedScrollSnap(),
+    );
   }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
 
-    onSelect();
+    const frame = requestAnimationFrame(() => {
+      updateSelectedIndex();
+    });
 
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
+    emblaApi.on(
+      "select",
+      updateSelectedIndex,
+    );
+
+    emblaApi.on(
+      "reInit",
+      updateSelectedIndex,
+    );
 
     return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
+      cancelAnimationFrame(frame);
+
+      emblaApi.off(
+        "select",
+        updateSelectedIndex,
+      );
+
+      emblaApi.off(
+        "reInit",
+        updateSelectedIndex,
+      );
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, updateSelectedIndex]);
 
   return (
     <div className="relative mt-10">
-      {/* Carousel Wrapper */}
       <div className="relative">
-        {/* Left Fade */}
+
         <div
           className="
             pointer-events-none
@@ -81,7 +103,6 @@ export default function IndustryCarousel({ industries }: Props) {
           "
         />
 
-        {/* Right Fade */}
         <div
           className="
             pointer-events-none
@@ -97,8 +118,10 @@ export default function IndustryCarousel({ industries }: Props) {
           "
         />
 
-        {/* Embla */}
-        <div ref={emblaRef} className="overflow-hidden px-2">
+        <div
+          ref={emblaRef}
+          className="overflow-hidden px-2"
+        >
           <div className="flex">
             {industries.map((industry, index) => (
               <div
@@ -132,41 +155,60 @@ export default function IndustryCarousel({ industries }: Props) {
         </div>
       </div>
 
-      {/* Progress */}
+
       <div className="mt-12 flex justify-center">
-        {/* Mobile: 3 dots */}
+
         <div className="flex items-center gap-2 sm:hidden">
-          {industries.slice(0, 3).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => scrollTo(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              className="flex items-center justify-center p-1"
-            >
-              <span
-                className={`
-                  block
-                  rounded-full
-                  transition-all
-                  duration-500
-                  ${
-                    selectedIndex === index
-                      ? "h-2.5 w-2.5 bg-gradient-to-r from-[#616CFA] to-[#E46ECC] shadow-[0_0_10px_rgba(97,108,250,0.5)]"
-                      : "h-2 w-2 bg-white/25"
-                  }
-                `}
-              />
-            </button>
-          ))}
+          {industries
+            .slice(0, 3)
+            .map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  p-1
+                "
+              >
+                <span
+                  className={`
+                    block
+                    rounded-full
+                    transition-all
+                    duration-500
+                    ${
+                      selectedIndex === index
+                        ? "h-2.5 w-2.5 bg-gradient-to-r from-[#616CFA] to-[#E46ECC] shadow-[0_0_10px_rgba(97,108,250,0.5)]"
+                        : "h-2 w-2 bg-white/25"
+                    }
+                  `}
+                />
+              </button>
+            ))}
         </div>
 
-        {/* Tablet/Desktop: Progress bars */}
-        <div className="hidden items-center justify-center gap-3 sm:flex">
+
+        <div
+          className="
+            hidden
+            items-center
+            justify-center
+            gap-3
+            sm:flex
+          "
+        >
           {industries.map((_, index) => (
             <button
               key={index}
               onClick={() => scrollTo(index)}
-              className="group flex items-center"
+              className="
+                group
+                flex
+                items-center
+              "
               aria-label={`Go to slide ${index + 1}`}
             >
               <div
@@ -185,6 +227,7 @@ export default function IndustryCarousel({ industries }: Props) {
             </button>
           ))}
         </div>
+
       </div>
     </div>
   );

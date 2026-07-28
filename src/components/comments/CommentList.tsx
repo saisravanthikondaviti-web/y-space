@@ -19,27 +19,45 @@ export default function CommentList({
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function loadComments() {
-    try {
-      setLoading(true);
-
-      const data = await getComments(blogId);
-
-      setComments(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    let mounted = true;
+
+    const loadComments = async () => {
+      try {
+        const data = await getComments(blogId);
+
+        if (mounted) {
+          setComments(data);
+        }
+      } catch (error) {
+        console.error("Failed to load comments:", error);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadComments();
+
+    return () => {
+      mounted = false;
+    };
   }, [blogId, refreshKey]);
 
   if (loading) {
     return (
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-center backdrop-blur-xl">
+      <div
+        className="
+          rounded-3xl
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-8
+          text-center
+          backdrop-blur-xl
+        "
+      >
         <p className="text-white/60">
           Loading comments...
         </p>
@@ -49,8 +67,30 @@ export default function CommentList({
 
   if (comments.length === 0) {
     return (
-      <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-10 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.05]">
+      <div
+        className="
+          rounded-3xl
+          border
+          border-dashed
+          border-white/10
+          bg-white/[0.02]
+          p-10
+          text-center
+        "
+      >
+        <div
+          className="
+            mx-auto
+            mb-4
+            flex
+            h-16
+            w-16
+            items-center
+            justify-center
+            rounded-full
+            bg-white/[0.05]
+          "
+        >
           <MessageCircle className="h-8 w-8 text-white/40" />
         </div>
 

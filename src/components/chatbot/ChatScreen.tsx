@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import ChatHeader from "./ChatHeader";
 import MessageBubble from "./MessageBubble";
@@ -32,99 +37,119 @@ export default function ChatScreen({ onClose }: Props) {
     projectDetails: "",
   });
 
+  const askQuestion = useCallback((index: number) => {
+    setTyping(true);
+
+    const timer = window.setTimeout(() => {
+      const question = conversation[index];
+
+      if (!question) return;
+
+      setTyping(false);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: "bot",
+          content: question.question,
+          options: question.options,
+        },
+      ]);
+    }, 900);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      askQuestion(0);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [askQuestion]);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [messages, typing]);
 
-  useEffect(() => {
-    askQuestion(0);
-  }, []);
+  const handleAnswer = useCallback(
+    (answer: string) => {
+      const current = conversation[step];
 
-  const askQuestion = (index: number) => {
-    setTyping(true);
-
-    setTimeout(() => {
-      setTyping(false);
+      if (!current) return;
 
       setMessages((prev) => [
         ...prev,
         {
           id: crypto.randomUUID(),
-          role: "bot",
-          content: conversation[index].question,
-          options: conversation[index].options,
+          role: "user",
+          content: answer,
         },
       ]);
-    }, 900);
-  };
 
-  const handleAnswer = (answer: string) => {
-    const current = conversation[step];
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        role: "user",
-        content: answer,
-      },
-    ]);
-
-    setLead((prev) => ({
-      ...prev,
-      [current.key]: answer,
-    }));
-
-    const nextStep = step + 1;
-
-    if (nextStep >= conversation.length) {
-      const finalLead = {
+      const updatedLead = {
         ...lead,
         [current.key]: answer,
       };
 
-      fetch("/api/chatbot", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(finalLead),
-      }).catch(console.error);
+      setLead(updatedLead);
 
-      setTimeout(() => {
+      const nextStep = step + 1;
+
+      if (nextStep >= conversation.length) {
+        fetch("/api/chatbot", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedLead),
+        }).catch(console.error);
+
+        window.setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: crypto.randomUUID(),
+              role: "bot",
+              content:
+                "🎉 Thank you!\n\nWe've received your request.\n\nOur team will contact you shortly.",
+            },
+          ]);
+        }, 800);
+
+        return;
+      }
+
+      setStep(nextStep);
+      setTyping(true);
+
+      window.setTimeout(() => {
+        const nextQuestion = conversation[nextStep];
+
+        if (!nextQuestion) return;
+
+        setTyping(false);
+
         setMessages((prev) => [
           ...prev,
           {
             id: crypto.randomUUID(),
             role: "bot",
-            content:
-              "🎉 Thank you!\n\nWe've received your request.\n\nOur team will contact you shortly.",
+            content: nextQuestion.question,
+            options: nextQuestion.options,
           },
         ]);
-      }, 800);
-
-      return;
-    }
-
-    setStep(nextStep);
-    setTyping(true);
-
-    setTimeout(() => {
-      setTyping(false);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          role: "bot",
-          content: conversation[nextStep].question,
-          options: conversation[nextStep].options,
-        },
-      ]);
-    }, 900);
-  };
+      }, 900);
+    },
+    [lead, step]
+  );
 
   const currentQuestion = conversation[step];
 
@@ -136,21 +161,16 @@ export default function ChatScreen({ onClose }: Props) {
         min-h-0
         flex-col
         overflow-hidden
-
         rounded-2xl
-        sm:rounded-3xl
-
         border
         border-white/10
-
         bg-[#09090B]/90
         backdrop-blur-xl
+        sm:rounded-3xl
       "
     >
-      {/* Header */}
       <ChatHeader onClose={onClose} />
 
-      {/* Messages */}
       <div
         className="
           chat-scroll
@@ -158,18 +178,15 @@ export default function ChatScreen({ onClose }: Props) {
           min-h-0
           flex-1
           overflow-y-auto
-
           px-4
           py-5
-
           sm:px-5
           sm:py-6
-
           lg:px-6
         "
       >
-        {/* Background Glow */}
         <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-violet-600/10 blur-[120px]" />
+
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-[120px]" />
 
         <div className="relative space-y-4 sm:space-y-5">
@@ -198,23 +215,23 @@ export default function ChatScreen({ onClose }: Props) {
         </div>
       </div>
 
-      {/* Input */}
-      {step < conversation.length && !currentQuestion?.options && (
-        <div
-          className="
-            shrink-0
-            border-t
-            border-white/10
-            bg-black/20
-            backdrop-blur-md
-          "
-        >
-          <MessageInput
-            disabled={typing}
-            onSend={handleAnswer}
-          />
-        </div>
-      )}
+      {step < conversation.length &&
+        !currentQuestion?.options && (
+          <div
+            className="
+              shrink-0
+              border-t
+              border-white/10
+              bg-black/20
+              backdrop-blur-md
+            "
+          >
+            <MessageInput
+              disabled={typing}
+              onSend={handleAnswer}
+            />
+          </div>
+        )}
     </div>
   );
 }

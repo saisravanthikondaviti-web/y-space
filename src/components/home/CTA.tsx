@@ -1,6 +1,6 @@
-import FadeUp from "../ui/FadeUp";
 import Link from "next/link";
 
+import FadeUp from "../ui/FadeUp";
 
 export default function CTA() {
   return (
@@ -11,36 +11,44 @@ export default function CTA() {
     >
       <div className="mx-auto max-w-3xl px-6">
         <FadeUp>
-          <h2 className="text-4xl md:text-5xl xl:text-6xl font-bold">
+          <h2 className="text-4xl font-bold md:text-5xl xl:text-6xl">
             Ready To Scale?
           </h2>
         </FadeUp>
 
         <p className="mx-auto mt-6 max-w-xl text-zinc-400">
-          Let's build something extraordinary.
+          Let&apos;s build something extraordinary.
         </p>
 
-        <Link href="/contact">
-  <button
-    className="
-      mt-10
-      rounded-full
-      bg-gradient-to-r
-      from-[#616CFA]
-      to-[#E46ECC]
-      px-8
-      py-4
-      font-medium
-      text-white
-      transition-all
-      duration-300
-      hover:scale-105
-      hover:shadow-[0_0_35px_rgba(97,108,250,0.45)]
-    "
-  >
-    Schedule Consultation
-  </button>
-</Link>
+        <Link
+          href="/contact"
+          className="
+            mt-10
+            inline-flex
+            items-center
+            justify-center
+
+            rounded-full
+
+            bg-gradient-to-r
+            from-[#616CFA]
+            to-[#E46ECC]
+
+            px-8
+            py-4
+
+            font-medium
+            text-white
+
+            transition-all
+            duration-300
+
+            hover:scale-105
+            hover:shadow-[0_0_35px_rgba(97,108,250,0.45)]
+          "
+        >
+          Schedule Consultation
+        </Link>
       </div>
     </section>
   );

@@ -4,68 +4,106 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
+interface Blog {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+}
+
+interface Interaction {
+  blog_id: string;
+}
+
 export default function RecentlyViewed() {
-  const [blogs, setBlogs] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const loadRecentlyViewed = async () => {
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
+
+        if (userError || !user) {
+          if (isMounted) {
+            setLoading(false);
+          }
+          return;
+        }
+
+        const { data: interactions, error: interactionsError } = await supabase
+          .from("user_blog_interactions")
+          .select("blog_id")
+          .eq("user_id", user.id)
+          .eq("interaction_type", "view")
+          .order("created_at", { ascending: false });
+
+        if (interactionsError || !interactions?.length) {
+          if (isMounted) {
+            setLoading(false);
+          }
+          return;
+        }
+
+        // Remove duplicates while preserving newest first
+        const blogIds = [
+          ...new Set(
+            (interactions as Interaction[]).map(
+              (interaction) => interaction.blog_id
+            )
+          ),
+        ].slice(0, 5);
+
+        const { data: blogsData, error: blogsError } = await supabase
+          .from("blogs")
+          .select("id, slug, title, excerpt")
+          .in("id", blogIds);
+
+        if (blogsError || !blogsData) {
+          if (isMounted) {
+            setBlogs([]);
+            setLoading(false);
+          }
+          return;
+        }
+
+        // Preserve original recently viewed order
+        const orderedBlogs = blogIds
+          .map((id) => blogsData.find((blog) => blog.id === id))
+          .filter(Boolean) as Blog[];
+
+        if (isMounted) {
+          setBlogs(orderedBlogs);
+        }
+      } catch (error) {
+        console.error("RecentlyViewed Error:", error);
+
+        if (isMounted) {
+          setBlogs([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadRecentlyViewed();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
-
-  async function loadRecentlyViewed() {
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      console.log("User:", user);
-
-      if (!user) {
-        console.log("No logged in user found");
-        setLoading(false);
-        return;
-      }
-
-      const { data: interactions, error: interactionsError } = await supabase
-        .from("user_blog_interactions")
-        .select("blog_id")
-        .eq("user_id", user.id)
-        .eq("interaction_type", "view")
-        .order("created_at", { ascending: false })
-        .limit(5);
-
-      console.log("Interactions:", interactions);
-      console.log("Interactions Error:", interactionsError);
-
-      const blogIds = interactions?.map((item) => item.blog_id) || [];
-
-      console.log("Blog IDs:", blogIds);
-
-      if (blogIds.length === 0) {
-        setLoading(false);
-        return;
-      }
-
-      const { data: blogsData, error: blogsError } = await supabase
-        .from("blogs")
-        .select("*")
-        .in("id", blogIds);
-
-      console.log("Blogs:", blogsData);
-      console.log("Blogs Error:", blogsError);
-
-      setBlogs(blogsData || []);
-    } catch (error) {
-      console.error("RecentlyViewed Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   if (loading) {
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold mb-6">Recently Viewed</h2>
+        <h2 className="mb-6 text-2xl font-bold">Recently Viewed</h2>
         <p className="text-gray-500">Loading...</p>
       </div>
     );
@@ -74,7 +112,7 @@ export default function RecentlyViewed() {
   if (blogs.length === 0) {
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold mb-6">Recently Viewed</h2>
+        <h2 className="mb-6 text-2xl font-bold">Recently Viewed</h2>
         <p className="text-gray-500">No recently viewed blogs yet.</p>
       </div>
     );
@@ -82,22 +120,22 @@ export default function RecentlyViewed() {
 
   return (
     <div className="mt-16">
-      <h2 className="text-2xl font-bold mb-6">Recently Viewed</h2>
+      <h2 className="mb-6 text-2xl font-bold">Recently Viewed</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {blogs.map((blog) => (
           <Link key={blog.id} href={`/blogs/${blog.slug}`}>
-            <div className="h-64 rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-white/20 hover:shadow-lg transition flex flex-col">
-              <h3 className="text-xl font-semibold line-clamp-2">
+            <div className="flex h-64 flex-col rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-white/20 hover:shadow-lg">
+              <h3 className="line-clamp-2 text-xl font-semibold">
                 {blog.title}
               </h3>
 
-              <p className="mt-3 text-sm text-gray-400 line-clamp-3 flex-1">
-                {blog.excerpt}
+              <p className="mt-3 flex-1 line-clamp-3 text-sm text-gray-400">
+                {blog.excerpt ?? "No description available."}
               </p>
 
               <div className="mt-4">
-                <span className="text-sm text-violet-400 font-medium">
+                <span className="text-sm font-medium text-violet-400">
                   Read More →
                 </span>
               </div>

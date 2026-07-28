@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,7 +51,9 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -71,10 +73,8 @@ export default function Navbar() {
           max-w-7xl
           items-center
           justify-between
-
           px-5
           py-1.5
-
           sm:px-6
           md:py-2
         "
@@ -93,14 +93,13 @@ export default function Navbar() {
             height={50}
             priority
             className="
-    w-35
-    h-auto
-
-    sm:w-35
-    md:w-40
-    lg:w-48
-    xl:w-52
-  "
+              h-auto
+              w-35
+              sm:w-35
+              md:w-40
+              lg:w-48
+              xl:w-52
+            "
           />
         </Link>
 
@@ -109,12 +108,12 @@ export default function Navbar() {
         <ul
           className="
             hidden
-            md:flex
             items-center
             gap-8
             text-sm
             font-[Lexend]
             text-gray-200
+            md:flex
           "
         >
           {navLinks.map((link) => (
@@ -122,10 +121,7 @@ export default function Navbar() {
               <Link
                 href={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="
-                  transition
-                  hover:text-white
-                "
+                className="transition hover:text-white"
               >
                 {link.label}
               </Link>
@@ -140,7 +136,6 @@ export default function Navbar() {
           onClick={() => handleNavClick("/contact")}
           className="
             hidden
-            md:inline-flex
             rounded-full
             bg-gradient-to-r
             from-indigo-500
@@ -153,9 +148,10 @@ export default function Navbar() {
             transition-all
             duration-300
             hover:scale-105
+            md:inline-flex
           "
         >
-          Let's Talk
+          Let&apos;s Talk
         </Link>
 
         {/* Mobile Menu Button */}
@@ -166,10 +162,9 @@ export default function Navbar() {
             items-center
             justify-center
             text-white
-
             md:hidden
           "
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((prev) => !prev)}
           aria-label="Toggle Menu"
         >
           {menuOpen ? (
@@ -184,11 +179,10 @@ export default function Navbar() {
 
       <div
         className={`
-          md:hidden
           overflow-hidden
           transition-all
           duration-300
-
+          md:hidden
           ${menuOpen ? "max-h-[450px]" : "max-h-0"}
         `}
       >
@@ -216,12 +210,9 @@ export default function Navbar() {
                 className="
                   border-b
                   border-white/5
-
                   py-3
-
                   text-sm
                   text-white
-
                   transition
                   hover:text-indigo-400
                 "
@@ -239,16 +230,14 @@ export default function Navbar() {
                 bg-gradient-to-r
                 from-indigo-500
                 to-fuchsia-500
-
                 py-2.5
-
                 text-center
                 text-sm
                 font-semibold
                 text-white
               "
             >
-              Let's Talk
+              Let&apos;s Talk
             </Link>
           </div>
         </div>

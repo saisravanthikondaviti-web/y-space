@@ -116,14 +116,13 @@ ${message}`;
             </h2>
 
             <p className="mt-6 text-white/50 leading-relaxed max-w-md">
-              Whether you're launching a new business, repositioning an existing
-              brand, or looking to strengthen your digital presence, we'd love
-              to hear your story.
+              Whether you&apos;re launching a new business, repositioning an
+              existing brand, or looking to strengthen your digital presence,
+              we&apos;d love to hear your story.
             </p>
 
             <p className="mt-5 text-white/60 font-medium">
-              Every successful brand starts with clarity. Let’s build yours.
-            </p>
+             Every successful brand starts with clarity. Let&rsquo;s build yours. </p>
 
             <div className="mt-10">
               <p className="text-white/40 uppercase text-xs tracking-widest">

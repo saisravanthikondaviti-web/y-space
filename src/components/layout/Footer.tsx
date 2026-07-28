@@ -1,43 +1,46 @@
 "use client";
 
+import Image from "next/image";
 import SocialIcon from "./SocialIcon";
 
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 py-10">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:px-8 md:grid-cols-3">
 
-        {/* ================= LEFT ================= */}
+        {/* LEFT */}
         <div>
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src="/images/yspacelogo.png"
               alt="VAI SPACE"
+              width={36}
+              height={36}
               className="h-9 w-9 object-contain"
             />
           </div>
 
-          <p className="mt-5 text-zinc-400 leading-8 text-base">
+          <p className="mt-5 text-base leading-8 text-zinc-400">
             Where Strategy Meets Storytelling.
             <br />
-            We don't help brands make noise.
+            We don&apos;t help brands make noise.
             <br />
             We help them stand out.
             <br />
-            <span className="text-white font-medium">
+            <span className="font-medium text-white">
               Build Your Space. Own Your Market.
             </span>
           </p>
         </div>
 
 
-        {/* ================= CENTER ================= */}
+        {/* CENTER */}
         <div>
-          <h4 className="uppercase tracking-[0.25em] text-white/60 text-sm">
+          <h4 className="text-sm uppercase tracking-[0.25em] text-white/60">
             Contact Us
           </h4>
 
-          <div className="mt-5 space-y-3 text-zinc-400 text-base">
+          <div className="mt-5 space-y-3 text-base text-zinc-400">
             <p>
               Phone: +91 99597 49993
             </p>
@@ -53,10 +56,10 @@ export default function Footer() {
         </div>
 
 
-        {/* ================= RIGHT ================= */}
+        {/* RIGHT */}
         <div>
-          <p className="text-zinc-500 text-base leading-7">
-            Let's build something meaningful together.
+          <p className="text-base leading-7 text-zinc-500">
+            Let&apos;s build something meaningful together.
           </p>
 
           <div className="mt-6 flex items-center gap-6">
@@ -75,7 +78,7 @@ export default function Footer() {
             />
 
             <SocialIcon
-              href="https://www.linkedin.com/company/vaispace/ "
+              href="https://www.linkedin.com/company/vaispace/"
               normal="/images/footer/linkedin.png"
               hover="/images/footer/flinkedin.png"
               alt="LinkedIn"
@@ -93,9 +96,9 @@ export default function Footer() {
       </div>
 
 
-      {/* ================= COPYRIGHT ================= */}
+      {/* COPYRIGHT */}
       <div className="mt-8 border-t border-white/10">
-        <div className="mx-auto max-w-7xl py-3 flex justify-center">
+        <div className="mx-auto flex max-w-7xl justify-center py-3">
           <p className="text-center text-sm text-zinc-500">
             © {new Date().getFullYear()} VAI SPACE. All rights reserved.
           </p>

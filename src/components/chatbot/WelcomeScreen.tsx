@@ -23,14 +23,37 @@ export default function WelcomeScreen({ onStart }: Props) {
         overflow-hidden
         bg-[#09090B]
         px-5
+        text-center
         sm:px-6
         md:px-8
-        text-center
       "
     >
       {/* Background Glow */}
-      <div className="absolute -top-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-violet-600/20 blur-[100px]" />
-      <div className="absolute bottom-0 h-44 w-44 rounded-full bg-fuchsia-600/20 blur-[100px]" />
+      <div
+        className="
+          absolute
+          -top-20
+          left-1/2
+          h-56
+          w-56
+          -translate-x-1/2
+          rounded-full
+          bg-violet-600/20
+          blur-[100px]
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-0
+          h-44
+          w-44
+          rounded-full
+          bg-fuchsia-600/20
+          blur-[100px]
+        "
+      />
 
       <div className="relative z-10">
         {/* Logo */}
@@ -38,17 +61,9 @@ export default function WelcomeScreen({ onStart }: Props) {
           className="
             mx-auto
             mb-6
-
             flex
             h-16
             w-16
-
-            sm:h-18
-            sm:w-18
-
-            md:h-20
-            md:w-20
-
             items-center
             justify-center
             rounded-full
@@ -57,6 +72,12 @@ export default function WelcomeScreen({ onStart }: Props) {
             to-fuchsia-500
             shadow-xl
             shadow-violet-600/30
+
+            sm:h-18
+            sm:w-18
+
+            md:h-20
+            md:w-20
           "
         >
           <Sparkles
@@ -69,12 +90,12 @@ export default function WelcomeScreen({ onStart }: Props) {
         <h1
           className="
             mb-3
-
             text-2xl
             font-bold
             text-white
 
             sm:text-[28px]
+
             md:text-3xl
           "
         >
@@ -86,7 +107,6 @@ export default function WelcomeScreen({ onStart }: Props) {
           className="
             mx-auto
             max-w-[280px]
-
             text-sm
             leading-6
             text-zinc-400
@@ -99,9 +119,10 @@ export default function WelcomeScreen({ onStart }: Props) {
             md:leading-7
           "
         >
-          I'm your AI assistant.
+          I&apos;m your AI assistant.
           <br />
-          Let's understand your project and help you find the perfect digital solution.
+          Let&apos;s understand your project and help you find the perfect
+          digital solution.
         </p>
 
         {/* Button */}
@@ -109,29 +130,21 @@ export default function WelcomeScreen({ onStart }: Props) {
           onClick={onStart}
           className="
             group
-
             mt-8
-
             inline-flex
             items-center
             gap-2
-
             rounded-full
-
             bg-gradient-to-r
             from-violet-600
             to-fuchsia-500
-
             px-5
             py-3
-
             text-sm
             font-medium
             text-white
-
             transition-all
             duration-300
-
             hover:scale-105
             hover:shadow-lg
             hover:shadow-violet-600/40
@@ -141,7 +154,7 @@ export default function WelcomeScreen({ onStart }: Props) {
             sm:text-base
           "
         >
-          Let's Start
+          Let&apos;s Start
 
           <ArrowRight
             size={16}
