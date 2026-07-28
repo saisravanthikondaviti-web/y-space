@@ -202,26 +202,26 @@ export default function AboutHero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
           className="
-            mx-auto
-            mt-6
+    mx-auto
+    mt-6
 
-            max-w-xs
-            sm:mt-8
-            sm:max-w-xl
-            md:max-w-2xl
+    max-w-xs
+    sm:mt-8
+    sm:max-w-xl
+    md:max-w-2xl
 
-            px-2
+    px-2
 
-            text-sm
-            sm:text-base
-            md:text-lg
+    text-sm
+    sm:text-base
+    md:text-lg
 
-            leading-relaxed
-            text-zinc-400
-          "
+    leading-relaxed
+    text-zinc-400
+  "
         >
-          Great brands aren't created by chance. They're built with clarity,
-          consistency, and intention.
+          Great brands aren&apos;t created by chance. They&apos;re built with
+          clarity, consistency, and intention.
         </motion.p>
       </div>
     </section>

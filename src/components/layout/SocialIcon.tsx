@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 interface Props {
   href: string;
@@ -24,11 +25,18 @@ export default function SocialIcon({
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+      className="
+        transition-all
+        duration-300
+        hover:scale-110
+        hover:-translate-y-1
+      "
     >
-      <img
+      <Image
         src={hovered ? hover : normal}
         alt={alt}
+        width={32}
+        height={32}
         className="h-8 w-8 object-contain"
       />
     </a>

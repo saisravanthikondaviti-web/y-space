@@ -5,55 +5,33 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { services } from "./data";
 
-export default function Services() {
-  const router = useRouter();
 
-  const [page, setPage] = useState(0);
-  const [mobileIndex, setMobileIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+interface Service {
+  title: string;
+  description: string;
+  image: string;
+  slug: string;
+}
 
-  const cardsPerPage = 4;
 
-  const totalPages = Math.ceil(services.length / cardsPerPage);
+interface ServiceCardProps {
+  service: Service;
+  index: number;
+  onClick: () => void;
+}
 
-  const visibleServices = services.slice(
-    page * cardsPerPage,
-    page * cardsPerPage + cardsPerPage,
-  );
 
-  // Mobile autoplay
-
-  useEffect(() => {
-    if (paused) return;
-
-    const timer = setInterval(() => {
-      setMobileIndex((prev) => (prev === services.length - 1 ? 0 : prev + 1));
-    }, 3500);
-
-    return () => clearInterval(timer);
-  }, [paused]);
-
-  const previousPage = () => {
-    setPage(page === 0 ? totalPages - 1 : page - 1);
-  };
-
-  const nextPage = () => {
-    setPage(page === totalPages - 1 ? 0 : page + 1);
-  };
-
-  const previousMobile = () => {
-    setMobileIndex(mobileIndex === 0 ? services.length - 1 : mobileIndex - 1);
-  };
-
-  const nextMobile = () => {
-    setMobileIndex(mobileIndex === services.length - 1 ? 0 : mobileIndex + 1);
-  };
-
-  const ServiceCard = ({ service, index }: any) => (
+function ServiceCard({
+  service,
+  index,
+  onClick,
+}: ServiceCardProps) {
+  return (
     <motion.div
-      onClick={() => router.push(`/services?service=${service.slug}`)}
+      onClick={onClick}
       whileHover={{
         y: -8,
       }}
@@ -77,9 +55,8 @@ export default function Services() {
         hover:bg-white/[0.06]
       "
     >
-      {/* Image */}
-
       <div className="flex items-start justify-between">
+
         <div
           className="
             h-1
@@ -105,11 +82,12 @@ export default function Services() {
             group-hover:scale-110
           "
         />
+
       </div>
 
-      {/* Content */}
 
       <div className="mt-8">
+
         <h3
           className="
             text-lg
@@ -120,6 +98,7 @@ export default function Services() {
         >
           {service.title}
         </h3>
+
 
         <p
           className="
@@ -133,9 +112,9 @@ export default function Services() {
         >
           {service.description}
         </p>
+
       </div>
 
-      {/* Number */}
 
       <span
         className="
@@ -150,7 +129,6 @@ export default function Services() {
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      {/* Glow */}
 
       <div
         className="
@@ -168,274 +146,263 @@ export default function Services() {
           group-hover:opacity-100
         "
       />
+
     </motion.div>
   );
+}
+
+
+
+export default function Services() {
+
+  const router = useRouter();
+
+
+  const [page, setPage] = useState(0);
+  const [mobileIndex, setMobileIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+
+  const cardsPerPage = 4;
+
+  const totalPages = Math.ceil(
+    services.length / cardsPerPage,
+  );
+
+
+  const visibleServices = services.slice(
+    page * cardsPerPage,
+    page * cardsPerPage + cardsPerPage,
+  );
+
+
+  useEffect(() => {
+
+    if (paused) return;
+
+
+    const timer = setInterval(() => {
+
+      setMobileIndex((prev) =>
+        prev === services.length - 1
+          ? 0
+          : prev + 1,
+      );
+
+    }, 3500);
+
+
+    return () => clearInterval(timer);
+
+  }, [paused]);
+
+
+  const previousPage = () => {
+    setPage((prev) =>
+      prev === 0
+        ? totalPages - 1
+        : prev - 1,
+    );
+  };
+
+
+  const nextPage = () => {
+    setPage((prev) =>
+      prev === totalPages - 1
+        ? 0
+        : prev + 1,
+    );
+  };
+
+
+  const previousMobile = () => {
+    setMobileIndex((prev) =>
+      prev === 0
+        ? services.length - 1
+        : prev - 1,
+    );
+  };
+
+
+  const nextMobile = () => {
+    setMobileIndex((prev) =>
+      prev === services.length - 1
+        ? 0
+        : prev + 1,
+    );
+  };
+
 
   return (
     <section
       data-scroll-section
       id="services"
       className="
-    min-h-screen
-    flex
-    items-center
-    px-5
-    py-16
-    sm:px-8
-    sm:py-20
-    md:px-16
-    md:py-24
-  "
+        flex
+        min-h-screen
+        items-center
+        px-5
+        py-16
+        sm:px-8
+        md:px-16
+      "
     >
-      {/* Heading */}
 
-      <div
-        className="
-w-full
-"
-      >
+      <div className="w-full">
+
+
         <div
           className="
-mx-auto
-mb-10
-max-w-3xl
-text-center
-sm:mb-14
-"
+            mx-auto
+            mb-10
+            max-w-3xl
+            text-center
+          "
         >
+
           <h2
             className="
-text-3xl
-font-bold
-text-white
-sm:text-4xl
-lg:text-5xl
-"
+              text-3xl
+              font-bold
+              text-white
+              sm:text-4xl
+              lg:text-5xl
+            "
           >
             Services{" "}
             <span
               className="
-bg-gradient-to-r
-from-[#616CFA]
-to-[#E46ECC]
-bg-clip-text
-text-transparent
-"
+                bg-gradient-to-r
+                from-[#616CFA]
+                to-[#E46ECC]
+                bg-clip-text
+                text-transparent
+              "
             >
               we offer...
             </span>
+
           </h2>
 
-          <div
-            className="
-mx-auto
-mt-6
-h-px
-w-48
-bg-gradient-to-r
-from-transparent
-via-[#616CFA]
-to-transparent
-"
-          />
         </div>
+
+
 
         {/* MOBILE */}
 
         <div
-          className="
-md:hidden
-min-h-[330px]
-"
+          className="md:hidden"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div
-            className="
-w-full
-overflow-hidden
-"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={mobileIndex}
-                initial={{
-                  x: "100%",
-                  opacity: 0,
-                }}
-                animate={{
-                  x: 0,
-                  opacity: 1,
-                }}
-                exit={{
-                  x: "-100%",
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.35,
-                  ease: "easeInOut",
-                }}
-              >
-                <ServiceCard
-                  service={services[mobileIndex]}
-                  index={mobileIndex}
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
 
-          <div
-            className="
-mt-6
-flex
-justify-center
-gap-5
-"
-          >
-            <button
-              onClick={previousMobile}
-              className="
-flex
-h-10
-w-10
-items-center
-justify-center
-rounded-full
-border
-border-white/10
-bg-white/5
-text-white
-"
+          <AnimatePresence mode="wait">
+
+            <motion.div
+              key={mobileIndex}
+              initial={{
+                x: "100%",
+                opacity: 0,
+              }}
+              animate={{
+                x: 0,
+                opacity: 1,
+              }}
+              exit={{
+                x: "-100%",
+                opacity: 0,
+              }}
             >
-              <ChevronLeft size={18} />
+
+              <ServiceCard
+                service={services[mobileIndex]}
+                index={mobileIndex}
+                onClick={() =>
+                  router.push(
+                    `/services?service=${services[mobileIndex].slug}`,
+                  )
+                }
+              />
+
+            </motion.div>
+
+          </AnimatePresence>
+
+
+          <div className="mt-6 flex justify-center gap-5">
+
+            <button onClick={previousMobile}>
+              <ChevronLeft />
             </button>
 
-            <button
-              onClick={nextMobile}
-              className="
-flex
-h-10
-w-10
-items-center
-justify-center
-rounded-full
-bg-gradient-to-r
-from-[#616CFA]
-to-[#E46ECC]
-text-white
-"
-            >
-              <ChevronRight size={18} />
+
+            <button onClick={nextMobile}>
+              <ChevronRight />
             </button>
+
           </div>
+
         </div>
 
-        {/* DESKTOP */}
+
 
         {/* DESKTOP */}
 
         <div
           className="
-    hidden
-    md:flex
-    mx-auto
-    max-w-7xl
-    items-center
-    gap-5
-  "
+            hidden
+            md:flex
+            mx-auto
+            max-w-7xl
+            items-center
+            gap-5
+          "
         >
-          {/* Previous Button */}
 
-          <button
-            onClick={previousPage}
-            className="
-      group
-      flex
-      h-12
-      w-12
-      shrink-0
-      items-center
-      justify-center
-      rounded-full
-      border
-      border-white/10
-      bg-white/[0.05]
-      text-white/70
-      backdrop-blur-xl
-      transition-all
-      duration-300
-      hover:border-[#616CFA]/50
-      hover:bg-[#616CFA]/20
-      hover:text-white
-      active:scale-95
-    "
-          >
-            <ChevronLeft
-              size={22}
-              className="
-        transition-transform
-        duration-300
-        group-hover:-translate-x-1
-      "
-            />
+          <button onClick={previousPage}>
+            <ChevronLeft />
           </button>
 
-          {/* Cards */}
 
           <div
             className="
-      grid
-      flex-1
-      grid-cols-4
-      gap-5
-    "
+              grid
+              flex-1
+              grid-cols-4
+              gap-5
+            "
           >
+
             {visibleServices.map((service, index) => (
+
               <ServiceCard
                 key={service.title}
                 service={service}
-                index={page * cardsPerPage + index}
+                index={
+                  page * cardsPerPage + index
+                }
+                onClick={() =>
+                  router.push(
+                    `/services?service=${service.slug}`,
+                  )
+                }
               />
+
             ))}
+
           </div>
 
-          {/* Next Button */}
 
-          <button
-            onClick={nextPage}
-            className="
-      group
-      flex
-      h-12
-      w-12
-      shrink-0
-      items-center
-      justify-center
-      rounded-full
-      border
-      border-white/10
-      bg-white/[0.05]
-      text-white/70
-      backdrop-blur-xl
-      transition-all
-      duration-300
-      hover:border-[#E46ECC]/50
-      hover:bg-[#E46ECC]/20
-      hover:text-white
-      active:scale-95
-    "
-          >
-            <ChevronRight
-              size={22}
-              className="
-        transition-transform
-        duration-300
-        group-hover:translate-x-1
-      "
-            />
+          <button onClick={nextPage}>
+            <ChevronRight />
           </button>
+
+
         </div>
+
+
       </div>
+
     </section>
   );
 }

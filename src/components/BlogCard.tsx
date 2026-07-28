@@ -1,24 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Blog } from "@/types/blog";
+interface BlogCardProps {
+  blog: Blog;
+}
 
-export default function BlogCard({
-  blog,
-}: {
-  blog: {
-    id: string;
-    title: string;
-    slug: string;
-    excerpt: string;
-    cover_image?: string;
-    views: number;
-    likes: number;
-  };
-}) {
+export default function BlogCard({ blog }: BlogCardProps) {
   return (
     <Link href={`/blogs/${blog.slug}`}>
-      <article className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-white/20 hover:shadow-2xl cursor-pointer">
+      <article className="group cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-white/20 hover:shadow-2xl">
+
         {blog.cover_image && (
           <div className="relative h-60 w-full overflow-hidden">
+
             <Image
               src={blog.cover_image}
               alt={blog.title}
@@ -28,15 +22,17 @@ export default function BlogCard({
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
           </div>
         )}
 
         <div className="p-6">
-          <h2 className="text-xl font-bold line-clamp-2">
+
+          <h2 className="line-clamp-2 text-xl font-bold">
             {blog.title}
           </h2>
 
-          <p className="mt-3 text-sm text-gray-400 line-clamp-3">
+          <p className="mt-3 line-clamp-3 text-sm text-gray-400">
             {blog.excerpt}
           </p>
 
@@ -44,7 +40,9 @@ export default function BlogCard({
             <span>👁 {blog.views}</span>
             <span>❤️ {blog.likes}</span>
           </div>
+
         </div>
+
       </article>
     </Link>
   );

@@ -38,12 +38,11 @@ export default function CTA() {
       >
         <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
 
-
           {/* Left Content */}
           <div className="max-w-3xl">
 
             <span className="text-sm uppercase tracking-[0.2em] text-white/40">
-              Let's Build
+              Let&apos;s Build
             </span>
 
 
@@ -51,27 +50,31 @@ export default function CTA() {
 
               Your next stage of growth
 
-              <span className="
-                block
-                bg-gradient-to-r
-                from-[#616CFA]
-                to-[#E46ECC]
-                bg-clip-text
-                text-transparent
-              ">
+              <span
+                className="
+                  block
+                  bg-gradient-to-r
+                  from-[#616CFA]
+                  to-[#E46ECC]
+                  bg-clip-text
+                  text-transparent
+                "
+              >
                 starts with VAISPACE.
               </span>
 
             </h2>
 
 
-            <p className="
-              mt-6
-              text-lg
-              leading-relaxed
-              text-white/60
-            ">
-              Whether you're launching, scaling, or repositioning,
+            <p
+              className="
+                mt-6
+                text-lg
+                leading-relaxed
+                text-white/60
+              "
+            >
+              Whether you&apos;re launching, scaling, or repositioning,
               we create the systems that move brands forward.
             </p>
 
@@ -100,15 +103,15 @@ export default function CTA() {
           </div>
 
 
-
           {/* Right Illustration */}
-          <div className="
-            relative
-            hidden
-            justify-center
-            lg:flex
-          ">
-
+          <div
+            className="
+              relative
+              hidden
+              justify-center
+              lg:flex
+            "
+          >
 
             {/* Glow */}
             <div

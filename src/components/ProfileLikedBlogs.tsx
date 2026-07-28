@@ -1,73 +1,119 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { supabase } from "@/lib/supabase";
+
 import BlogCard from "./BlogCard";
 
+interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  cover_image: string | null;
+  excerpt: string;
+  views: number;
+  likes: number;
+}
+
 export default function ProfileLikedBlogs() {
-  const [blogs, setBlogs] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadLikedBlogs();
+    let ignore = false;
+
+    async function fetchLikedBlogs() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          if (!ignore) {
+            setLoading(false);
+          }
+
+          return;
+        }
+
+        const { data: likes, error: likesError } = await supabase
+          .from("blog_likes")
+          .select("blog_id")
+          .eq("user_id", user.id);
+
+        if (likesError) {
+          throw likesError;
+        }
+
+        if (ignore) {
+          return;
+        }
+
+        const ids = likes?.map((item) => item.blog_id) ?? [];
+
+        if (ids.length === 0) {
+          setBlogs([]);
+          setLoading(false);
+          return;
+        }
+
+        const { data: blogsData, error: blogsError } = await supabase
+          .from("blogs")
+          .select("*")
+          .in("id", ids);
+
+        if (blogsError) {
+          throw blogsError;
+        }
+
+        if (ignore) {
+          return;
+        }
+
+        const blogsWithStats: Blog[] = (blogsData ?? []).map((blog) => ({
+          id: blog.id,
+          title: blog.title,
+          slug: blog.slug,
+          cover_image: blog.cover_image ?? null,
+          excerpt: blog.excerpt ?? "",
+          views: blog.views ?? 0,
+          likes: blog.likes ?? 0,
+        }));
+
+        setBlogs(blogsWithStats);
+      } catch (error) {
+        console.error("Failed to fetch liked blogs:", error);
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void fetchLikedBlogs();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
-  async function loadLikedBlogs() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    // Get liked blog IDs
-    const { data: likes } = await supabase
-      .from("blog_likes")
-      .select("blog_id")
-      .eq("user_id", user.id);
-
-    const ids = likes?.map((item) => item.blog_id) || [];
-
-    if (ids.length === 0) {
-      setLoading(false);
-      return;
-    }
-
-    // Get blogs
-    const { data: blogsData } = await supabase
-      .from("blogs")
-      .select("*")
-      .in("id", ids);
-
-    setBlogs(blogsData || []);
-    setLoading(false);
-  }
-
   if (loading) {
-    return (
-      <p className="text-gray-400 mt-8">
-        Loading liked blogs...
-      </p>
-    );
+    return <p className="mt-8 text-gray-400">Loading liked blogs...</p>;
   }
 
   if (blogs.length === 0) {
     return (
-      <p className="text-gray-400 mt-8">
-        You haven't liked any blogs yet.
+      <p className="mt-8 text-gray-400">
+        You haven&apos;t liked any blogs yet.
       </p>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+    <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       {blogs.map((blog) => (
-        <BlogCard
-          key={blog.id}
-          blog={blog}
-        />
+        <BlogCard key={blog.id} blog={blog} />
       ))}
     </div>
   );

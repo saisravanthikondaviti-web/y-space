@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { services } from "./data";
 
 export default function ServicesStepper() {
@@ -10,54 +11,39 @@ export default function ServicesStepper() {
 
   const serviceSlug = searchParams.get("service");
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const service = services[activeIndex];
-
-  // Open service based on URL
-  useEffect(() => {
-    if (!serviceSlug) return;
+  const [activeIndex, setActiveIndex] = useState(() => {
+    if (!serviceSlug) return 0;
 
     const index = services.findIndex(
       (item) => item.slug === serviceSlug
     );
 
-    if (index !== -1) {
-      setActiveIndex(index);
-    }
-  }, [serviceSlug]);
+    return index === -1 ? 0 : index;
+  });
 
-  // Go to next service
+  const service = services[activeIndex];
+
   const nextService = () => {
     setActiveIndex((prev) =>
       prev === services.length - 1 ? 0 : prev + 1
     );
   };
 
-  // Go to previous service
-  const previousService = () => {
-    setActiveIndex((prev) =>
-      prev === 0 ? services.length - 1 : prev - 1
-    );
-  };
+  if (!service) return null;
 
   return (
     <section
       className="
-        min-h-[85vh]
         flex
+        min-h-[85vh]
         items-center
         justify-center
         px-4
-        sm:px-6
         py-10
+        sm:px-6
       "
     >
       <div className="w-full max-w-6xl">
-
-        {/* =========================
-            SERVICE TITLE
-        ========================== */}
 
         <AnimatePresence mode="wait">
           <motion.h2
@@ -78,17 +64,20 @@ export default function ServicesStepper() {
               duration: 0.3,
             }}
             className="
-              mt-25
               mb-8
+              mt-25
               text-center
               text-3xl
-              sm:text-4xl
-              lg:text-5xl
               font-bold
               leading-tight
+
+              sm:text-4xl
+              lg:text-5xl
+
               bg-gradient-to-r
               from-[#616CFA]
               to-[#E46ECC]
+
               bg-clip-text
               text-transparent
             "
@@ -97,9 +86,6 @@ export default function ServicesStepper() {
           </motion.h2>
         </AnimatePresence>
 
-        {/* =========================
-            SERVICE ITEMS
-        ========================== */}
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -119,14 +105,15 @@ export default function ServicesStepper() {
             className="
               grid
               grid-cols-1
+              gap-4
+
               sm:grid-cols-2
               lg:grid-cols-4
-              gap-4
             "
           >
-            {service.items.map((item: string, index: number) => {
+            {service.items.map((item, index) => {
               const description =
-                service.details?.[item] ||
+                service.details?.[item] ??
                 "Create impactful solutions with strategic thinking and creative execution.";
 
               return (
@@ -148,59 +135,70 @@ export default function ServicesStepper() {
                     group
                     relative
                     min-h-[170px]
+
                     rounded-xl
                     border
                     border-white/15
+
                     bg-white/[0.04]
+
                     p-5
+
                     backdrop-blur-xl
+
                     transition-all
                     duration-300
+
                     hover:-translate-y-1
                     hover:border-[#616CFA]/60
                     hover:bg-white/[0.08]
                   "
                 >
-                  {/* Gradient Accent */}
                   <div
                     className="
                       mb-5
                       h-[3px]
                       w-12
+
                       rounded-full
+
                       bg-gradient-to-r
                       from-[#616CFA]
                       to-[#E46ECC]
+
                       transition-all
                       duration-300
+
                       group-hover:w-16
                     "
                   />
 
-                  {/* Item Title */}
                   <h3
                     className="
                       mb-2
                       text-base
-                      sm:text-lg
                       font-semibold
                       leading-snug
                       text-white
+
+                      sm:text-lg
                     "
                   >
                     {item}
                   </h3>
 
-                  {/* Item Description */}
                   <p
                     className="
                       text-xs
-                      sm:text-sm
                       leading-relaxed
                       text-white/50
+
                       transition-colors
                       duration-300
+
                       group-hover:text-white/70
+
+                      sm:text-sm
                     "
                   >
                     {description}
@@ -211,9 +209,6 @@ export default function ServicesStepper() {
           </motion.div>
         </AnimatePresence>
 
-        {/* =========================
-            NAVIGATION
-        ========================== */}
 
         <div
           className="
@@ -223,19 +218,24 @@ export default function ServicesStepper() {
             gap-4
           "
         >
-          {/* Back */}
           <button
-            onClick={() => window.history.back()}
+            onClick={() => {
+              window.history.back();
+            }}
             className="
               rounded-full
               border
               border-white/20
+
               px-6
               py-2.5
+
               text-sm
               text-white
+
               transition-all
               duration-300
+
               hover:border-white/40
               hover:bg-white/10
             "
@@ -243,23 +243,29 @@ export default function ServicesStepper() {
             Back
           </button>
 
-          {/* Next */}
+
           <button
             onClick={nextService}
             className="
               rounded-full
+
               bg-gradient-to-r
               from-[#616CFA]
               to-[#E46ECC]
+
               px-8
               py-2.5
+
               text-sm
               font-medium
               text-white
+
               shadow-lg
               shadow-[#616CFA]/20
+
               transition-all
               duration-300
+
               hover:scale-105
               hover:shadow-[#616CFA]/30
             "
@@ -267,6 +273,7 @@ export default function ServicesStepper() {
             Next
           </button>
         </div>
+
       </div>
     </section>
   );

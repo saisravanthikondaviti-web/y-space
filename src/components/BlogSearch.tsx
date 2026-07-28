@@ -3,26 +3,48 @@
 import { useMemo, useState } from "react";
 import BlogCard from "@/components/BlogCard";
 
-export default function BlogSearch({ blogs }: { blogs: any[] }) {
+interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string | null;
+  category: string | null;
+  cover_image: string | null;
+  views: number;
+  likes: number;
+  created_at?: string;
+}
+
+interface BlogSearchProps {
+  blogs: Blog[];
+}
+
+export default function BlogSearch({ blogs }: BlogSearchProps) {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = useMemo(() => {
-    const cats = blogs.map((blog) => blog.category).filter(Boolean);
+    const cats = blogs
+      .map((blog) => blog.category)
+      .filter((category): category is string => Boolean(category));
 
     return ["All", ...new Set(cats)];
   }, [blogs]);
 
-  const filteredBlogs = blogs.filter((blog) => {
-    const matchesSearch = `${blog.title} ${blog.excerpt} ${blog.content}`
-      .toLowerCase()
-      .includes(query.toLowerCase());
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter((blog) => {
+      const matchesSearch =
+        `${blog.title} ${blog.excerpt ?? ""} ${blog.content ?? ""}`
+          .toLowerCase()
+          .includes(query.toLowerCase());
 
-    const matchesCategory =
-      selectedCategory === "All" || blog.category === selectedCategory;
+      const matchesCategory =
+        selectedCategory === "All" || blog.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    });
+  }, [blogs, query, selectedCategory]);
 
   return (
     <>
@@ -38,15 +60,16 @@ export default function BlogSearch({ blogs }: { blogs: any[] }) {
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="mb-8 flex flex-wrap gap-2">
         {categories.map((category) => (
           <button
             key={category}
+            type="button"
             onClick={() => setSelectedCategory(category)}
-            className={`px-3 py-1.5 text-sm rounded-full border transition-all duration-300 ${
+            className={`rounded-full border px-3 py-1.5 text-sm transition-all duration-300 ${
               selectedCategory === category
-                ? "bg-white text-black border-white"
-                : "bg-transparent border-white/20 text-white hover:border-white/40 hover:bg-white/5"
+                ? "border-white bg-white text-black"
+                : "border-white/20 bg-transparent text-white hover:border-white/40 hover:bg-white/5"
             }`}
           >
             {category}
@@ -55,9 +78,15 @@ export default function BlogSearch({ blogs }: { blogs: any[] }) {
       </div>
 
       {/* Blog Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredBlogs.map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
+          <BlogCard
+            key={blog.id}
+            blog={{
+              ...blog,
+              excerpt: blog.excerpt ?? "",
+            }}
+          />
         ))}
       </div>
     </>

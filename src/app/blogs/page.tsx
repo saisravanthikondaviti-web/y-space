@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import BlogCard from "@/components/BlogCard";
 import { getBlogViews, getBlogLikes } from "@/lib/blog";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import TrendingBlogs from "@/components/TrendingBlogs";

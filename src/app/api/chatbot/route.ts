@@ -90,9 +90,7 @@ export async function POST(req: Request) {
     const safePhone = escapeHtml(phone || "Not provided");
     const safeService = escapeHtml(service || "Not provided");
     const safeProject = escapeHtml(project || "Not provided");
-    const safeProjectDetails = escapeHtml(
-      projectDetails || "Not provided",
-    );
+    const safeProjectDetails = escapeHtml(projectDetails || "Not provided");
     const safeTimeline = escapeHtml(timeline || "Not provided");
     const safeBudget = escapeHtml(budget || "Not provided");
 
@@ -177,46 +175,29 @@ export async function POST(req: Request) {
       "
     >
 
-      <!-- ================================== -->
-      <!-- BANNER -->
-      <!-- ================================== -->
+     <!-- ================================== -->
+<!-- BANNER -->
+<!-- ================================== -->
 
-      <div
-        style="
-          background:linear-gradient(
-            135deg,
-            #616CFA,
-            #E46ECC
-          );
-          padding:35px 25px;
-          border-radius:18px;
-          text-align:center;
-          color:white;
-        "
-      >
-
-        <h1
-          style="
-            margin:0;
-            font-size:32px;
-            font-weight:700;
-          "
-        >
-          VAISPACE
-        </h1>
-
-        <p
-          style="
-            margin:10px 0 0;
-            font-size:16px;
-          "
-        >
-          New Chatbot Conversation
-        </p>
-
-      </div>
-
-
+<div
+  style="
+    text-align:center;
+    border-radius:18px;
+    overflow:hidden;
+  "
+>
+  <img
+    src="/images/banner.png"
+    alt="VAISPACE Banner"
+    style="
+      width:100%;
+      max-width:600px;
+      height:auto;
+      display:block;
+      border-radius:18px;
+    "
+  />
+</div>
       <!-- ================================== -->
       <!-- CLIENT DETAILS -->
       <!-- ================================== -->
@@ -425,11 +406,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    console.log(
-      "ADMIN CHATBOT EMAIL SENT:",
-      adminResult.messageId,
-    );
-
+    console.log("ADMIN CHATBOT EMAIL SENT:", adminResult.messageId);
 
     // ==================================
     // THANK YOU EMAIL TO USER
@@ -691,11 +668,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    console.log(
-      "USER CHATBOT EMAIL SENT:",
-      userResult.messageId,
-    );
-
+    console.log("USER CHATBOT EMAIL SENT:", userResult.messageId);
 
     // ==================================
     // SUCCESS
@@ -711,9 +684,7 @@ export async function POST(req: Request) {
         status: 200,
       },
     );
-
   } catch (error) {
-
     console.error("Chatbot Route Error:", error);
 
     return NextResponse.json(

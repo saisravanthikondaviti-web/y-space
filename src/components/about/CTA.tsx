@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function CTA() {
   return (
@@ -141,9 +142,9 @@ export default function CTA() {
                 lg:text-xl
               "
             >
-              Great brands don't happen by chance. They are built through
+              Great brands don&apos;t happen by chance. They are built through
               thoughtful strategy, purposeful design, and consistent execution.
-              Let's create something that lasts.
+              Let&apos;s create something that lasts.{" "}
             </p>
 
             {/* BUTTON MOVED WITH CONTENT */}
@@ -230,9 +231,7 @@ export default function CTA() {
               "
             />
 
-            <motion.img
-              src="/images/abtcta.png"
-              alt="Creative Illustration"
+            <motion.div
               animate={{
                 y: [0, -12, 0],
               }}
@@ -242,27 +241,27 @@ export default function CTA() {
                 ease: "easeInOut",
               }}
               className="
-  relative
-  z-10
-
-  w-full
-
-  max-w-lg
-
-  sm:max-w-xl
-
-  md:max-w-2xl
-
-  lg:max-w-3xl
-
-  xl:max-w-[1000px]
-
-  object-contain
-
-  mt-6
-  lg:mt-10
-"
-            />
+    relative
+    z-10
+    mt-6
+    lg:mt-10
+    w-full
+    max-w-lg
+    sm:max-w-xl
+    md:max-w-2xl
+    lg:max-w-3xl
+    xl:max-w-[1000px]
+  "
+            >
+              <Image
+                src="/images/abtcta.png"
+                alt="Creative Illustration"
+                width={1000}
+                height={900}
+                className="h-auto w-full object-contain"
+                priority
+              />
+            </motion.div>
           </motion.div>
         </div>
       </div>

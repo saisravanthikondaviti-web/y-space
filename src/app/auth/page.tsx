@@ -34,7 +34,7 @@ export default function AuthPage() {
           throw new Error("Passwords do not match");
         }
 
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
         });
@@ -52,8 +52,12 @@ export default function AuthPage() {
 
         router.push("/");
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong.");
+      }
     } finally {
       setLoading(false);
     }

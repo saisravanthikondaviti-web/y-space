@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Particle = {
   left: string;
@@ -9,22 +9,20 @@ type Particle = {
   duration: number;
 };
 
-export default function HeroBackground() {
-  const [particles, setParticles] = useState<Particle[]>([]);
+function createParticles(): Particle[] {
+  return Array.from({ length: 20 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    duration: 3 + Math.random() * 5,
+  }));
+}
 
-  useEffect(() => {
-    setParticles(
-      Array.from({ length: 20 }, () => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        duration: 3 + Math.random() * 5,
-      }))
-    );
-  }, []);
+export default function HeroBackground() {
+  const [particles] = useState<Particle[]>(createParticles);
 
   return (
     <>
-      {/* Orbs */}
+      {/* Floating Particles */}
 
       {particles.map((particle, i) => (
         <motion.div
