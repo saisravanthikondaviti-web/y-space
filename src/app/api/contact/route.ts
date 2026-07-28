@@ -164,7 +164,7 @@ export async function POST(req: Request) {
   "
 >
   <img
-    src="/images/banner.png"
+    src="cid:banner"
     alt="VAISPACE Banner"
     style="
       width:100%;
