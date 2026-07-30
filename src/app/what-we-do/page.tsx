@@ -1,35 +1,12 @@
-"use client";
+import type { Metadata } from "next";
+import WhatWeDoClient from "./WhatWeDoClient";
 
-import Footer from "@/components/layout/Footer";
+export const metadata: Metadata = {
+  title: "What We Do | VAI SPACE",
+  description:
+    "Discover how VAI SPACE combines strategy, creativity, technology, and marketing to build unforgettable brands and scalable digital experiences.",
+};
 
-import {
-  BackgroundFX,
-  Hero,
-  Philosophy,
-  Outcomes,
-  Services,
-  CTA,
-} from "@/components/what-we-do";
-
-
-export default function WhatWeDo() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
-
-      <BackgroundFX />
-
-      <Hero />
-
-      <Philosophy />
-
-      <Outcomes />
-
-      <Services />
-
-      <CTA />
-
-      <Footer />
-
-    </main>
-  );
+export default function WhatWeDoPage() {
+  return <WhatWeDoClient />;
 }

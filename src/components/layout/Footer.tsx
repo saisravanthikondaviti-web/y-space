@@ -12,12 +12,12 @@ export default function Footer() {
         <div>
           <div className="flex items-center gap-3">
             <Image
-              src="/images/yspacelogo.png"
-              alt="VAI SPACE"
-              width={36}
-              height={36}
-              className="h-9 w-9 object-contain"
-            />
+  src="/images/yspacelogo.png"
+  alt="VAI SPACE"
+  width={120}
+  height={40}
+  className="h-9 w-auto object-contain"
+/>
           </div>
 
           <p className="mt-5 text-base leading-8 text-zinc-400">

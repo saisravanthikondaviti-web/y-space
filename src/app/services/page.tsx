@@ -7,6 +7,13 @@ import ScrollProgress from "@/components/ui/ScrollProgress";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 
 import ServicesStepper from "@/components/services/ServicesStepper";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "Explore VAI SPACE services including branding, website development, UI/UX design, AI solutions, digital marketing, performance marketing, and creative production.",
+};
 
 export default function ServicesPage() {
   return (

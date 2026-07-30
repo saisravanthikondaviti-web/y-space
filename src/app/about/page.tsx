@@ -12,6 +12,13 @@ import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 import SectionNavigator from "@/components/ui/SectionNavigator";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About VAI SPACE",
+  description:
+  "Learn about VAI SPACE, a creative growth organization helping ambitious brands through branding, web development, digital marketing, AI solutions, and strategic design.",
+};
 
 export default function AboutPage() {
   return (

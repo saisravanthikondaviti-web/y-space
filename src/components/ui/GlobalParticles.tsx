@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Particle = {
   left: number;
@@ -22,18 +22,16 @@ function generateParticles(): Particle[] {
 }
 
 export default function GlobalParticles() {
-  const [particles] = useState<Particle[]>(generateParticles);
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  useEffect(() => {
+    setParticles(generateParticles());
+  }, []);
+
+  if (!particles.length) return null;
 
   return (
-    <div
-      className="
-        fixed
-        inset-0
-        pointer-events-none
-        z-0
-        overflow-hidden
-      "
-    >
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {particles.map((particle, index) => (
         <motion.div
           key={index}
