@@ -174,44 +174,30 @@ export async function POST(req: Request) {
         margin:0 auto;
       "
     >
- <!-- ================================== -->
-      <!-- BANNER -->
-      <!-- ================================== -->
+<!-- ================================== -->
+<!-- BANNER IMAGE -->
+<!-- ================================== -->
 
-      <div
-        style="
-          background:linear-gradient(
-            135deg,
-            #616CFA,
-            #E46ECC
-          );
-          padding:35px 25px;
-          border-radius:18px;
-          text-align:center;
-          color:white;
-        "
-      >
-
-        <h1
-          style="
-            margin:0;
-            font-size:32px;
-            font-weight:700;
-          "
-        >
-          VAISPACE
-        </h1>
-
-        <p
-          style="
-            margin:10px 0 0;
-            font-size:16px;
-          "
-        >
-          New Chatbot Conversation
-        </p>
-
-      </div>
+<div
+  style="
+    padding:0;
+    border-radius:18px;
+    overflow:hidden;
+    text-align:center;
+  "
+>
+  <img
+    src="https://vaispace.com/images/banner.png"
+    alt="VAISPACE"
+    style="
+      width:100%;
+      max-width:700px;
+      height:auto;
+      display:block;
+      border-radius:18px;
+    "
+  />
+</div>
 
       <!-- ================================== -->
       <!-- CLIENT DETAILS -->
