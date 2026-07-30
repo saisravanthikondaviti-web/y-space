@@ -89,17 +89,17 @@ export default function Navbar() {
           <Image
             src="/images/hlogo.png"
             alt="VAI SPACE Logo"
-            width={150}
-            height={50}
+            width={220}
+            height={70}
             priority
             className="
-              h-auto
-              w-35
-              sm:w-35
-              md:w-40
-              lg:w-48
-              xl:w-52
-            "
+    w-35
+    sm:w-35
+    md:w-40
+    lg:w-48
+    xl:w-52
+    h-auto
+  "
           />
         </Link>
 

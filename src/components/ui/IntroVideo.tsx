@@ -10,7 +10,8 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [started, setStarted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+
 
   useEffect(() => {
     const checkMobile = () => {
@@ -19,37 +20,85 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
 
     checkMobile();
 
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener(
+      "resize",
+      checkMobile
+    );
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener(
+        "resize",
+        checkMobile
+      );
     };
   }, []);
 
+
   const handleStart = async () => {
-    if (!videoRef.current || started) return;
+    const video = videoRef.current;
+
+    if (!video || started) return;
+
 
     try {
-      videoRef.current.muted = false;
+      // keep muted for browser permission
+      video.muted = true;
 
-      await videoRef.current.play();
+      await video.play();
 
       setStarted(true);
+
+
+      // enable audio after playback starts
+      setTimeout(() => {
+        video.muted = false;
+      }, 300);
+
+
     } catch (error) {
-      console.error("Unable to play intro video:", error);
+      console.error(
+        "Unable to play intro video:",
+        error
+      );
     }
   };
 
+
+  // Prevent hydration mismatch
+  if (isMobile === null) {
+    return null;
+  }
+
+
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center cursor-pointer"
+      className="
+        fixed
+        inset-0
+        z-[9999]
+        bg-black
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+      "
       onClick={handleStart}
     >
+
       {!started && (
-        <div className="absolute z-50 text-white text-lg pointer-events-none">
+        <div
+          className="
+            absolute
+            z-50
+            text-white
+            text-lg
+            pointer-events-none
+          "
+        >
           Tap anywhere to start
         </div>
       )}
+
 
       <video
         ref={videoRef}
@@ -61,9 +110,14 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         playsInline
         muted
         preload="auto"
-        className="w-full h-full object-cover"
+        className="
+          w-full
+          h-full
+          object-cover
+        "
         onEnded={onFinish}
       />
+
     </div>
   );
 }

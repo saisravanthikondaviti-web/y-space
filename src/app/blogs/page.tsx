@@ -8,6 +8,13 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Insights & Blogs",
+  description:
+    "Read expert insights from VAI SPACE on branding, marketing, web development, AI, business growth, design, and digital innovation.",
+};
 
 export default async function BlogsPage() {
   const { data: blogs, error } = await supabase

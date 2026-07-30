@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Particle = {
   left: string;
@@ -18,12 +18,14 @@ function createParticles(): Particle[] {
 }
 
 export default function HeroBackground() {
-  const [particles] = useState<Particle[]>(createParticles);
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  useEffect(() => {
+    setParticles(createParticles());
+  }, []);
 
   return (
     <>
-      {/* Floating Particles */}
-
       {particles.map((particle, i) => (
         <motion.div
           key={i}

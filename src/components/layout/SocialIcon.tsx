@@ -21,7 +21,7 @@ export default function SocialIcon({
   return (
     <a
       href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
+      target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -35,9 +35,13 @@ export default function SocialIcon({
       <Image
         src={hovered ? hover : normal}
         alt={alt}
-        width={32}
-        height={32}
-        className="h-8 w-8 object-contain"
+        width={40}
+        height={40}
+        style={{
+          width: "32px",
+          height: "auto",
+        }}
+        className="object-contain"
       />
     </a>
   );
