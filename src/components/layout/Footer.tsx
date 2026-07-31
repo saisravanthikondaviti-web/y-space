@@ -69,9 +69,9 @@ export default function Footer() {
             />
 
             <SocialIcon
-              href="https://www.linkedin.com/company/vaispace/"
-              normal="/images/footer/linkedin.png"
-              hover="/images/footer/flinkedin.png"
+              href="https://x.com/vaispacehq"
+              normal="/images/footer/twitter.png"
+              hover="/images/footer/twitter-color.png"
               alt="LinkedIn"
             />
 
@@ -80,6 +80,13 @@ export default function Footer() {
               normal="/images/footer/youtube.png"
               hover="/images/footer/fyoutube.png"
               alt="YouTube"
+            />
+
+            <SocialIcon
+              href="https://www.linkedin.com/company/vaispace/"
+              normal="/images/footer/linkedin.png"
+              hover="/images/footer/flinkedin.png"
+              alt="LinkedIn"
             />
           </div>
         </div>
