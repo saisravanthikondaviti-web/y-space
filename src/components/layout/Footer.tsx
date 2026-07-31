@@ -6,18 +6,22 @@ import SocialIcon from "./SocialIcon";
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 py-6">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 lg:px-8 md:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 md:grid-cols-3 lg:px-8">
         {/* LEFT */}
         <div>
-          <Image
-            src="/images/yspacelogo.png"
-            alt="VAI SPACE"
-            width={50}
-            height={16}
-            className="h-3.5 w-auto object-contain"
-          />
+          {/* Logo */}
+          <div className="relative h-10 w-10">
+            <Image
+              src="/images/yspacelogo.png"
+              alt="VAI SPACE"
+              fill
+              sizes="40px"
+              className="object-contain"
+              priority
+            />
+          </div>
 
-          <p className="mt-3 text-sm leading-7 text-zinc-400">
+          <p className="mt-4 text-sm leading-7 text-zinc-400">
             Where Strategy Meets Storytelling.
             <br />
             We don&apos;t help brands make noise.
@@ -80,10 +84,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      <div className="bg-red-600 text-white p-2 text-center font-bold">
-  HOSTINGER TEST 12345
-</div>
 
       {/* COPYRIGHT */}
       <div className="mt-5 border-t border-white/10">
