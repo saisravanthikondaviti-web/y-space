@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Space_Grotesk, Lexend } from "next/font/google";
 import "./globals.css";
 import GlobalParticles from "@/components/ui/GlobalParticles";
@@ -15,14 +16,12 @@ const bodyFont = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: {
-  default: "VAI SPACE | Creative Technology Hub",
-  template: "%s | VAI SPACE",
-},
-  description:
-    "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+  title: "VAI SPACE | Creative Technology Hub",
 
-    metadataBase: new URL("https://vaispace.com"),
+  description:
+    "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
+
+  metadataBase: new URL("https://vaispace.com"),
 
   keywords: [
     "Digital Marketing Agency",
@@ -30,29 +29,35 @@ export const metadata: Metadata = {
     "Creative Agency",
     "Web Development",
     "Performance Marketing",
+    "AI Solutions",
+    "UI/UX Design",
+    "SEO Services",
     "VAI SPACE",
   ],
 
-  authors: [{ name: "VAI SPACE" }],
+  authors: [
+    {
+      name: "VAI SPACE",
+    },
+  ],
 
   openGraph: {
-  title: "VAI SPACE",
-  description:
-    "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
-  url: "https://vaispace.com",
-  siteName: "VAI SPACE",
-  type: "website",
-  locale: "en_US",
-},
+    title: "VAI SPACE | Creative Technology Hub",
+    description:
+      "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
+    url: "https://vaispace.com",
+    siteName: "VAI SPACE",
+    type: "website",
+    locale: "en_US",
+  },
 
-twitter: {
-  card: "summary_large_image",
-  title: "VAI SPACE",
-  description:
-    "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
-},
+  twitter: {
+    card: "summary_large_image",
+    title: "VAI SPACE | Creative Technology Hub",
+    description:
+      "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
+  },
 
-  // ✅ FIXED FAVICON (force refresh)
   icons: {
     icon: "/favicon.ico?v=2",
     shortcut: "/favicon.ico?v=2",
@@ -71,6 +76,24 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
+      <head>
+        {/* Google Analytics (GA4) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-022P31P0VY"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-022P31P0VY');
+          `}
+        </Script>
+      </head>
+
       <body className="min-h-screen bg-black">
         {children}
 

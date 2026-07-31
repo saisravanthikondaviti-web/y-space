@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {
-  title: "Contact | VAI SPACE",
+  title: "Contact VAI SPACE | Let's Build Your Brand",
   description:
-    "Get in touch with VAI SPACE to discuss your next branding, marketing, website, or AI project. We'd love to help bring your ideas to life.",
+    "Ready to bring your vision to life? Contact VAI SPACE for branding, website development, AI solutions, digital marketing, and creative technology services tailored to your business goals.",
 };
-
 export default function ContactPage() {
   return <ContactClient />;
 }

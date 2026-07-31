@@ -1,23 +1,31 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import SocialIcon from "./SocialIcon";
+import Link from "next/link";
 
 export default function Footer() {
+  const [showTerms, setShowTerms] = useState(false);
+
   return (
     <footer className="border-t border-white/10 py-6">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 lg:px-8 md:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 md:grid-cols-3 lg:px-8">
         {/* LEFT */}
         <div>
-          <Image
-            src="/images/yspacelogo.png"
-            alt="VAI SPACE"
-            width={50}
-            height={16}
-            className="h-3.5 w-auto object-contain"
-          />
+          {/* Logo */}
+          <div className="relative h-10 w-10">
+            <Image
+              src="/images/yspacelogo.png"
+              alt="VAI SPACE"
+              fill
+              sizes="40px"
+              className="object-contain"
+              priority
+            />
+          </div>
 
-          <p className="mt-3 text-sm leading-7 text-zinc-400">
+          <p className="mt-4 text-sm leading-7 text-zinc-400">
             Where Strategy Meets Storytelling.
             <br />
             We don&apos;t help brands make noise.
@@ -40,9 +48,20 @@ export default function Footer() {
             <p>Phone: +91 99597 49993</p>
             <p>Email: hello@vaispace.com</p>
             <p>Location: Visakhapatnam, India</p>
+
+            <div className="pt-3 space-y-2">
+              <Link
+                href="/pdfs/terms-and-conditions.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition hover:text-white"
+              >
+                Terms & Conditions
+              </Link>
+
+            </div>
           </div>
         </div>
-
         {/* RIGHT */}
         <div>
           <p className="text-sm leading-6 text-zinc-500">
@@ -65,9 +84,9 @@ export default function Footer() {
             />
 
             <SocialIcon
-              href="https://www.linkedin.com/company/vaispace/"
-              normal="/images/footer/linkedin.png"
-              hover="/images/footer/flinkedin.png"
+              href="https://x.com/vaispacehq"
+              normal="/images/footer/twitter.png"
+              hover="/images/footer/twitter-color.png"
               alt="LinkedIn"
             />
 
@@ -76,6 +95,13 @@ export default function Footer() {
               normal="/images/footer/youtube.png"
               hover="/images/footer/fyoutube.png"
               alt="YouTube"
+            />
+
+            <SocialIcon
+              href="https://www.linkedin.com/company/vaispace/"
+              normal="/images/footer/linkedin.png"
+              hover="/images/footer/flinkedin.png"
+              alt="LinkedIn"
             />
           </div>
         </div>
