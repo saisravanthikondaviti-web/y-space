@@ -51,7 +51,7 @@ export default function Footer() {
 
             <div className="pt-3 space-y-2">
               <Link
-                href="/pdfs/Terms & Conditions.pdf"
+                href="/pdfs/termsandconditions.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block transition hover:text-white"
