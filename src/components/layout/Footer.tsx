@@ -81,6 +81,10 @@ export default function Footer() {
         </div>
       </div>
 
+      <div className="bg-red-600 text-white p-2 text-center font-bold">
+  HOSTINGER TEST 12345
+</div>
+
       {/* COPYRIGHT */}
       <div className="mt-5 border-t border-white/10">
         <div className="mx-auto max-w-7xl py-3">
