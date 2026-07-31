@@ -494,7 +494,7 @@ export async function POST(req: Request) {
         >
 
           <a
-            href="https://vaispace.vercel.app"
+            href="https://vaispace.com"
             style="
               display:inline-block;
               background:#616CFA;

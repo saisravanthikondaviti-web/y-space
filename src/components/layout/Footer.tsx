@@ -5,22 +5,19 @@ import SocialIcon from "./SocialIcon";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 py-10">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:px-8 md:grid-cols-3">
-
+    <footer className="border-t border-white/10 py-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 lg:px-8 md:grid-cols-3">
         {/* LEFT */}
         <div>
-          <div className="flex items-center gap-3">
-            <Image
-  src="/images/yspacelogo.png"
-  alt="VAI SPACE"
-  width={120}
-  height={40}
-  className="h-9 w-auto object-contain"
-/>
-          </div>
+          <Image
+            src="/images/yspacelogo.png"
+            alt="VAI SPACE"
+            width={50}
+            height={16}
+            className="h-3.5 w-auto object-contain"
+          />
 
-          <p className="mt-5 text-base leading-8 text-zinc-400">
+          <p className="mt-3 text-sm leading-7 text-zinc-400">
             Where Strategy Meets Storytelling.
             <br />
             We don&apos;t help brands make noise.
@@ -33,36 +30,26 @@ export default function Footer() {
           </p>
         </div>
 
-
         {/* CENTER */}
         <div>
-          <h4 className="text-sm uppercase tracking-[0.25em] text-white/60">
+          <h4 className="text-xs uppercase tracking-[0.22em] text-white/60">
             Contact Us
           </h4>
 
-          <div className="mt-5 space-y-3 text-base text-zinc-400">
-            <p>
-              Phone: +91 99597 49993
-            </p>
-
-            <p>
-              Email: hello@vaispace.in
-            </p>
-
-            <p>
-              Location: Visakhapatnam, India
-            </p>
+          <div className="mt-3 space-y-2 text-sm text-zinc-400">
+            <p>Phone: +91 99597 49993</p>
+            <p>Email: hello@vaispace.com</p>
+            <p>Location: Visakhapatnam, India</p>
           </div>
         </div>
 
-
         {/* RIGHT */}
         <div>
-          <p className="text-base leading-7 text-zinc-500">
+          <p className="text-sm leading-6 text-zinc-500">
             Let&apos;s build something meaningful together.
           </p>
 
-          <div className="mt-6 flex items-center gap-6">
+          <div className="mt-4 flex items-center gap-5">
             <SocialIcon
               href="https://www.instagram.com/vaispaceofficial/"
               normal="/images/footer/instagram.png"
@@ -92,19 +79,16 @@ export default function Footer() {
             />
           </div>
         </div>
-
       </div>
 
-
       {/* COPYRIGHT */}
-      <div className="mt-8 border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl justify-center py-3">
-          <p className="text-center text-sm text-zinc-500">
+      <div className="mt-5 border-t border-white/10">
+        <div className="mx-auto max-w-7xl py-3">
+          <p className="text-center text-xs text-zinc-500">
             © {new Date().getFullYear()} VAI SPACE. All rights reserved.
           </p>
         </div>
       </div>
-
     </footer>
   );
 }

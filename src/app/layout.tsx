@@ -16,7 +16,7 @@ const bodyFont = Lexend({
 
 export const metadata: Metadata = {
   title: {
-  default: "VAI SPACE | Creative Growth Organization",
+  default: "VAI SPACE | Creative Technology Hub",
   template: "%s | VAI SPACE",
 },
   description:
