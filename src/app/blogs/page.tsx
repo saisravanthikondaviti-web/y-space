@@ -11,9 +11,9 @@ import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Insights & Blogs",
+  title: "VAI SPACE Blogs | Branding, Marketing & Web Tips",
   description:
-    "Read expert insights from VAI SPACE on branding, marketing, web development, AI, business growth, design, and digital innovation.",
+    "Discover expert insights on branding, web development, AI, SEO, digital marketing, UI/UX, and business growth through practical guides and industry updates from the VAI SPACE team.",
 };
 
 export default async function BlogsPage() {

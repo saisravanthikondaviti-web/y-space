@@ -16,13 +16,10 @@ const bodyFont = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "VAI SPACE | Creative Technology Hub",
-    template: "%s | VAI SPACE",
-  },
+  title: "VAI SPACE | Creative Technology Hub",
 
   description:
-    "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+    "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
 
   metadataBase: new URL("https://vaispace.com"),
 
@@ -32,6 +29,9 @@ export const metadata: Metadata = {
     "Creative Agency",
     "Web Development",
     "Performance Marketing",
+    "AI Solutions",
+    "UI/UX Design",
+    "SEO Services",
     "VAI SPACE",
   ],
 
@@ -42,9 +42,9 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title: "VAI SPACE",
+    title: "VAI SPACE | Creative Technology Hub",
     description:
-      "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+      "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
     url: "https://vaispace.com",
     siteName: "VAI SPACE",
     type: "website",
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "VAI SPACE",
+    title: "VAI SPACE | Creative Technology Hub",
     description:
-      "VAI SPACE helps ambitious brands scale through strategy, branding, digital marketing, performance marketing, creative production and technology.",
+      "Transform your ideas into powerful digital experiences with VAI SPACE. We specialize in branding, web development, AI solutions, digital marketing, UI/UX design, and creative technology that helps businesses grow.",
   },
 
   icons: {

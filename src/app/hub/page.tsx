@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import HubClient from "./HubClient";
 
 export const metadata: Metadata = {
-  title: "Hub | VAI SPACE",
+  title: "Something Extraordinary Is Coming | VAI SPACE",
   description:
-    "Explore the VAI SPACE Hub for resources, tools, ideas, and updates that help ambitious businesses grow smarter and faster.",
+    "Our next big innovation is on the way. Stay connected with VAI SPACE as we prepare to launch exciting creative technology solutions designed to inspire, innovate, and transform digital experiences.",
 };
 
 export default function HubPage() {
