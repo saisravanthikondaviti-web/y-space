@@ -104,7 +104,7 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         ref={videoRef}
         src={
           isMobile
-            ? "/videos/Mobile-intro.mp4"
+            ? "/videos/mobileintro.mp4"
             : "/videos/web-intro.mp4"
         }
         playsInline
