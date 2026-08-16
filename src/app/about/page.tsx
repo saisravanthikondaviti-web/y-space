@@ -15,7 +15,7 @@ import SectionNavigator from "@/components/ui/SectionNavigator";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About VAI SPACE | Creative Technology Hub",
+  title: "About VAI SPACE | Branding, Strategy & Innovation",
   description:
     "Learn about VAI SPACE, a creative technology hub passionate about building innovative digital products, memorable brands, and intelligent solutions that empower businesses and creators.",
 };
