@@ -10,7 +10,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "VAI SPACE Blogs | Branding, Marketing & Web Tips",
@@ -66,7 +66,7 @@ export default async function BlogsPage() {
 
         <BlogSearch blogs={blogsWithStats} />
 
-        <TrendingBlogs />
+        <TrendingBlogs blogs={blogsWithStats} />
 
         <RecentlyViewed />
       </main>
