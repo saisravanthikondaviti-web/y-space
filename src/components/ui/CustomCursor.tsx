@@ -8,7 +8,27 @@ export default function CustomCursor() {
     y: 0,
   });
 
+  const [isDesktop, setIsDesktop] = useState(false);
+
   useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    // Check initially
+    checkScreenSize();
+
+    // Check whenever window is resized
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
     const move = (e: MouseEvent) => {
       setPosition({
         x: e.clientX,
@@ -21,7 +41,10 @@ export default function CustomCursor() {
     return () => {
       window.removeEventListener("mousemove", move);
     };
-  }, []);
+  }, [isDesktop]);
+
+  // Completely remove cursor on mobile/tablet
+  if (!isDesktop) return null;
 
   return (
     <div
