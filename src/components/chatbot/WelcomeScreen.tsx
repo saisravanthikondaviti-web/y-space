@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface Props {
   onStart: () => void;
@@ -64,28 +64,32 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
       <div className="relative z-10">
         {/* Logo */}
         <div
-          className="
-            mx-auto
-            mb-6
-            flex
-            h-16
-            w-16
-            items-center
-            justify-center
-            rounded-full
-            bg-gradient-to-br
-            from-violet-600
-            to-fuchsia-500
-            shadow-xl
-            shadow-violet-600/30
-            sm:h-18
-            sm:w-18
-            md:h-20
-            md:w-20
-          "
-        >
-          <Sparkles className="text-white" size={24} />
-        </div>
+  className="
+    mx-auto
+    mb-6
+    h-16
+    w-16
+    overflow-hidden
+    rounded-full
+    border-2
+    border-violet-500/60
+    bg-gradient-to-br
+    from-violet-600
+    to-fuchsia-500
+    shadow-xl
+    shadow-violet-600/30
+    sm:h-18
+    sm:w-18
+    md:h-20
+    md:w-20
+  "
+>
+  <img
+    src="/images/chatbot/robot_wink.png"
+    alt="VAI SPACE Assistant"
+    className="block h-full w-full object-cover"
+  />
+</div>
 
         {/* Title */}
         <h1
