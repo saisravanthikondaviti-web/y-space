@@ -92,7 +92,10 @@ export default function ChatModal({ open, onClose }: Props) {
               {started ? (
                 <ChatScreen onClose={handleClose} />
               ) : (
-                <WelcomeScreen onStart={() => setStarted(true)} />
+                <WelcomeScreen
+                  onStart={() => setStarted(true)}
+                  onClose={handleClose}
+                />
               )}
             </div>
           </motion.div>

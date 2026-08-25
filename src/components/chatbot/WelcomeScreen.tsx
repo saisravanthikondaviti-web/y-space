@@ -5,18 +5,21 @@ import { Sparkles, ArrowRight } from "lucide-react";
 
 interface Props {
   onStart: () => void;
+  onClose: () => void;
 }
 
-export default function WelcomeScreen({ onStart }: Props) {
+export default function WelcomeScreen({ onStart, onClose }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
+      onClick={onClose}
       className="
         relative
         flex
         h-full
+        w-full
         flex-col
         items-center
         justify-center
@@ -26,11 +29,13 @@ export default function WelcomeScreen({ onStart }: Props) {
         text-center
         sm:px-6
         md:px-8
+        cursor-pointer
       "
     >
       {/* Background Glow */}
       <div
         className="
+          pointer-events-none
           absolute
           -top-20
           left-1/2
@@ -45,6 +50,7 @@ export default function WelcomeScreen({ onStart }: Props) {
 
       <div
         className="
+          pointer-events-none
           absolute
           bottom-0
           h-44
@@ -72,18 +78,13 @@ export default function WelcomeScreen({ onStart }: Props) {
             to-fuchsia-500
             shadow-xl
             shadow-violet-600/30
-
             sm:h-18
             sm:w-18
-
             md:h-20
             md:w-20
           "
         >
-          <Sparkles
-            className="text-white"
-            size={24}
-          />
+          <Sparkles className="text-white" size={24} />
         </div>
 
         {/* Title */}
@@ -93,9 +94,7 @@ export default function WelcomeScreen({ onStart }: Props) {
             text-2xl
             font-bold
             text-white
-
             sm:text-[28px]
-
             md:text-3xl
           "
         >
@@ -110,10 +109,8 @@ export default function WelcomeScreen({ onStart }: Props) {
             text-sm
             leading-6
             text-zinc-400
-
             sm:max-w-xs
             sm:text-[15px]
-
             md:max-w-sm
             md:text-base
             md:leading-7
@@ -127,7 +124,11 @@ export default function WelcomeScreen({ onStart }: Props) {
 
         {/* Button */}
         <button
-          onClick={onStart}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onStart();
+          }}
           className="
             group
             mt-8
@@ -148,7 +149,6 @@ export default function WelcomeScreen({ onStart }: Props) {
             hover:scale-105
             hover:shadow-lg
             hover:shadow-violet-600/40
-
             sm:px-6
             sm:py-3.5
             sm:text-base
