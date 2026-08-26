@@ -20,47 +20,24 @@ import IntroVideo from "@/components/ui/IntroVideo";
 const INTRO_STORAGE_KEY = "yspace_intro_seen";
 
 export default function HomeClient() {
-  const [mounted, setMounted] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
 
-
   useEffect(() => {
-    setMounted(true);
-
-    const introSeen = localStorage.getItem(
-      INTRO_STORAGE_KEY
-    );
+    const introSeen = localStorage.getItem(INTRO_STORAGE_KEY);
 
     if (introSeen !== "true") {
       setShowIntro(true);
     }
-
   }, []);
 
-
   const handleIntroFinish = () => {
-    localStorage.setItem(
-      INTRO_STORAGE_KEY,
-      "true"
-    );
-
+    localStorage.setItem(INTRO_STORAGE_KEY, "true");
     setShowIntro(false);
   };
 
-
-  // Prevent server/client mismatch
-  if (!mounted) {
-    return null;
-  }
-
-
   return (
     <>
-      {showIntro && (
-        <IntroVideo 
-          onFinish={handleIntroFinish} 
-        />
-      )}
+      {showIntro && <IntroVideo onFinish={handleIntroFinish} />}
 
       <SmoothScroll />
       <SectionNavigator />

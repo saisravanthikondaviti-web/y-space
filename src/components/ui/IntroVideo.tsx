@@ -10,8 +10,7 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [started, setStarted] = useState(false);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -20,55 +19,35 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
 
     checkMobile();
 
-    window.addEventListener(
-      "resize",
-      checkMobile
-    );
+    window.addEventListener("resize", checkMobile);
 
     return () => {
-      window.removeEventListener(
-        "resize",
-        checkMobile
-      );
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
-
 
   const handleStart = async () => {
     const video = videoRef.current;
 
     if (!video || started) return;
 
-
     try {
-      // keep muted for browser permission
       video.muted = true;
 
       await video.play();
 
       setStarted(true);
 
-
-      // enable audio after playback starts
-      setTimeout(() => {
-        video.muted = false;
-      }, 300);
-
-
+      // Do not force audio on mobile.
+      // Mobile browsers, especially iOS Safari,
+      // can block or interrupt this behavior.
     } catch (error) {
-      console.error(
-        "Unable to play intro video:",
-        error
-      );
+      console.error("Unable to play intro video:", error);
+
+      // Never leave the user trapped on a black screen.
+      onFinish();
     }
   };
-
-
-  // Prevent hydration mismatch
-  if (isMobile === null) {
-    return null;
-  }
-
 
   return (
     <div
@@ -84,7 +63,6 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
       "
       onClick={handleStart}
     >
-
       {!started && (
         <div
           className="
@@ -99,7 +77,6 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         </div>
       )}
 
-
       <video
         ref={videoRef}
         src={
@@ -109,7 +86,7 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         }
         playsInline
         muted
-        preload="auto"
+        preload="metadata"
         className="
           w-full
           h-full
@@ -117,7 +94,6 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         "
         onEnded={onFinish}
       />
-
     </div>
   );
 }

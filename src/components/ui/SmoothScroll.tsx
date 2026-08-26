@@ -7,19 +7,30 @@ export let lenis: Lenis | null = null;
 
 export default function SmoothScroll() {
   useEffect(() => {
+    const isTouchDevice =
+      window.matchMedia("(pointer: coarse)").matches;
+
+    if (isTouchDevice) {
+      return;
+    }
+
     lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
     });
 
+    let animationFrameId: number;
+
     function raf(time: number) {
       lenis?.raf(time);
-      requestAnimationFrame(raf);
+      animationFrameId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    animationFrameId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
+
       lenis?.destroy();
       lenis = null;
     };
