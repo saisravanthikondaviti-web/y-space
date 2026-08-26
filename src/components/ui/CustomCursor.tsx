@@ -12,13 +12,11 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      setIsDesktop(window.innerWidth >= 1280);
     };
 
-    // Check initially
     checkScreenSize();
 
-    // Check whenever window is resized
     window.addEventListener("resize", checkScreenSize);
 
     return () => {
@@ -43,7 +41,6 @@ export default function CustomCursor() {
     };
   }, [isDesktop]);
 
-  // Completely remove cursor on mobile/tablet
   if (!isDesktop) return null;
 
   return (
