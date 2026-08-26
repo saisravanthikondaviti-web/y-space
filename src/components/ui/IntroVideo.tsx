@@ -32,17 +32,15 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     if (!video || started) return;
 
     try {
-      video.muted = true;
+      // The user's tap/click allows us to request audible playback.
+      video.muted = false;
+      video.volume = 1;
 
       await video.play();
 
       setStarted(true);
-
-      // Do not force audio on mobile.
-      // Mobile browsers, especially iOS Safari,
-      // can block or interrupt this behavior.
     } catch (error) {
-      console.error("Unable to play intro video:", error);
+      console.error("Unable to play intro video with sound:", error);
 
       // Never leave the user trapped on a black screen.
       onFinish();
@@ -85,8 +83,7 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
             : "/videos/web-intro.mp4"
         }
         playsInline
-        muted
-        preload="metadata"
+        preload="auto"
         className="
           w-full
           h-full
