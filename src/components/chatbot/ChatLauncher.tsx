@@ -145,18 +145,6 @@ export default function ChatLauncher() {
 
   /*
   |--------------------------------------------------------------------------
-  | HOVER
-  |--------------------------------------------------------------------------
-  */
-
-  useEffect(() => {
-    if (hovered && !open) {
-      setBotState("happy");
-    }
-  }, [hovered, open]);
-
-  /*
-  |--------------------------------------------------------------------------
   | OPEN
   |--------------------------------------------------------------------------
   */
@@ -176,6 +164,24 @@ export default function ChatLauncher() {
   const handleClose = () => {
     setOpen(false);
     setBotState("awake");
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | HOVER
+  |--------------------------------------------------------------------------
+  */
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+
+    if (!open) {
+      setBotState("happy");
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
   };
 
   return (
@@ -201,8 +207,8 @@ export default function ChatLauncher() {
         "
       >
         {/* =======================================================
-        GREETING
-    ======================================================= */}
+            GREETING
+        ======================================================= */}
 
         <AnimatePresence>
           {showGreeting && !open && (
@@ -227,37 +233,37 @@ export default function ChatLauncher() {
                 ease: "easeOut",
               }}
               className="
-        absolute
-        right-0
-        bottom-[88px]
-        sm:bottom-[102px]
-        w-[250px]
-      "
+                absolute
+                right-0
+                bottom-[88px]
+                sm:bottom-[102px]
+                w-[250px]
+              "
             >
               <div
                 className="
-          relative
-          rounded-[22px]
-          border
-          border-white/10
-          bg-black/75
-          px-5
-          py-4
-          shadow-[0_20px_60px_rgba(92,45,180,0.28)]
-          backdrop-blur-2xl
-        "
+                  relative
+                  rounded-[22px]
+                  border
+                  border-white/10
+                  bg-black/75
+                  px-5
+                  py-4
+                  shadow-[0_20px_60px_rgba(92,45,180,0.28)]
+                  backdrop-blur-2xl
+                "
               >
                 <div
                   className="
-            pointer-events-none
-            absolute
-            inset-0
-            rounded-[22px]
-            bg-gradient-to-br
-            from-violet-500/[0.08]
-            via-transparent
-            to-fuchsia-500/[0.05]
-          "
+                    pointer-events-none
+                    absolute
+                    inset-0
+                    rounded-[22px]
+                    bg-gradient-to-br
+                    from-violet-500/[0.08]
+                    via-transparent
+                    to-fuchsia-500/[0.05]
+                  "
                 />
 
                 <button
@@ -265,23 +271,23 @@ export default function ChatLauncher() {
                   aria-label="Dismiss greeting"
                   onClick={() => setShowGreeting(false)}
                   className="
-            absolute
-            right-2.5
-            top-2.5
-            z-10
-            flex
-            h-6
-            w-6
-            items-center
-            justify-center
-            rounded-full
-            text-sm
-            text-white/40
-            transition-all
-            duration-200
-            hover:bg-white/10
-            hover:text-white
-          "
+                    absolute
+                    right-2.5
+                    top-2.5
+                    z-10
+                    flex
+                    h-6
+                    w-6
+                    items-center
+                    justify-center
+                    rounded-full
+                    text-sm
+                    text-white/40
+                    transition-all
+                    duration-200
+                    hover:bg-white/10
+                    hover:text-white
+                  "
                 >
                   ×
                 </button>
@@ -289,25 +295,25 @@ export default function ChatLauncher() {
                 <div className="relative z-10 pr-5">
                   <p
                     className="
-              text-[9px]
-              font-semibold
-              uppercase
-              tracking-[0.16em]
-              text-violet-300
-            "
+                      text-[9px]
+                      font-semibold
+                      uppercase
+                      tracking-[0.16em]
+                      text-violet-300
+                    "
                   >
                     VAI Assistant
                   </p>
 
                   <p
                     className="
-              mt-1
-              whitespace-nowrap
-              text-[13px]
-              font-medium
-              leading-relaxed
-              text-white/85
-            "
+                      mt-1
+                      whitespace-nowrap
+                      text-[13px]
+                      font-medium
+                      leading-relaxed
+                      text-white/85
+                    "
                   >
                     Hi 👋 Need some help?
                   </p>
@@ -315,17 +321,17 @@ export default function ChatLauncher() {
 
                 <div
                   className="
-            absolute
-            -bottom-[7px]
-            right-8
-            h-4
-            w-4
-            rotate-45
-            border-r
-            border-b
-            border-white/10
-            bg-black/75
-          "
+                    absolute
+                    -bottom-[7px]
+                    right-8
+                    h-4
+                    w-4
+                    rotate-45
+                    border-r
+                    border-b
+                    border-white/10
+                    bg-black/75
+                  "
                 />
               </div>
             </motion.div>
@@ -341,8 +347,8 @@ export default function ChatLauncher() {
           aria-label="Open AI Assistant"
           aria-expanded={open}
           onClick={handleOpen}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           whileHover={{
             scale: 1.045,
           }}
@@ -385,8 +391,9 @@ export default function ChatLauncher() {
           <motion.div
             animate={{
               scale: hovered ? [1, 1.15, 1] : [1, 1.06, 1],
-
-              opacity: hovered ? [0.28, 0.5, 0.28] : [0.12, 0.28, 0.12],
+              opacity: hovered
+                ? [0.28, 0.5, 0.28]
+                : [0.12, 0.28, 0.12],
             }}
             transition={{
               duration: hovered ? 1.6 : 3.5,
@@ -473,7 +480,9 @@ export default function ChatLauncher() {
 
           <motion.div
             animate={{
-              opacity: hovered ? [0.25, 0.5, 0.25] : [0.12, 0.28, 0.12],
+              opacity: hovered
+                ? [0.25, 0.5, 0.25]
+                : [0.12, 0.28, 0.12],
             }}
             transition={{
               duration: 2.8,

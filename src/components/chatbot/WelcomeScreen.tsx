@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -84,11 +85,14 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
     md:w-20
   "
 >
-  <img
-    src="/images/chatbot/robot_wink.png"
-    alt="VAI SPACE Assistant"
-    className="block h-full w-full object-cover"
-  />
+ <Image
+  src="/images/chatbot/robot_wink.png"
+  alt="VAI SPACE Assistant"
+  width={80}
+  height={80}
+  className="block h-full w-full object-cover"
+/>
+
 </div>
 
         {/* Title */}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import FadeUp from "../ui/FadeUp";
 
@@ -90,13 +91,15 @@ export default function About() {
               className="relative h-[240px] overflow-hidden rounded-3xl border border-white/10 bg-black sm:h-[300px] md:h-[360px] lg:h-[420px]"
             >
               {/* Poster / fallback */}
-              <img
-                src="/images/about-robo-poster.webp"
-                alt="VAI SPACE digital innovation"
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  videoReady ? "opacity-0" : "opacity-100"
-                }`}
-              />
+              <Image
+  src="/images/about-robo-poster.webp"
+  alt="VAI SPACE digital innovation"
+  fill
+  sizes="(max-width: 1024px) 100vw, 50vw"
+  className={`object-cover transition-opacity duration-700 ${
+    videoReady ? "opacity-0" : "opacity-100"
+  }`}
+/>
 
               {/* Video */}
               {shouldLoadVideo && (

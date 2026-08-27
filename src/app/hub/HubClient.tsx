@@ -537,7 +537,7 @@ export default function HubClient() {
                 sm:leading-8
                 "
               >
-                Every great experience begins with a bold vision. We're putting
+                Every great experience begins with a bold vision. We&apos;re putting
                 the finishing touches on something that blends strategy,
                 creativity, and technology into one seamless journey.
               </p>

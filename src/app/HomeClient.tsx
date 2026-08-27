@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
@@ -20,15 +20,13 @@ import IntroVideo from "@/components/ui/IntroVideo";
 const INTRO_STORAGE_KEY = "yspace_intro_seen";
 
 export default function HomeClient() {
-  const [showIntro, setShowIntro] = useState(false);
-
-  useEffect(() => {
-    const introSeen = localStorage.getItem(INTRO_STORAGE_KEY);
-
-    if (introSeen !== "true") {
-      setShowIntro(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
     }
-  }, []);
+
+    return localStorage.getItem(INTRO_STORAGE_KEY) !== "true";
+  });
 
   const handleIntroFinish = () => {
     localStorage.setItem(INTRO_STORAGE_KEY, "true");
