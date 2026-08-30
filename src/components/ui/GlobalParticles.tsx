@@ -1,7 +1,8 @@
+
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Particle = {
   left: number;
@@ -11,8 +12,8 @@ type Particle = {
   size: number;
 };
 
-function generateParticles(): Particle[] {
-  return Array.from({ length: 40 }, () => ({
+function generateParticles(count: number): Particle[] {
+  return Array.from({ length: count }, () => ({
     left: Math.random() * 100,
     top: Math.random() * 100,
     duration: 4 + Math.random() * 6,
@@ -22,14 +23,26 @@ function generateParticles(): Particle[] {
 }
 
 export default function GlobalParticles() {
-  const [particles, setParticles] = useState<Particle[]>([]);
+  const [particles] = useState<Particle[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
 
-  useEffect(() => {
-    setParticles(generateParticles());
-  }, []);
+    const isTouchDevice = window.matchMedia(
+      "(pointer: coarse)"
+    ).matches;
+
+    // Fewer particles on touch devices for better mobile performance.
+    const particleCount = isTouchDevice ? 12 : 40;
+
+    return generateParticles(particleCount);
+  });
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      aria-hidden="true"
+    >
       {particles.map((particle, index) => (
         <motion.div
           key={index}
@@ -55,3 +68,4 @@ export default function GlobalParticles() {
     </div>
   );
 }
+

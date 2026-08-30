@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -25,7 +26,8 @@ export default function HomeClient() {
       return false;
     }
 
-    return localStorage.getItem(INTRO_STORAGE_KEY) !== "true";
+    const introSeen = localStorage.getItem(INTRO_STORAGE_KEY);
+    return introSeen !== "true";
   });
 
   const handleIntroFinish = () => {
@@ -54,3 +56,4 @@ export default function HomeClient() {
     </>
   );
 }
+

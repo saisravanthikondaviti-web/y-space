@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface IntroVideoProps {
   onFinish: () => void;
@@ -8,23 +8,17 @@ interface IntroVideoProps {
 
 export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const [started, setStarted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-
-    window.addEventListener("resize", checkMobile);
+    const timer = window.setTimeout(() => {
+      onFinish();
+    }, 15000);
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.clearTimeout(timer);
     };
-  }, []);
+  }, [onFinish]);
 
   const handleStart = async () => {
     const video = videoRef.current;
@@ -32,7 +26,6 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     if (!video || started) return;
 
     try {
-      // The user's tap/click allows us to request audible playback.
       video.muted = false;
       video.volume = 1;
 
@@ -40,11 +33,14 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
 
       setStarted(true);
     } catch (error) {
-      console.error("Unable to play intro video with sound:", error);
-
-      // Never leave the user trapped on a black screen.
+      console.error("Unable to play intro video:", error);
       onFinish();
     }
+  };
+
+  const handleVideoError = () => {
+    console.error("Intro video failed to load.");
+    onFinish();
   };
 
   return (
@@ -53,22 +49,22 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         fixed
         inset-0
         z-[9999]
-        bg-black
         flex
+        cursor-pointer
         items-center
         justify-center
-        cursor-pointer
+        bg-black
       "
       onClick={handleStart}
     >
       {!started && (
         <div
           className="
+            pointer-events-none
             absolute
             z-50
-            text-white
             text-lg
-            pointer-events-none
+            text-white
           "
         >
           Tap anywhere to start
@@ -77,20 +73,23 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
 
       <video
         ref={videoRef}
-        src={
-          isMobile
-            ? "/videos/mobileintro.mp4"
-            : "/videos/web-intro.mp4"
-        }
         playsInline
-        preload="auto"
-        className="
-          w-full
-          h-full
-          object-cover
-        "
+        preload="metadata"
+        className="h-full w-full object-cover"
         onEnded={onFinish}
-      />
+        onError={handleVideoError}
+      >
+        <source
+          src="/videos/mobileintro.mp4"
+          media="(max-width: 767px)"
+          type="video/mp4"
+        />
+
+        <source
+          src="/videos/web-intro.mp4"
+          type="video/mp4"
+        />
+      </video>
     </div>
   );
 }
