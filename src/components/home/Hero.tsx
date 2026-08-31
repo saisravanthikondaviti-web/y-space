@@ -23,7 +23,7 @@ export default function Hero() {
           -translate-y-1/2
           rounded-full
           bg-[#616CFA]/20
-          blur-[150px]
+          blur-[70px] md:blur-[100px]
         "
       />
 

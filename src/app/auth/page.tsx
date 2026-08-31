@@ -72,8 +72,8 @@ export default function AuthPage() {
       <main className="min-h-screen bg-black text-white flex">
         {/* LEFT SIDE */}
         <section className="hidden lg:flex flex-1 relative overflow-hidden">
-          <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-[#616CFA]/20 blur-[180px]" />
-          <div className="absolute bottom-[-120px] right-[-120px] h-[500px] w-[500px] rounded-full bg-[#E46ECC]/20 blur-[180px]" />
+          <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-[#616CFA]/20 blur-[80px] md:blur-[120px]" />
+          <div className="absolute bottom-[-120px] right-[-120px] h-[500px] w-[500px] rounded-full bg-[#E46ECC]/20 blur-[80px] md:blur-[110px]" />
 
           <div
             className="absolute inset-0 opacity-[0.03]"

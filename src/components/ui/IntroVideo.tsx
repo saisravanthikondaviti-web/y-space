@@ -8,9 +8,19 @@ interface IntroVideoProps {
 
 export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [started, setStarted] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    setVideoSrc(
+      mediaQuery.matches
+        ? "/videos/mobileintro.mp4"
+        : "/videos/web-intro.mp4"
+    );
+
     const timer = window.setTimeout(() => {
       onFinish();
     }, 15000);
@@ -34,12 +44,37 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
       setStarted(true);
     } catch (error) {
       console.error("Unable to play intro video:", error);
-      onFinish();
+
+      // Fallback to muted playback
+      try {
+        video.muted = true;
+
+        await video.play();
+
+        setStarted(true);
+      } catch (fallbackError) {
+        console.error(
+          "Muted intro video playback also failed:",
+          fallbackError
+        );
+
+        onFinish();
+      }
     }
   };
 
-  const handleVideoError = () => {
-    console.error("Intro video failed to load.");
+  const handleVideoError = (
+    event: React.SyntheticEvent<HTMLVideoElement>
+  ) => {
+    const video = event.currentTarget;
+
+    console.error("Intro video failed to load", {
+      src: video.currentSrc,
+      networkState: video.networkState,
+      readyState: video.readyState,
+      errorCode: video.error?.code ?? null,
+    });
+
     onFinish();
   };
 
@@ -58,38 +93,24 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
       onClick={handleStart}
     >
       {!started && (
-        <div
-          className="
-            pointer-events-none
-            absolute
-            z-50
-            text-lg
-            text-white
-          "
-        >
+        <div className="pointer-events-none absolute z-50 text-lg text-white">
           Tap anywhere to start
         </div>
       )}
 
-      <video
-        ref={videoRef}
-        playsInline
-        preload="metadata"
-        className="h-full w-full object-cover"
-        onEnded={onFinish}
-        onError={handleVideoError}
-      >
-        <source
-          src="/videos/mobileintro.mp4"
-          media="(max-width: 767px)"
-          type="video/mp4"
+      {videoSrc && (
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          src={videoSrc}
+          muted
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+          onEnded={onFinish}
+          onError={handleVideoError}
         />
-
-        <source
-          src="/videos/web-intro.mp4"
-          type="video/mp4"
-        />
-      </video>
+      )}
     </div>
   );
 }

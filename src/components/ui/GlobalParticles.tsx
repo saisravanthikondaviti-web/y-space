@@ -1,13 +1,13 @@
-
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Particle = {
   left: number;
   top: number;
   duration: number;
+  delay: number;
   color: string;
   size: number;
 };
@@ -16,27 +16,28 @@ function generateParticles(count: number): Particle[] {
   return Array.from({ length: count }, () => ({
     left: Math.random() * 100,
     top: Math.random() * 100,
-    duration: 4 + Math.random() * 6,
+    duration: 6 + Math.random() * 5,
+    delay: Math.random() * 3,
     color: Math.random() > 0.5 ? "#616CFA" : "#E46ECC",
-    size: 1 + Math.random() * 3,
+    size: 1 + Math.random() * 2,
   }));
 }
 
 export default function GlobalParticles() {
-  const [particles] = useState<Particle[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia(
+      "(min-width: 1280px) and (pointer: fine)"
+    );
+
+    // No particles on mobile and tablets for better performance.
+    if (!desktopQuery.matches) {
+      return;
     }
 
-    const isTouchDevice = window.matchMedia(
-      "(pointer: coarse)"
-    ).matches;
-
-    // Fewer particles on touch devices for better mobile performance.
-    const particleCount = isTouchDevice ? 12 : 40;
-
-    return generateParticles(particleCount);
-  });
+    setParticles(generateParticles(15));
+  }, []);
 
   return (
     <div
@@ -46,16 +47,17 @@ export default function GlobalParticles() {
       {particles.map((particle, index) => (
         <motion.div
           key={index}
+          className="absolute rounded-full will-change-transform"
           animate={{
-            y: [0, -50, 0],
-            opacity: [0.15, 0.8, 0.15],
+            y: [0, -35, 0],
+            opacity: [0.2, 0.65, 0.2],
           }}
           transition={{
             duration: particle.duration,
+            delay: particle.delay,
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute rounded-full"
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
@@ -68,4 +70,3 @@ export default function GlobalParticles() {
     </div>
   );
 }
-
