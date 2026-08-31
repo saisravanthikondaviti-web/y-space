@@ -1,11 +1,11 @@
-
+﻿
 
 ==================== AGENTS.md ====================
 
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version has breaking changes â€” APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
 
@@ -18,7 +18,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 /// <reference types="next" />
 /// <reference types="next/image-types/global" />
-import "./.next/types/routes.d.ts";
+import "./.next/dev/types/routes.d.ts";
 
 // NOTE: This file should not be edited
 // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
@@ -7764,10 +7764,9 @@ select {
 
 ==================== src\app\HomeClient.tsx ====================
 
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
@@ -7780,33 +7779,48 @@ import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import SectionNavigator from "@/components/ui/SectionNavigator";
 import Stats from "@/components/home/Stats";
 import IntroVideo from "@/components/ui/IntroVideo";
 
 const INTRO_STORAGE_KEY = "yspace_intro_seen";
 
 export default function HomeClient() {
-  const [showIntro, setShowIntro] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
+  // Keep the server and first client render identical.
+  const [showIntro, setShowIntro] = useState(false);
+  const [introChecked, setIntroChecked] = useState(false);
 
-    const introSeen = localStorage.getItem(INTRO_STORAGE_KEY);
-    return introSeen !== "true";
-  });
+  useEffect(() => {
+    try {
+      const introSeen = window.localStorage.getItem(INTRO_STORAGE_KEY);
+
+      setShowIntro(introSeen !== "true");
+    } catch (error) {
+      // If storage is unavailable, show the intro safely.
+      setShowIntro(true);
+    } finally {
+      setIntroChecked(true);
+    }
+  }, []);
 
   const handleIntroFinish = () => {
-    localStorage.setItem(INTRO_STORAGE_KEY, "true");
+    try {
+      window.localStorage.setItem(INTRO_STORAGE_KEY, "true");
+    } catch (error) {
+      console.warn("Unable to save intro preference:", error);
+    }
+
     setShowIntro(false);
   };
 
   return (
     <>
-      {showIntro && <IntroVideo onFinish={handleIntroFinish} />}
+      {/* Only render after checking browser storage */}
+      {introChecked && showIntro && (
+        <IntroVideo onFinish={handleIntroFinish} />
+      )}
 
       <SmoothScroll />
-      <SectionNavigator />
+
       <ScrollProgress />
       <CustomCursor />
 
@@ -7824,15 +7838,16 @@ export default function HomeClient() {
 }
 
 
-
 ==================== src\app\layout.tsx ====================
 
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, Lexend } from "next/font/google";
+
 import "./globals.css";
+
 import GlobalParticles from "@/components/ui/GlobalParticles";
-import ChatLauncher from "@/components/chatbot/ChatLauncher";
+import ChatLauncherLoader from "@/components/chatbot/ChatLauncherLoader";
 
 const headingFont = Space_Grotesk({
   subsets: ["latin"],
@@ -7906,7 +7921,7 @@ export default function RootLayout({
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
       <head>
-        {/* Google Analytics (GA4) */}
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-022P31P0VY"
           strategy="afterInteractive"
@@ -7926,8 +7941,11 @@ export default function RootLayout({
       <body className="min-h-screen bg-black">
         {children}
 
+        {/* Global background particles */}
         <GlobalParticles />
-        <ChatLauncher />
+
+        {/* Lazy-loaded chatbot */}
+        <ChatLauncherLoader />
       </body>
     </html>
   );
@@ -8040,7 +8058,7 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
-import SectionNavigator from "@/components/ui/SectionNavigator";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8054,7 +8072,7 @@ export default function AboutPage() {
     <main className="bg-black text-white overflow-hidden">
       <ScrollProgress />
       <SmoothScroll />
-      <SectionNavigator />
+      
       <CustomCursor />
       <Navbar />
       <AboutHero />
@@ -8211,7 +8229,7 @@ export async function POST(req: Request) {
       // to the customer who submitted the chatbot form.
       replyTo: email,
 
-      subject: `🤖 New Chatbot Lead - ${name || "New Client"}`,
+      subject: `ðŸ¤– New Chatbot Lead - ${name || "New Client"}`,
 
       html: `
 <!DOCTYPE html>
@@ -8448,7 +8466,7 @@ export async function POST(req: Request) {
             font-size:14px;
           "
         >
-          💬 Simply click <strong>Reply</strong> to respond
+          ðŸ’¬ Simply click <strong>Reply</strong> to respond
           directly to ${safeName}.
         </p>
 
@@ -8468,7 +8486,7 @@ export async function POST(req: Request) {
         "
       >
 
-        © ${new Date().getFullYear()} VAISPACE
+        Â© ${new Date().getFullYear()} VAISPACE
 
       </div>
 
@@ -8492,7 +8510,7 @@ export async function POST(req: Request) {
 
       to: email,
 
-      subject: "Thank you for contacting VAISPACE 🚀",
+      subject: "Thank you for contacting VAISPACE ðŸš€",
 
       html: `
 <!DOCTYPE html>
@@ -8577,7 +8595,7 @@ export async function POST(req: Request) {
             color:#111827;
           "
         >
-          Hi ${safeName} 👋
+          Hi ${safeName} ðŸ‘‹
         </h2>
 
 
@@ -8714,7 +8732,7 @@ export async function POST(req: Request) {
         "
       >
 
-        © ${new Date().getFullYear()} VAISPACE.
+        Â© ${new Date().getFullYear()} VAISPACE.
         All rights reserved.
 
       </div>
@@ -8881,7 +8899,7 @@ export async function POST(req: Request) {
       // the reply goes directly to the customer.
       replyTo: email,
 
-      subject: `🚀 New VAISPACE Inquiry from ${name}`,
+      subject: `ðŸš€ New VAISPACE Inquiry from ${name}`,
 
       html: `
 <!DOCTYPE html>
@@ -9040,7 +9058,7 @@ export async function POST(req: Request) {
             font-size:14px;
           "
         >
-          💬 Simply click <strong>Reply</strong> to respond directly
+          ðŸ’¬ Simply click <strong>Reply</strong> to respond directly
           to ${safeName}.
         </p>
 
@@ -9056,7 +9074,7 @@ export async function POST(req: Request) {
         "
       >
 
-        © ${new Date().getFullYear()} VAISPACE
+        Â© ${new Date().getFullYear()} VAISPACE
 
       </div>
 
@@ -9081,7 +9099,7 @@ export async function POST(req: Request) {
 
       to: email,
 
-      subject: "Thank you for contacting VAISPACE 🚀",
+      subject: "Thank you for contacting VAISPACE ðŸš€",
 
       html: `
 <!DOCTYPE html>
@@ -9159,7 +9177,7 @@ export async function POST(req: Request) {
             color:#111827;
           "
         >
-          Hi ${safeName} 👋
+          Hi ${safeName} ðŸ‘‹
         </h2>
 
         <p
@@ -9297,7 +9315,7 @@ export async function POST(req: Request) {
         "
       >
 
-        © ${new Date().getFullYear()} VAISPACE.
+        Â© ${new Date().getFullYear()} VAISPACE.
         All rights reserved.
 
       </div>
@@ -9423,8 +9441,8 @@ export default function AuthPage() {
       <main className="min-h-screen bg-black text-white flex">
         {/* LEFT SIDE */}
         <section className="hidden lg:flex flex-1 relative overflow-hidden">
-          <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-[#616CFA]/20 blur-[180px]" />
-          <div className="absolute bottom-[-120px] right-[-120px] h-[500px] w-[500px] rounded-full bg-[#E46ECC]/20 blur-[180px]" />
+          <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-[#616CFA]/20 blur-[80px] md:blur-[120px]" />
+          <div className="absolute bottom-[-120px] right-[-120px] h-[500px] w-[500px] rounded-full bg-[#E46ECC]/20 blur-[80px] md:blur-[110px]" />
 
           <div
             className="absolute inset-0 opacity-[0.03]"
@@ -9458,7 +9476,7 @@ export default function AuthPage() {
             <div className="mt-12 h-[1px] w-24 bg-white/20" />
 
             <p className="mt-6 text-sm tracking-[0.3em] uppercase text-white/40">
-              Built for thinkers • Designed for creators
+              Built for thinkers â€¢ Designed for creators
             </p>
           </div>
 
@@ -9717,7 +9735,7 @@ export default async function BlogsPage() {
     })),
   );
 
-  // 🔥 IMPORTANT: handle error OR empty state
+  // ðŸ”¥ IMPORTANT: handle error OR empty state
   if (error) {
     return (
       <div className="p-10 text-center">
@@ -9828,7 +9846,7 @@ export default async function BlogPage({
           transition-all duration-300 group text-sm sm:text-base"
         >
           <span className="transition-transform duration-300 group-hover:-translate-x-1">
-            ←
+            â†
           </span>
 
           <span className="font-medium">
@@ -9867,7 +9885,7 @@ export default async function BlogPage({
 
         {/* Views */}
         <div className="flex items-center gap-6 mt-4 sm:mt-5 text-xs sm:text-sm text-gray-400">
-          <span>👁 {views} Views</span>
+          <span>ðŸ‘ {views} Views</span>
         </div>
 
         {/* Blog Content */}
@@ -10078,7 +10096,7 @@ ${message}`;
               font-semibold 
               leading-snug
             ">
-              Let’s Build Something{" "}
+              Letâ€™s Build Something{" "}
 
               <span
                 className="
@@ -10306,7 +10324,7 @@ ${message}`;
               text-white/40
               text-center
             ">
-              We usually respond within 24–48 hours.
+              We usually respond within 24â€“48 hours.
             </p>
 
 
@@ -10358,10 +10376,10 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 
 export default function HubClient() {
-  // Deterministic stars (prevents hydration mismatch)
+  // Deterministic stars â€” prevents hydration mismatch
   const stars = useMemo(
     () =>
-      Array.from({ length: 80 }, (_, i) => ({
+      Array.from({ length: 30 }, (_, i) => ({
         id: i,
         size: (i % 3) + 1,
         left: (i * 37) % 100,
@@ -10372,12 +10390,13 @@ export default function HubClient() {
     [],
   );
 
+  // Reduced shooting stars for better performance
   const shootingStars = useMemo(
     () =>
-      Array.from({ length: 6 }, (_, i) => ({
+      Array.from({ length: 3 }, (_, i) => ({
         id: i,
-        top: 10 + i * 12,
-        delay: i * 3,
+        top: 15 + i * 25,
+        delay: i * 4,
       })),
     [],
   );
@@ -10385,11 +10404,11 @@ export default function HubClient() {
   return (
     <main
       className="
-      relative
-      min-h-screen
-      overflow-x-hidden
-      bg-black
-      text-white
+        relative
+        min-h-screen
+        overflow-x-hidden
+        bg-black
+        text-white
       "
     >
       <ScrollProgress />
@@ -10401,110 +10420,103 @@ export default function HubClient() {
       {/* ================= BACKGROUND ================= */}
 
       {/* Grid Background */}
-
       <div
         className="
-        fixed
-        inset-0
-        -z-40
-        pointer-events-none
-        bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),
-        linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)]
-        bg-[size:60px_60px]
+          fixed
+          inset-0
+          -z-40
+          pointer-events-none
+          bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),
+          linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)]
+          bg-[size:60px_60px]
         "
       />
 
       {/* Aurora Blob 1 */}
-
       <motion.div
         animate={{
-          x: [0, 120, -60, 0],
-          y: [0, -80, 60, 0],
+          x: [0, 70, -40, 0],
+          y: [0, -50, 35, 0],
         }}
         transition={{
-          duration: 24,
+          duration: 32,
           repeat: Infinity,
           ease: "easeInOut",
         }}
         className="
-        fixed
-        -top-48
-        -left-40
-        h-[320px]
-        w-[320px]
-        sm:h-[420px]
-        sm:w-[420px]
-        lg:h-[520px]
-        lg:w-[520px]
-        rounded-full
-        bg-[#616CFA]/20
-        blur-[150px]
-        -z-30
-        pointer-events-none
+          fixed
+          -top-48
+          -left-40
+          h-[320px]
+          w-[320px]
+          sm:h-[420px]
+          sm:w-[420px]
+          lg:h-[520px]
+          lg:w-[520px]
+          rounded-full
+          bg-[#616CFA]/20
+          blur-[70px]
+          md:blur-[100px]
+          -z-30
+          pointer-events-none
         "
       />
 
       {/* Aurora Blob 2 */}
-
       <motion.div
         animate={{
-          x: [0, -140, 100, 0],
-          y: [0, 80, -60, 0],
+          x: [0, -80, 60, 0],
+          y: [0, 45, -35, 0],
         }}
         transition={{
-          duration: 28,
+          duration: 36,
           repeat: Infinity,
           ease: "easeInOut",
         }}
         className="
-        fixed
-        bottom-[-220px]
-        right-[-120px]
-        h-[350px]
-        w-[350px]
-        sm:h-[450px]
-        sm:w-[450px]
-        lg:h-[600px]
-        lg:w-[600px]
-        rounded-full
-        bg-[#E46ECC]/20
-        blur-[170px]
-        -z-30
-        pointer-events-none
+          fixed
+          bottom-[-220px]
+          right-[-120px]
+          h-[350px]
+          w-[350px]
+          sm:h-[450px]
+          sm:w-[450px]
+          lg:h-[600px]
+          lg:w-[600px]
+          rounded-full
+          bg-[#E46ECC]/20
+          blur-[80px]
+          md:blur-[110px]
+          -z-30
+          pointer-events-none
         "
       />
 
       {/* Center Glow */}
-
       <div
         className="
-        fixed
-        inset-0
-        -z-20
-        pointer-events-none
-        bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_65%)]
+          fixed
+          inset-0
+          -z-20
+          pointer-events-none
+          bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_65%)]
         "
       />
 
       {/* Stars */}
-
       <div
         className="
-        fixed
-        inset-0
-        -z-10
-        overflow-hidden
-        pointer-events-none
+          fixed
+          inset-0
+          -z-10
+          overflow-hidden
+          pointer-events-none
         "
       >
         {stars.map((star) => (
           <motion.span
             key={star.id}
-            className="
-            absolute
-            rounded-full
-            bg-white
-            "
+            className="absolute rounded-full bg-white"
             style={{
               width: star.size,
               height: star.size,
@@ -10525,14 +10537,13 @@ export default function HubClient() {
       </div>
 
       {/* Shooting Stars */}
-
       <div
         className="
-        fixed
-        inset-0
-        overflow-hidden
-        pointer-events-none
-        -z-10
+          fixed
+          inset-0
+          -z-10
+          overflow-hidden
+          pointer-events-none
         "
       >
         {shootingStars.map((meteor) => (
@@ -10562,13 +10573,13 @@ export default function HubClient() {
           >
             <div
               className="
-              h-[2px]
-              w-40
-              rotate-[25deg]
-              bg-gradient-to-r
-              from-white
-              via-[#616CFA]
-              to-transparent
+                h-[2px]
+                w-40
+                rotate-[25deg]
+                bg-gradient-to-r
+                from-white
+                via-[#616CFA]
+                to-transparent
               "
             />
           </motion.div>
@@ -10576,8 +10587,7 @@ export default function HubClient() {
       </div>
 
       {/* Floating Orbs */}
-
-      {[...Array(5)].map((_, i) => (
+      {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
           animate={{
@@ -10590,11 +10600,11 @@ export default function HubClient() {
             ease: "easeInOut",
           }}
           className="
-          fixed
-          rounded-full
-          blur-3xl
-          -z-20
-          pointer-events-none
+            fixed
+            rounded-full
+            blur-3xl
+            -z-20
+            pointer-events-none
           "
           style={{
             width: 100 + i * 20,
@@ -10602,7 +10612,9 @@ export default function HubClient() {
             left: `${10 + i * 12}%`,
             top: `${15 + (i % 3) * 25}%`,
             background:
-              i % 2 === 0 ? "rgba(97,108,250,0.05)" : "rgba(228,110,204,0.05)",
+              i % 2 === 0
+                ? "rgba(97,108,250,0.05)"
+                : "rgba(228,110,204,0.05)",
           }}
         />
       ))}
@@ -10611,33 +10623,32 @@ export default function HubClient() {
 
       <section
         className="
-        relative
-        flex
-        min-h-screen
-        items-center
-        justify-center
-        px-5
-        pt-28
-        pb-20
-        sm:px-6
-        md:px-10
-        lg:px-16
+          relative
+          flex
+          min-h-screen
+          items-center
+          justify-center
+          px-5
+          pt-28
+          pb-20
+          sm:px-6
+          md:px-10
+          lg:px-16
         "
       >
         <div
           className="
-          relative
-          mx-auto
-          flex
-          w-full
-          max-w-5xl
-          flex-col
-          items-center
-          text-center
+            relative
+            mx-auto
+            flex
+            w-full
+            max-w-5xl
+            flex-col
+            items-center
+            text-center
           "
         >
           {/* Floating Badge */}
-
           <motion.div
             initial={{
               opacity: 0,
@@ -10651,35 +10662,27 @@ export default function HubClient() {
               duration: 0.7,
             }}
             className="
-            inline-flex
-            items-center
-            gap-2
-            rounded-full
-            border
-            border-white/10
-            bg-white/5
-            px-4
-            py-2
-            backdrop-blur-xl
-            sm:px-6
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-white/10
+              bg-white/5
+              px-4
+              py-2
+              backdrop-blur-xl
+              sm:px-6
             "
           >
-            <span
-              className="
-              h-2
-              w-2
-              rounded-full
-              bg-[#616CFA]
-              animate-pulse
-              "
-            />
+            <span className="h-2 w-2 rounded-full bg-[#616CFA] animate-pulse" />
 
             <span
               className="
-              text-xs
-              uppercase
-              tracking-[0.35em]
-              text-white/60
+                text-xs
+                uppercase
+                tracking-[0.35em]
+                text-white/60
               "
             >
               VAISPACE
@@ -10687,7 +10690,6 @@ export default function HubClient() {
           </motion.div>
 
           {/* Heading */}
-
           <motion.h1
             initial={{
               opacity: 0,
@@ -10702,36 +10704,31 @@ export default function HubClient() {
               duration: 0.8,
             }}
             className="
-            mt-3
-            text-4xl
-            font-black
-            leading-tight
-            sm:text-5xl
-            md:text-6xl
-            lg:text-7xl
-            xl:text-[8rem]
+              mt-3
+              text-4xl
+              font-black
+              leading-tight
+              sm:text-5xl
+              md:text-6xl
+              lg:text-7xl
+              xl:text-[8rem]
             "
           >
-            <span
-              className="
-              block
-              text-white
-              "
-            >
+            <span className="block text-white">
               SOMETHING
             </span>
 
             <span
               className="
-              mt-2
-              block
-              bg-gradient-to-r
-              from-[#616CFA]
-              via-white
-              to-[#E46ECC]
-              bg-clip-text
-              text-transparent
-              sm:mt-4
+                mt-2
+                block
+                bg-gradient-to-r
+                from-[#616CFA]
+                via-white
+                to-[#E46ECC]
+                bg-clip-text
+                text-transparent
+                sm:mt-4
               "
             >
               COMING SOON
@@ -10739,39 +10736,33 @@ export default function HubClient() {
           </motion.h1>
 
           {/* Description */}
-
           <motion.p
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{
               delay: 0.5,
               duration: 0.8,
             }}
             className="
-            mt-8
-            max-w-3xl
-            px-2
-            text-base
-            leading-7
-            text-white/60
-            sm:text-lg
-            sm:leading-8
-            md:text-xl
-            md:leading-9
+              mt-8
+              max-w-3xl
+              px-2
+              text-base
+              leading-7
+              text-white/60
+              sm:text-lg
+              sm:leading-8
+              md:text-xl
+              md:leading-9
             "
           >
-            We are building something extraordinary — a refined digital
+            We are building something extraordinary â€” a refined digital
             experience crafted with creativity, innovation, and precision.
             <br />
             Stay tuned.
           </motion.p>
 
           {/* Glass Card */}
-
           <motion.div
             initial={{
               opacity: 0,
@@ -10786,39 +10777,37 @@ export default function HubClient() {
               duration: 0.8,
             }}
             className="
-            relative
-            mt-14
-            w-full
-            max-w-4xl
-            overflow-hidden
-            rounded-3xl
-            border
-            border-white/10
-            bg-white/[0.03]
-            backdrop-blur-2xl
-            p-6
-            sm:p-8
-            md:p-10
-            lg:p-14
+              relative
+              mt-14
+              w-full
+              max-w-4xl
+              overflow-hidden
+              rounded-3xl
+              border
+              border-white/10
+              bg-white/[0.03]
+              backdrop-blur-2xl
+              p-6
+              sm:p-8
+              md:p-10
+              lg:p-14
             "
           >
             {/* Card Glow */}
-
             <div
               className="
-              absolute
-              inset-0
-              pointer-events-none
-              bg-gradient-to-r
-              from-[#616CFA]/5
-              via-transparent
-              to-[#E46ECC]/5
+                absolute
+                inset-0
+                pointer-events-none
+                bg-gradient-to-r
+                from-[#616CFA]/5
+                via-transparent
+                to-[#E46ECC]/5
               "
             />
 
             <div className="relative z-10">
               {/* Rotating Icon */}
-
               <motion.div
                 animate={{
                   rotate: 360,
@@ -10829,44 +10818,44 @@ export default function HubClient() {
                   ease: "linear",
                 }}
                 className="
-                mx-auto
-                flex
-                h-24
-                w-24
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-white/10
-                bg-white/[0.02]
+                  mx-auto
+                  flex
+                  h-24
+                  w-24
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-white/10
+                  bg-white/[0.02]
                 "
               >
                 <div
                   className="
-                  flex
-                  h-14
-                  w-14
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-gradient-to-r
-                  from-[#616CFA]
-                  to-[#E46ECC]
-                  text-2xl
-                  shadow-[0_0_40px_rgba(97,108,250,0.5)]
+                    flex
+                    h-14
+                    w-14
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-gradient-to-r
+                    from-[#616CFA]
+                    to-[#E46ECC]
+                    text-2xl
+                    shadow-[0_0_40px_rgba(97,108,250,0.5)]
                   "
                 >
-                  ✦
+                  âœ¦
                 </div>
               </motion.div>
 
               <h2
                 className="
-                mt-8
-                text-2xl
-                font-semibold
-                sm:text-3xl
-                md:text-4xl
+                  mt-8
+                  text-2xl
+                  font-semibold
+                  sm:text-3xl
+                  md:text-4xl
                 "
               >
                 Launching Something Extraordinary
@@ -10874,46 +10863,46 @@ export default function HubClient() {
 
               <p
                 className="
-                mx-auto
-                mt-5
-                max-w-2xl
-                text-sm
-                leading-7
-                text-white/55
-                sm:text-base
-                sm:leading-8
+                  mx-auto
+                  mt-5
+                  max-w-2xl
+                  text-sm
+                  leading-7
+                  text-white/55
+                  sm:text-base
+                  sm:leading-8
                 "
               >
-                Every great experience begins with a bold vision. We&apos;re putting
-                the finishing touches on something that blends strategy,
-                creativity, and technology into one seamless journey.
+                Every great experience begins with a bold vision. We&apos;re
+                putting the finishing touches on something that blends
+                strategy, creativity, and technology into one seamless
+                journey.
               </p>
 
               {/* Buttons */}
-
               <div
                 className="
-                mt-10
-                flex
-                flex-col
-                gap-4
-                sm:flex-row
-                sm:justify-center
+                  mt-10
+                  flex
+                  flex-col
+                  gap-4
+                  sm:flex-row
+                  sm:justify-center
                 "
               >
                 <Link
                   href="/"
                   className="
-                  rounded-full
-                  bg-gradient-to-r
-                  from-[#616CFA]
-                  to-[#E46ECC]
-                  px-8
-                  py-3
-                  text-center
-                  font-medium
-                  transition
-                  hover:scale-105
+                    rounded-full
+                    bg-gradient-to-r
+                    from-[#616CFA]
+                    to-[#E46ECC]
+                    px-8
+                    py-3
+                    text-center
+                    font-medium
+                    transition
+                    hover:scale-105
                   "
                 >
                   Back to Home
@@ -10922,16 +10911,16 @@ export default function HubClient() {
                 <Link
                   href="/contact"
                   className="
-                  rounded-full
-                  border
-                  border-white/10
-                  bg-white/[0.03]
-                  px-8
-                  py-3
-                  text-center
-                  font-medium
-                  transition
-                  hover:bg-white/10
+                    rounded-full
+                    border
+                    border-white/10
+                    bg-white/[0.03]
+                    px-8
+                    py-3
+                    text-center
+                    font-medium
+                    transition
+                    hover:bg-white/10
                   "
                 >
                   Contact Us
@@ -10941,7 +10930,6 @@ export default function HubClient() {
           </motion.div>
 
           {/* Scroll Indicator */}
-
           <motion.div
             animate={{
               y: [0, 12, 0],
@@ -10951,18 +10939,18 @@ export default function HubClient() {
               duration: 2,
             }}
             className="
-            mt-16
-            flex
-            flex-col
-            items-center
-            text-white/40
+              mt-16
+              flex
+              flex-col
+              items-center
+              text-white/40
             "
           >
             <span
               className="
-              text-xs
-              uppercase
-              tracking-[0.35em]
+                text-xs
+                uppercase
+                tracking-[0.35em]
               "
             >
               Stay Tuned
@@ -10970,12 +10958,12 @@ export default function HubClient() {
 
             <div
               className="
-              mt-5
-              h-12
-              w-[2px]
-              bg-gradient-to-b
-              from-[#616CFA]
-              to-[#E46ECC]
+                mt-5
+                h-12
+                w-[2px]
+                bg-gradient-to-b
+                from-[#616CFA]
+                to-[#E46ECC]
               "
             />
           </motion.div>
@@ -10983,24 +10971,24 @@ export default function HubClient() {
       </section>
 
       {/* Bottom Glow */}
-
       <div
         className="
-        pointer-events-none
-        absolute
-        bottom-0
-        left-1/2
-        h-64
-        w-[300px]
-        sm:w-[500px]
-        lg:w-[700px]
-        -translate-x-1/2
-        rounded-full
-        bg-gradient-to-r
-        from-[#616CFA]/10
-        via-[#E46ECC]/10
-        to-[#616CFA]/10
-        blur-[140px]
+          pointer-events-none
+          absolute
+          bottom-0
+          left-1/2
+          h-64
+          w-[300px]
+          -translate-x-1/2
+          rounded-full
+          bg-gradient-to-r
+          from-[#616CFA]/10
+          via-[#E46ECC]/10
+          to-[#616CFA]/10
+          blur-[80px]
+          sm:w-[500px]
+          lg:w-[700px]
+          md:blur-[100px]
         "
       />
 
@@ -11086,7 +11074,12 @@ export default function WhatWeDoPage() {
 
 "use client";
 
+import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+
+import CustomCursor from "@/components/ui/CustomCursor";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 
 import {
   BackgroundFX,
@@ -11100,16 +11093,20 @@ import {
 export default function WhatWeDoClient() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
+      {/* Global page components */}
+      <SmoothScroll />
+      <ScrollProgress />
+      <CustomCursor />
+      <Navbar />
+
+      {/* Background effects */}
       <BackgroundFX />
 
+      {/* Page content */}
       <Hero />
-
       <Philosophy />
-
       <Outcomes />
-
       <Services />
-
       <CTA />
 
       <Footer />
@@ -11133,7 +11130,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
     <Link href={`/blogs/${blog.slug}`} className="block h-full">
       <article className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-white/20 hover:shadow-2xl">
 
-        {/* Blog Image — Always 16:9 */}
+        {/* Blog Image â€” Always 16:9 */}
         {blog.cover_image && (
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
             <Image
@@ -11151,12 +11148,12 @@ export default function BlogCard({ blog }: BlogCardProps) {
         {/* Content */}
         <div className="flex flex-1 flex-col p-6">
 
-          {/* Title — Full text visible */}
+          {/* Title â€” Full text visible */}
           <h2 className="text-xl font-bold leading-snug break-words">
             {blog.title}
           </h2>
 
-          {/* Excerpt — Full text visible */}
+          {/* Excerpt â€” Full text visible */}
           {blog.excerpt && (
             <p className="mt-3 text-sm leading-6 text-gray-400 break-words">
               {blog.excerpt}
@@ -11165,8 +11162,8 @@ export default function BlogCard({ blog }: BlogCardProps) {
 
           {/* Views & Likes */}
           <div className="mt-auto pt-5 flex items-center gap-5 text-sm text-gray-400">
-            <span>👁 {blog.views}</span>
-            <span>❤️ {blog.likes}</span>
+            <span>ðŸ‘ {blog.views}</span>
+            <span>â¤ï¸ {blog.likes}</span>
           </div>
 
         </div>
@@ -11738,7 +11735,7 @@ export default function RecentlyViewed() {
 
               <div className="mt-4">
                 <span className="text-sm font-medium text-violet-400">
-                  Read More →
+                  Read More â†’
                 </span>
               </div>
             </div>
@@ -12031,7 +12028,7 @@ export default function TrendingBlogsClient({
       >
         {showTrending
           ? "Hide Trending Blogs"
-          : "🔥 Show Trending Blogs"}
+          : "ðŸ”¥ Show Trending Blogs"}
       </button>
 
       {showTrending && (
@@ -12143,7 +12140,7 @@ export default function AboutHero() {
 
           blur-[90px]
           sm:blur-[120px]
-          md:blur-[150px]
+          md:blur-[70px] md:blur-[100px]
         "
       />
 
@@ -12181,7 +12178,7 @@ export default function AboutHero() {
 
           blur-[100px]
           sm:blur-[130px]
-          md:blur-[170px]
+          md:blur-[80px] md:blur-[110px]
         "
       />
 
@@ -12459,7 +12456,7 @@ export default function Approach() {
       </div>
 
       {/* Background Glow */}
-      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#616CFA]/10 blur-[80px] sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:h-[500px] lg:w-[500px] lg:blur-[150px]" />
+      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#616CFA]/10 blur-[80px] sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:h-[500px] lg:w-[500px] lg:blur-[70px] md:blur-[100px]" />
     </section>
   );
 }
@@ -12506,7 +12503,7 @@ export default function Belief() {
       {/* background glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[180px] rounded-full" />
+        <div className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[80px] md:blur-[120px] rounded-full" />
       </div>
 
       <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
@@ -12554,10 +12551,10 @@ export default function Belief() {
           <div className="mt-8 space-y-5">
             <div>
               <h3 className="text-white text-sm font-semibold tracking-wide">
-                • Deep Research First
+                â€¢ Deep Research First
               </h3>
               <p className="text-zinc-500 text-sm mt-1">
-                We don’t jump into design.
+                We donâ€™t jump into design.
                 <br /> We analyze users, markets, and positioning before
                 anything else.
               </p>
@@ -12565,7 +12562,7 @@ export default function Belief() {
 
             <div>
               <h3 className="text-white text-sm font-semibold tracking-wide">
-                • Strategy Over Decoration
+                â€¢ Strategy Over Decoration
               </h3>
               <p className="text-zinc-500 text-sm mt-1">
                 Design only works when it has direction. Strategy drives every
@@ -12575,7 +12572,7 @@ export default function Belief() {
 
             <div>
               <h3 className="text-white text-sm font-semibold tracking-wide">
-                • Systems, Not One-Offs
+                â€¢ Systems, Not One-Offs
               </h3>
               <p className="text-zinc-500 text-sm mt-1">
                 We build scalable brand and product systems that grow with the
@@ -12900,7 +12897,7 @@ export default function CTA() {
                 text-zinc-500
               "
             >
-              Response within 24–48 hours.
+              Response within 24â€“48 hours.
             </p>
           </motion.div>
 
@@ -13040,7 +13037,7 @@ export default function Founder() {
           className="mt-6 text-lg md:text-xl text-gray-300 leading-relaxed"
         >
           VAI SPACE is not a layered agency system.
-          It’s a direct extension of one vision — where strategy, design, and execution stay unified.
+          Itâ€™s a direct extension of one vision â€” where strategy, design, and execution stay unified.
         </motion.p>
 
         <motion.p
@@ -13059,7 +13056,7 @@ export default function Founder() {
           transition={{ delay: 0.4 }}
           className="mt-10 text-sm uppercase tracking-[0.3em] text-[#8E96FF]"
         >
-          Founder-Led • Design-Driven • Strategy-Focused
+          Founder-Led â€¢ Design-Driven â€¢ Strategy-Focused
         </motion.div>
 
       </div>
@@ -13081,7 +13078,7 @@ const story = [
   },
   {
     title: "Since 2017",
-    text: "We’ve worked across branding, marketing, design, and film making helping businesses refine how they are seen and remembered.",
+    text: "Weâ€™ve worked across branding, marketing, design, and film making helping businesses refine how they are seen and remembered.",
   },
   {
     title: "Not an agency",
@@ -13134,7 +13131,7 @@ export default function Story() {
             w-[500px]
             h-[500px]
             bg-[#E46ECC]/10
-            blur-[180px]
+            blur-[80px] md:blur-[120px]
             rounded-full
           "
         />
@@ -13234,7 +13231,7 @@ export default function Story() {
             "
           >
             Every iconic brand starts with a vision. At VAI SPACE, we believe
-            design must create meaning—not just visuals. We elevate businesses
+            design must create meaningâ€”not just visuals. We elevate businesses
             through purposeful strategy, sharp clarity, and high-impact digital
             experiences built with absolute intention.
           </motion.p>
@@ -13280,7 +13277,7 @@ export default function Story() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src="/videos/roadmap.mp4" type="video/mp4" />
             </video>
@@ -13639,7 +13636,7 @@ export default function ChatHeader({ onClose }: Props) {
               <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
 
               <p className="text-xs text-zinc-400">
-                Online • Ready to help
+                Online â€¢ Ready to help
               </p>
             </div>
           </div>
@@ -13686,12 +13683,6 @@ import ChatModal from "./ChatModal";
 
 type BotState = "awake" | "blinking" | "happy" | "wink" | "thinking";
 
-/*
-|--------------------------------------------------------------------------
-| BOT IMAGES
-|--------------------------------------------------------------------------
-*/
-
 const botImages: Record<BotState, string> = {
   awake: "/images/chatbot/robot_awake.png",
   blinking: "/images/chatbot/robot_blinking.png",
@@ -13700,62 +13691,29 @@ const botImages: Record<BotState, string> = {
   thinking: "/images/chatbot/robot_thinking.png",
 };
 
-/*
-|--------------------------------------------------------------------------
-| IDLE ANIMATION
-|--------------------------------------------------------------------------
-| Longer transitions make the expressions feel more natural.
-|--------------------------------------------------------------------------
-*/
-
 const idleSequence: {
   state: BotState;
   duration: number;
 }[] = [
-  {
-    state: "awake",
-    duration: 5000,
-  },
-  {
-    state: "blinking",
-    duration: 500,
-  },
-  {
-    state: "awake",
-    duration: 3500,
-  },
-  {
-    state: "happy",
-    duration: 2600,
-  },
-  {
-    state: "awake",
-    duration: 4500,
-  },
-  {
-    state: "wink",
-    duration: 900,
-  },
-  {
-    state: "awake",
-    duration: 4500,
-  },
-  {
-    state: "thinking",
-    duration: 2600,
-  },
+  { state: "awake", duration: 5000 },
+  { state: "blinking", duration: 500 },
+  { state: "awake", duration: 3500 },
+  { state: "happy", duration: 2600 },
+  { state: "awake", duration: 4500 },
+  { state: "wink", duration: 900 },
+  { state: "awake", duration: 4500 },
+  { state: "thinking", duration: 2600 },
 ];
 
 export default function ChatLauncher() {
   const [open, setOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
   const [hovered, setHovered] = useState(false);
-
   const [botState, setBotState] = useState<BotState>("awake");
 
   /*
   |--------------------------------------------------------------------------
-  | PRELOAD IMAGES
+  | PRELOAD BOT IMAGES
   |--------------------------------------------------------------------------
   */
 
@@ -13773,18 +13731,20 @@ export default function ChatLauncher() {
   */
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = window.setTimeout(() => {
       if (!open) {
         setShowGreeting(true);
       }
     }, 3500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+    };
   }, [open]);
 
   /*
   |--------------------------------------------------------------------------
-  | AUTOMATIC FACE ANIMATION
+  | BOT FACE ANIMATION
   |--------------------------------------------------------------------------
   */
 
@@ -13794,37 +13754,43 @@ export default function ChatLauncher() {
     }
 
     let cancelled = false;
-    let timer: ReturnType<typeof setTimeout>;
-
+    let timer: number | undefined;
     let index = 0;
 
-    const runNextAnimation = () => {
-      if (cancelled) return;
+    const runNext = () => {
+      if (cancelled) {
+        return;
+      }
 
       const current = idleSequence[index];
 
       setBotState(current.state);
 
-      timer = setTimeout(() => {
-        if (cancelled) return;
+      timer = window.setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
 
         index = (index + 1) % idleSequence.length;
 
-        runNextAnimation();
+        runNext();
       }, current.duration);
     };
 
-    runNextAnimation();
+    runNext();
 
     return () => {
       cancelled = true;
-      clearTimeout(timer);
+
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+      }
     };
   }, [open, hovered]);
 
   /*
   |--------------------------------------------------------------------------
-  | OPEN
+  | OPEN CHAT
   |--------------------------------------------------------------------------
   */
 
@@ -13836,7 +13802,7 @@ export default function ChatLauncher() {
 
   /*
   |--------------------------------------------------------------------------
-  | CLOSE
+  | CLOSE CHAT
   |--------------------------------------------------------------------------
   */
 
@@ -13865,37 +13831,27 @@ export default function ChatLauncher() {
 
   return (
     <>
-      {/* =========================================================
-          CHAT MODAL
-      ========================================================= */}
-
       <ChatModal open={open} onClose={handleClose} />
-
-      {/* =========================================================
-          LAUNCHER
-      ========================================================= */}
 
       <div
         className="
           fixed
           bottom-5
           right-5
+          z-[9998]
           sm:bottom-7
           sm:right-7
-          z-[9998]
         "
       >
-        {/* =======================================================
-            GREETING
-        ======================================================= */}
+        {/* GREETING */}
 
         <AnimatePresence>
           {showGreeting && !open && (
             <motion.div
               initial={{
                 opacity: 0,
-                y: 12,
-                scale: 0.92,
+                y: 10,
+                scale: 0.96,
               }}
               animate={{
                 opacity: 1,
@@ -13904,47 +13860,32 @@ export default function ChatLauncher() {
               }}
               exit={{
                 opacity: 0,
-                y: 8,
-                scale: 0.94,
+                y: 6,
               }}
               transition={{
-                duration: 0.35,
+                duration: 0.25,
                 ease: "easeOut",
               }}
               className="
                 absolute
                 right-0
                 bottom-[88px]
-                sm:bottom-[102px]
                 w-[250px]
+                sm:bottom-[102px]
               "
             >
               <div
                 className="
                   relative
-                  rounded-[22px]
+                  rounded-[20px]
                   border
                   border-white/10
-                  bg-black/75
+                  bg-black/90
                   px-5
                   py-4
-                  shadow-[0_20px_60px_rgba(92,45,180,0.28)]
-                  backdrop-blur-2xl
+                  shadow-[0_12px_35px_rgba(92,45,180,0.22)]
                 "
               >
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-0
-                    rounded-[22px]
-                    bg-gradient-to-br
-                    from-violet-500/[0.08]
-                    via-transparent
-                    to-fuchsia-500/[0.05]
-                  "
-                />
-
                 <button
                   type="button"
                   aria-label="Dismiss greeting"
@@ -13953,7 +13894,6 @@ export default function ChatLauncher() {
                     absolute
                     right-2.5
                     top-2.5
-                    z-10
                     flex
                     h-6
                     w-6
@@ -13962,16 +13902,15 @@ export default function ChatLauncher() {
                     rounded-full
                     text-sm
                     text-white/40
-                    transition-all
-                    duration-200
+                    transition
                     hover:bg-white/10
                     hover:text-white
                   "
                 >
-                  ×
+                  Ã—
                 </button>
 
-                <div className="relative z-10 pr-5">
+                <div className="pr-5">
                   <p
                     className="
                       text-[9px]
@@ -13990,26 +13929,25 @@ export default function ChatLauncher() {
                       whitespace-nowrap
                       text-[13px]
                       font-medium
-                      leading-relaxed
                       text-white/85
                     "
                   >
-                    Hi 👋 Need some help?
+                    Hi ðŸ‘‹ Need some help?
                   </p>
                 </div>
 
                 <div
                   className="
                     absolute
-                    -bottom-[7px]
+                    -bottom-[6px]
                     right-8
-                    h-4
-                    w-4
+                    h-3
+                    w-3
                     rotate-45
                     border-r
                     border-b
                     border-white/10
-                    bg-black/75
+                    bg-black/90
                   "
                 />
               </div>
@@ -14017,9 +13955,7 @@ export default function ChatLauncher() {
           )}
         </AnimatePresence>
 
-        {/* =======================================================
-            MAIN BUTTON
-        ======================================================= */}
+        {/* CHATBOT BUTTON */}
 
         <motion.button
           type="button"
@@ -14029,76 +13965,47 @@ export default function ChatLauncher() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           whileHover={{
-            scale: 1.045,
+            scale: 1.04,
           }}
           whileTap={{
-            scale: 0.94,
-          }}
-          animate={{
-            y: [0, -3, 0],
-          }}
-          transition={{
-            y: {
-              duration: 4.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-            scale: {
-              duration: 0.25,
-              ease: "easeOut",
-            },
+            scale: 0.96,
           }}
           className="
             relative
             flex
             h-[68px]
             w-[68px]
-            sm:h-[78px]
-            sm:w-[78px]
             items-center
             justify-center
             rounded-full
             outline-none
+            sm:h-[76px]
+            sm:w-[76px]
             focus-visible:ring-2
             focus-visible:ring-violet-400/70
           "
         >
-          {/* =====================================================
-              AMBIENT GLOW
-          ===================================================== */}
+          {/* STATIC AMBIENT GLOW */}
 
-          <motion.div
-            animate={{
-              scale: hovered ? [1, 1.15, 1] : [1, 1.06, 1],
-              opacity: hovered
-                ? [0.28, 0.5, 0.28]
-                : [0.12, 0.28, 0.12],
-            }}
-            transition={{
-              duration: hovered ? 1.6 : 3.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+          <div
             className="
               pointer-events-none
               absolute
-              inset-[-12px]
+              inset-[-8px]
               rounded-full
-              bg-violet-600/25
-              blur-2xl
+              bg-violet-500/15
+              blur-xl
             "
           />
 
-          {/* =====================================================
-              OUTER RING
-          ===================================================== */}
+          {/* SLOW ROTATING RING */}
 
           <motion.div
             animate={{
               rotate: 360,
             }}
             transition={{
-              duration: 20,
+              duration: 30,
               repeat: Infinity,
               ease: "linear",
             }}
@@ -14108,81 +14015,26 @@ export default function ChatLauncher() {
               inset-0
               rounded-full
               border
-              border-violet-400/25
+              border-violet-400/20
             "
           />
 
-          {/* =====================================================
-              INNER RING
-          ===================================================== */}
-
-          <motion.div
-            animate={{
-              rotate: -360,
-            }}
-            transition={{
-              duration: 14,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="
-              pointer-events-none
-              absolute
-              inset-[4px]
-              rounded-full
-              border
-              border-white/10
-            "
-          />
-
-          {/* =====================================================
-              GLASS CORE
-          ===================================================== */}
+          {/* CORE */}
 
           <div
             className="
               pointer-events-none
               absolute
-              inset-[7px]
+              inset-[6px]
               rounded-full
               border
-              border-white/[0.14]
-              bg-black/55
-              shadow-[inset_0_0_25px_rgba(139,92,246,0.16)]
-              backdrop-blur-xl
+              border-white/10
+              bg-black/85
+              shadow-[inset_0_0_18px_rgba(139,92,246,0.12)]
             "
           />
 
-          {/* =====================================================
-              INNER LIGHT
-          ===================================================== */}
-
-          <motion.div
-            animate={{
-              opacity: hovered
-                ? [0.25, 0.5, 0.25]
-                : [0.12, 0.28, 0.12],
-            }}
-            transition={{
-              duration: 2.8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="
-              pointer-events-none
-              absolute
-              inset-[11px]
-              rounded-full
-              bg-violet-500/20
-              blur-xl
-            "
-          />
-
-          {/* =====================================================
-              ROBOT FACE CONTAINER
-              IMPORTANT:
-              Clips the face so nothing can extend outside circle.
-          ===================================================== */}
+          {/* ROBOT FACE */}
 
           <div
             className="
@@ -14192,15 +14044,15 @@ export default function ChatLauncher() {
               flex
               h-[50px]
               w-[50px]
-              sm:h-[58px]
-              sm:w-[58px]
               items-center
               justify-center
               overflow-hidden
               rounded-full
+              sm:h-[58px]
+              sm:w-[58px]
             "
           >
-            <AnimatePresence mode="sync" initial={false}>
+            <AnimatePresence mode="wait" initial={false}>
               <motion.img
                 key={botState}
                 src={botImages[botState]}
@@ -14208,127 +14060,103 @@ export default function ChatLauncher() {
                 draggable={false}
                 initial={{
                   opacity: 0,
-                  scale: 0.94,
+                  scale: 0.97,
                 }}
                 animate={{
                   opacity: 1,
-                  scale: hovered ? 1.035 : 1,
+                  scale: 1,
                 }}
                 exit={{
                   opacity: 0,
-                  scale: 0.97,
                 }}
                 transition={{
-                  opacity: {
-                    duration: 0.28,
-                    ease: "easeInOut",
-                  },
-                  scale: {
-                    duration: 0.32,
-                    ease: "easeOut",
-                  },
+                  duration: 0.2,
+                  ease: "easeOut",
                 }}
                 className="
                   absolute
                   inset-0
                   h-full
                   w-full
-                  object-contain
                   select-none
-                  drop-shadow-[0_5px_14px_rgba(139,92,246,0.38)]
+                  object-contain
                 "
                 onError={() => {
                   console.error(
-                    `Failed to load chatbot image: ${botImages[botState]}`,
+                    `Failed to load chatbot image: ${botImages[botState]}`
                   );
                 }}
               />
             </AnimatePresence>
           </div>
 
-          {/* =====================================================
-              ONLINE DOT
-          ===================================================== */}
+          {/* ONLINE DOT */}
 
           <span
             className="
               absolute
-              right-[3px]
+              right-[4px]
               top-[4px]
               z-30
-              h-[10px]
-              w-[10px]
-              sm:h-[11px]
-              sm:w-[11px]
+              h-[9px]
+              w-[9px]
               rounded-full
               border-2
               border-black
               bg-emerald-400
-              shadow-[0_0_10px_rgba(52,211,153,0.9)]
+              sm:h-[10px]
+              sm:w-[10px]
             "
           />
 
-          {/* =====================================================
-              ONLINE PULSE
-          ===================================================== */}
+          {/* ONLINE PULSE */}
 
           <motion.span
             animate={{
-              scale: [1, 1.8],
-              opacity: [0.5, 0],
+              scale: [1, 1.5],
+              opacity: [0.35, 0],
             }}
             transition={{
-              duration: 1.8,
+              duration: 2.5,
               repeat: Infinity,
               ease: "easeOut",
             }}
             className="
               pointer-events-none
               absolute
-              right-[3px]
+              right-[4px]
               top-[4px]
               z-20
-              h-[10px]
-              w-[10px]
-              sm:h-[11px]
-              sm:w-[11px]
+              h-[9px]
+              w-[9px]
               rounded-full
               bg-emerald-400
-            "
-          />
-
-          {/* =====================================================
-              HOVER SHINE
-          ===================================================== */}
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: -80,
-            }}
-            animate={{
-              opacity: hovered ? 1 : 0,
-              x: hovered ? 80 : -80,
-            }}
-            transition={{
-              duration: 0.7,
-              ease: "easeOut",
-            }}
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              z-20
-              w-1/3
-              rotate-12
-              bg-white/15
-              blur-md
+              sm:h-[10px]
+              sm:w-[10px]
             "
           />
         </motion.button>
       </div>
     </>
   );
+}
+
+
+==================== src\components\chatbot\ChatLauncherLoader.tsx ====================
+
+"use client";
+
+import dynamic from "next/dynamic";
+
+const ChatLauncher = dynamic(
+  () => import("./ChatLauncher"),
+  {
+    ssr: false,
+  }
+);
+
+export default function ChatLauncherLoader() {
+  return <ChatLauncher />;
 }
 
 
@@ -14360,16 +14188,13 @@ export default function ChatModal({ open, onClose }: Props) {
       {open && (
         <div
           className="
+            pointer-events-none
             fixed
             inset-0
             z-[9999]
-
-            pointer-events-none
-
             flex
             items-end
             justify-end
-
             p-3
             sm:p-5
             lg:p-6
@@ -14378,8 +14203,8 @@ export default function ChatModal({ open, onClose }: Props) {
           <motion.div
             initial={{
               opacity: 0,
-              y: 40,
-              scale: 0.96,
+              y: 24,
+              scale: 0.98,
             }}
             animate={{
               opacity: 1,
@@ -14388,41 +14213,31 @@ export default function ChatModal({ open, onClose }: Props) {
             }}
             exit={{
               opacity: 0,
-              y: 40,
-              scale: 0.96,
+              y: 20,
+              scale: 0.98,
             }}
             transition={{
-              duration: 0.3,
+              duration: 0.22,
               ease: "easeOut",
             }}
             className="pointer-events-auto"
           >
             <div
               className="
-                w-[360px]
                 h-[520px]
-
-                sm:w-[380px]
-                sm:h-[560px]
-
-                md:w-[400px]
-                md:h-[580px]
-
-                lg:w-[420px]
-                lg:h-[600px]
-
+                w-[360px]
                 overflow-hidden
-
                 rounded-3xl
-
                 border
                 border-white/10
-
-                bg-black/60
-                backdrop-blur-2xl
-
-                shadow-[0_25px_80px_rgba(0,0,0,0.45)]
-                shadow-violet-900/30
+                bg-[#09090B]/95
+                shadow-[0_20px_60px_rgba(0,0,0,0.45)]
+                sm:h-[560px]
+                sm:w-[380px]
+                md:h-[580px]
+                md:w-[400px]
+                lg:h-[600px]
+                lg:w-[420px]
               "
             >
               {started ? (
@@ -14468,6 +14283,7 @@ interface Props {
 
 export default function ChatScreen({ onClose }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const timersRef = useRef<number[]>([]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState(0);
@@ -14483,18 +14299,38 @@ export default function ChatScreen({ onClose }: Props) {
     projectDetails: "",
   });
 
-  const askQuestion = useCallback((index: number) => {
-    setTyping(true);
+  const createTimer = useCallback(
+    (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+        timersRef.current = timersRef.current.filter(
+          (id) => id !== timer
+        );
 
-    const timer = window.setTimeout(() => {
-      const question = conversation[index];
+        callback();
+      }, delay);
+
+      timersRef.current.push(timer);
+
+      return timer;
+    },
+    []
+  );
+
+  /*
+  |--------------------------------------------------------------------------
+  | INITIAL QUESTION
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    createTimer(() => {
+      const question = conversation[0];
 
       if (!question) return;
 
       setTyping(false);
 
-      setMessages((prev) => [
-        ...prev,
+      setMessages([
         {
           id: crypto.randomUUID(),
           role: "bot",
@@ -14502,34 +14338,45 @@ export default function ChatScreen({ onClose }: Props) {
           options: question.options,
         },
       ]);
-    }, 900);
+    }, 500);
 
     return () => {
-      window.clearTimeout(timer);
+      timersRef.current.forEach((timer) => {
+        window.clearTimeout(timer);
+      });
+
+      timersRef.current = [];
     };
-  }, []);
+  }, [createTimer]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | AUTO SCROLL
+  |--------------------------------------------------------------------------
+  */
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      askQuestion(0);
-    }, 0);
+      bottomRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 50);
 
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [askQuestion]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    return () => window.clearTimeout(timer);
   }, [messages, typing]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | HANDLE ANSWER
+  |--------------------------------------------------------------------------
+  */
 
   const handleAnswer = useCallback(
     (answer: string) => {
       const current = conversation[step];
 
-      if (!current) return;
+      if (!current || typing) return;
 
       setMessages((prev) => [
         ...prev,
@@ -14540,7 +14387,7 @@ export default function ChatScreen({ onClose }: Props) {
         },
       ]);
 
-      const updatedLead = {
+      const updatedLead: LeadData = {
         ...lead,
         [current.key]: answer,
       };
@@ -14549,34 +14396,52 @@ export default function ChatScreen({ onClose }: Props) {
 
       const nextStep = step + 1;
 
+      /*
+      |--------------------------------------------------------------------------
+      | CONVERSATION COMPLETE
+      |--------------------------------------------------------------------------
+      */
+
       if (nextStep >= conversation.length) {
+        setTyping(true);
+
         fetch("/api/chatbot", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedLead),
-        }).catch(console.error);
+        }).catch((error) => {
+          console.error("Chatbot submission failed:", error);
+        });
 
-        window.setTimeout(() => {
+        createTimer(() => {
+          setTyping(false);
+
           setMessages((prev) => [
             ...prev,
             {
               id: crypto.randomUUID(),
               role: "bot",
               content:
-                "🎉 Thank you!\n\nWe've received your request.\n\nOur team will contact you shortly.",
+                "ðŸŽ‰ Thank you!\n\nWe've received your request.\n\nOur team will contact you shortly.",
             },
           ]);
-        }, 800);
+        }, 700);
 
         return;
       }
 
+      /*
+      |--------------------------------------------------------------------------
+      | NEXT QUESTION
+      |--------------------------------------------------------------------------
+      */
+
       setStep(nextStep);
       setTyping(true);
 
-      window.setTimeout(() => {
+      createTimer(() => {
         const nextQuestion = conversation[nextStep];
 
         if (!nextQuestion) return;
@@ -14592,9 +14457,9 @@ export default function ChatScreen({ onClose }: Props) {
             options: nextQuestion.options,
           },
         ]);
-      }, 900);
+      }, 700);
     },
-    [lead, step]
+    [step, lead, typing, createTimer]
   );
 
   const currentQuestion = conversation[step];
@@ -14610,8 +14475,7 @@ export default function ChatScreen({ onClose }: Props) {
         rounded-2xl
         border
         border-white/10
-        bg-[#09090B]/90
-        backdrop-blur-xl
+        bg-[#09090B]
         sm:rounded-3xl
       "
     >
@@ -14631,12 +14495,38 @@ export default function ChatScreen({ onClose }: Props) {
           lg:px-6
         "
       >
-        <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-violet-600/10 blur-[120px]" />
+        {/* Lightweight background effects */}
 
-        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-[120px]" />
+        <div
+          className="
+            pointer-events-none
+            absolute
+            left-0
+            top-0
+            h-48
+            w-48
+            rounded-full
+            bg-violet-600/5
+            blur-[80px]
+          "
+        />
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            bottom-0
+            right-0
+            h-48
+            w-48
+            rounded-full
+            bg-fuchsia-600/5
+            blur-[80px]
+          "
+        />
 
         <div className="relative space-y-4 sm:space-y-5">
-          {messages.map((msg) => (
+          {messages.map((msg, index) => (
             <div key={msg.id}>
               <MessageBubble
                 role={msg.role}
@@ -14644,7 +14534,7 @@ export default function ChatScreen({ onClose }: Props) {
               />
 
               {msg.options &&
-                msg === messages[messages.length - 1] &&
+                index === messages.length - 1 &&
                 !typing &&
                 step < conversation.length && (
                   <QuickReplies
@@ -14668,8 +14558,7 @@ export default function ChatScreen({ onClose }: Props) {
               shrink-0
               border-t
               border-white/10
-              bg-black/20
-              backdrop-blur-md
+              bg-[#09090B]
             "
           >
             <MessageInput
@@ -14689,7 +14578,7 @@ export const conversation = [
   {
     key: "name",
     question:
-      "👋 Hi! Welcome to VAI SPACE.\n\nI'm your AI assistant and I'd love to learn more about your project.\n\nFirst, what's your name?",
+      "ðŸ‘‹ Hi! Welcome to VAI SPACE.\n\nI'm your AI assistant and I'd love to learn more about your project.\n\nFirst, what's your name?",
   },
   {
     key: "service",
@@ -14728,7 +14617,7 @@ export const conversation = [
     options: [
       "Immediately",
       "Within 1 Month",
-      "1–3 Months",
+      "1â€“3 Months",
       "Just Exploring",
     ],
   },
@@ -15138,15 +15027,20 @@ interface Props {
 export default function WelcomeScreen({ onStart, onClose }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{
+        duration: 0.25,
+        ease: "easeOut",
+      }}
       onClick={onClose}
       className="
         relative
         flex
         h-full
         w-full
+        cursor-pointer
         flex-col
         items-center
         justify-center
@@ -15155,8 +15049,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
         px-5
         text-center
         sm:px-6
-        md:px-8
-        cursor-pointer
       "
     >
       {/* Background Glow */}
@@ -15164,14 +15056,14 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
         className="
           pointer-events-none
           absolute
-          -top-20
+          -top-16
           left-1/2
-          h-56
-          w-56
+          h-48
+          w-48
           -translate-x-1/2
           rounded-full
-          bg-violet-600/20
-          blur-[100px]
+          bg-violet-600/15
+          blur-[80px]
         "
       />
 
@@ -15180,46 +15072,42 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
           pointer-events-none
           absolute
           bottom-0
-          h-44
-          w-44
+          h-36
+          w-36
           rounded-full
-          bg-fuchsia-600/20
-          blur-[100px]
+          bg-fuchsia-600/15
+          blur-[80px]
         "
       />
 
       <div className="relative z-10">
-        {/* Logo */}
+        {/* Assistant Image */}
         <div
-  className="
-    mx-auto
-    mb-6
-    h-16
-    w-16
-    overflow-hidden
-    rounded-full
-    border-2
-    border-violet-500/60
-    bg-gradient-to-br
-    from-violet-600
-    to-fuchsia-500
-    shadow-xl
-    shadow-violet-600/30
-    sm:h-18
-    sm:w-18
-    md:h-20
-    md:w-20
-  "
->
- <Image
-  src="/images/chatbot/robot_wink.png"
-  alt="VAI SPACE Assistant"
-  width={80}
-  height={80}
-  className="block h-full w-full object-cover"
-/>
-
-</div>
+          className="
+            mx-auto
+            mb-6
+            h-16
+            w-16
+            overflow-hidden
+            rounded-full
+            border
+            border-violet-500/50
+            bg-black
+            shadow-lg
+            shadow-violet-600/20
+            sm:h-[72px]
+            sm:w-[72px]
+          "
+        >
+          <Image
+            src="/images/chatbot/robot_wink.png"
+            alt="VAI SPACE Assistant"
+            width={72}
+            height={72}
+            priority={false}
+            className="h-full w-full object-cover"
+          />
+        </div>
 
         {/* Title */}
         <h1
@@ -15229,7 +15117,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             font-bold
             text-white
             sm:text-[28px]
-            md:text-3xl
           "
         >
           Welcome to VAISPACE
@@ -15245,9 +15132,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             text-zinc-400
             sm:max-w-xs
             sm:text-[15px]
-            md:max-w-sm
-            md:text-base
-            md:leading-7
           "
         >
           I&apos;m your AI assistant.
@@ -15256,16 +15140,16 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
           digital solution.
         </p>
 
-        {/* Button */}
+        {/* Start Button */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onStart();
           }}
           className="
             group
-            mt-8
+            mt-7
             inline-flex
             items-center
             gap-2
@@ -15278,13 +15162,11 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             text-sm
             font-medium
             text-white
-            transition-all
-            duration-300
-            hover:scale-105
-            hover:shadow-lg
-            hover:shadow-violet-600/40
+            transition-transform
+            duration-200
+            hover:scale-[1.03]
+            active:scale-95
             sm:px-6
-            sm:py-3.5
             sm:text-base
           "
         >
@@ -15292,7 +15174,11 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
 
           <ArrowRight
             size={16}
-            className="transition-transform group-hover:translate-x-1"
+            className="
+              transition-transform
+              duration-200
+              group-hover:translate-x-1
+            "
           />
         </button>
       </div>
@@ -16014,7 +15900,7 @@ export default function Hero() {
           -translate-y-1/2
           rounded-full
           bg-[#616CFA]/20
-          blur-[150px]
+          blur-[70px] md:blur-[100px]
         "
       />
 
@@ -16175,70 +16061,70 @@ import IndustryCarousel from "../ui/IndustryCarousel";
 
 const industries = [
   {
-    icon: "🚀",
+    icon: "ðŸš€",
     title: "Startups",
     description:
       "Helping startups build strong digital foundations, launch faster, and accelerate growth with modern digital solutions.",
     color: "#616CFA",
   },
   {
-    icon: "🏢",
+    icon: "ðŸ¢",
     title: "Small & Medium Businesses",
     description:
       "Affordable branding, websites, and marketing strategies that generate leads and grow businesses.",
     color: "#F5B942",
   },
   {
-    icon: "🏛️",
+    icon: "ðŸ›ï¸",
     title: "Corporate Organizations",
     description:
       "Enterprise-grade branding, digital transformation, and scalable marketing solutions.",
     color: "#E46ECC",
   },
   {
-    icon: "🏠",
+    icon: "ðŸ ",
     title: "Real Estate Brands",
     description:
       "High-converting campaigns, premium branding, and property marketing that builds trust.",
     color: "#14B8A6",
   },
   {
-    icon: "🎓",
+    icon: "ðŸŽ“",
     title: "Educational Institutions",
     description:
       "Creative campaigns that attract admissions, improve engagement, and build institutional credibility.",
     color: "#8B5CF6",
   },
   {
-    icon: "🍔",
+    icon: "ðŸ”",
     title: "Food & Beverage",
     description:
       "Content and campaigns that increase visibility, customer engagement, and online orders.",
     color: "#F59E0B",
   },
   {
-    icon: "👗",
+    icon: "ðŸ‘—",
     title: "Fashion & Lifestyle",
     description:
       "Luxury branding and social-first content that transforms followers into loyal customers.",
     color: "#EC4899",
   },
   {
-    icon: "👤",
+    icon: "ðŸ‘¤",
     title: "Personal Brands",
     description:
       "Helping creators, entrepreneurs, and professionals establish authority and build influence.",
     color: "#22C55E",
   },
   {
-    icon: "🗳️",
+    icon: "ðŸ—³ï¸",
     title: "Political Campaigns",
     description:
       "Strategic digital campaigns, outreach, and engagement that maximize public reach.",
     color: "#A855F7",
   },
   {
-    icon: "🛕",
+    icon: "ðŸ›•",
     title: "Devotional Organizations",
     description:
       "Meaningful storytelling and community-focused digital experiences that inspire audiences.",
@@ -16758,7 +16644,7 @@ export default function Services() {
                         group-hover:translate-x-1
                       "
                     >
-                      →
+                      â†’
                     </span>
                   </div>
                 </div>
@@ -17106,7 +16992,7 @@ export default function Footer() {
       <div className="mt-5 border-t border-white/10">
         <div className="mx-auto max-w-7xl py-3">
           <p className="text-center text-xs text-zinc-500">
-            © {new Date().getFullYear()} VAI SPACE. All rights reserved.
+            Â© {new Date().getFullYear()} VAI SPACE. All rights reserved.
           </p>
         </div>
       </div>
@@ -18008,44 +17894,61 @@ export type Outcome = {
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({
-    x: 0,
-    y: 0,
-  });
-
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1280);
+    const mediaQuery = window.matchMedia(
+      "(min-width: 1280px) and (pointer: fine)"
+    );
+
+    const updateDevice = () => {
+      setIsDesktop(mediaQuery.matches);
     };
 
-    checkScreenSize();
+    updateDevice();
 
-    window.addEventListener("resize", checkScreenSize);
+    mediaQuery.addEventListener("change", updateDevice);
 
     return () => {
-      window.removeEventListener("resize", checkScreenSize);
+      mediaQuery.removeEventListener("change", updateDevice);
     };
   }, []);
 
   useEffect(() => {
     if (!isDesktop) return;
 
-    const move = (e: MouseEvent) => {
-      setPosition({
-        x: e.clientX,
-        y: e.clientY,
+    let animationFrameId = 0;
+    let mouseX = -100;
+    let mouseY = -100;
+
+    const move = (event: MouseEvent) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+
+      if (animationFrameId) return;
+
+      animationFrameId = window.requestAnimationFrame(() => {
+        if (cursorRef.current) {
+          cursorRef.current.style.transform =
+            `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        }
+
+        animationFrameId = 0;
       });
     };
 
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", move);
+
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
     };
   }, [isDesktop]);
 
@@ -18053,9 +17956,12 @@ export default function CustomCursor() {
 
   return (
     <div
+      ref={cursorRef}
       className="
         pointer-events-none
         fixed
+        left-0
+        top-0
         z-[99999]
         h-[18px]
         w-[18px]
@@ -18063,16 +17969,14 @@ export default function CustomCursor() {
         border
         border-[#616CFA]
         bg-[#616CFA]/20
+        will-change-transform
       "
       style={{
-        left: position.x,
-        top: position.y,
-        transform: "translate(-50%, -50%)",
+        transform: "translate3d(-100px, -100px, 0)",
         boxShadow: `
           0 0 20px #f867de,
           0 0 40px #fa61e3,
-          0 0 80px #ed4dd8,
-          0 0 120px rgb(234, 49, 191)
+          0 0 80px #ed4dd8
         `,
       }}
     />
@@ -18114,16 +18018,16 @@ export default function FadeUp({
 
 ==================== src\components\ui\GlobalParticles.tsx ====================
 
-
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Particle = {
   left: number;
   top: number;
   duration: number;
+  delay: number;
   color: string;
   size: number;
 };
@@ -18132,27 +18036,28 @@ function generateParticles(count: number): Particle[] {
   return Array.from({ length: count }, () => ({
     left: Math.random() * 100,
     top: Math.random() * 100,
-    duration: 4 + Math.random() * 6,
+    duration: 6 + Math.random() * 5,
+    delay: Math.random() * 3,
     color: Math.random() > 0.5 ? "#616CFA" : "#E46ECC",
-    size: 1 + Math.random() * 3,
+    size: 1 + Math.random() * 2,
   }));
 }
 
 export default function GlobalParticles() {
-  const [particles] = useState<Particle[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia(
+      "(min-width: 1280px) and (pointer: fine)"
+    );
+
+    // No particles on mobile and tablets for better performance.
+    if (!desktopQuery.matches) {
+      return;
     }
 
-    const isTouchDevice = window.matchMedia(
-      "(pointer: coarse)"
-    ).matches;
-
-    // Fewer particles on touch devices for better mobile performance.
-    const particleCount = isTouchDevice ? 12 : 40;
-
-    return generateParticles(particleCount);
-  });
+    setParticles(generateParticles(15));
+  }, []);
 
   return (
     <div
@@ -18162,16 +18067,17 @@ export default function GlobalParticles() {
       {particles.map((particle, index) => (
         <motion.div
           key={index}
+          className="absolute rounded-full will-change-transform"
           animate={{
-            y: [0, -50, 0],
-            opacity: [0.15, 0.8, 0.15],
+            y: [0, -35, 0],
+            opacity: [0.2, 0.65, 0.2],
           }}
           transition={{
             duration: particle.duration,
+            delay: particle.delay,
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute rounded-full"
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
@@ -18184,7 +18090,6 @@ export default function GlobalParticles() {
     </div>
   );
 }
-
 
 
 ==================== src\components\ui\IndustryCard.tsx ====================
@@ -18538,9 +18443,45 @@ interface IntroVideoProps {
 
 export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [started, setStarted] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+  /*
+  |--------------------------------------------------------------------------
+  | SELECT DESKTOP / MOBILE VIDEO
+  |--------------------------------------------------------------------------
+  */
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const updateVideoSource = () => {
+      setVideoSrc(
+        mediaQuery.matches
+          ? "/videos/mobileintro.mp4"
+          : "/videos/web-intro.mp4"
+      );
+    };
+
+    updateVideoSource();
+
+    mediaQuery.addEventListener("change", updateVideoSource);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateVideoSource);
+    };
+  }, []);
+
+  /*
+  |--------------------------------------------------------------------------
+  | SAFETY FALLBACK
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    if (!videoSrc) return;
+
     const timer = window.setTimeout(() => {
       onFinish();
     }, 15000);
@@ -18548,7 +18489,13 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [onFinish]);
+  }, [videoSrc, onFinish]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | START VIDEO
+  |--------------------------------------------------------------------------
+  */
 
   const handleStart = async () => {
     const video = videoRef.current;
@@ -18556,20 +18503,41 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     if (!video || started) return;
 
     try {
+      /*
+      User interaction allows Safari/browser
+      to play video with sound.
+      */
+
       video.muted = false;
       video.volume = 1;
 
       await video.play();
 
       setStarted(true);
-    } catch (error) {
-      console.error("Unable to play intro video:", error);
-      onFinish();
+    } catch {
+      /*
+      Fallback to muted playback
+      */
+
+      try {
+        video.muted = true;
+
+        await video.play();
+
+        setStarted(true);
+      } catch {
+        onFinish();
+      }
     }
   };
 
+  /*
+  |--------------------------------------------------------------------------
+  | VIDEO ERROR
+  |--------------------------------------------------------------------------
+  */
+
   const handleVideoError = () => {
-    console.error("Intro video failed to load.");
     onFinish();
   };
 
@@ -18587,39 +18555,39 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
       "
       onClick={handleStart}
     >
+      {/* START MESSAGE */}
+
       {!started && (
         <div
           className="
             pointer-events-none
             absolute
-            z-50
-            text-lg
-            text-white
+            z-10
+            text-center
+            text-sm
+            text-white/80
+            sm:text-base
           "
         >
           Tap anywhere to start
         </div>
       )}
 
-      <video
-        ref={videoRef}
-        playsInline
-        preload="metadata"
-        className="h-full w-full object-cover"
-        onEnded={onFinish}
-        onError={handleVideoError}
-      >
-        <source
-          src="/videos/mobileintro.mp4"
-          media="(max-width: 767px)"
-          type="video/mp4"
-        />
+      {/* VIDEO */}
 
-        <source
-          src="/videos/web-intro.mp4"
-          type="video/mp4"
+      {videoSrc && (
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          src={videoSrc}
+          muted
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+          onEnded={onFinish}
+          onError={handleVideoError}
         />
-      </video>
+      )}
     </div>
   );
 }
@@ -18636,17 +18604,19 @@ export default function ScrollProgress() {
 
   return (
     <motion.div
+      aria-hidden="true"
       className="
         fixed
         top-0
         left-0
         right-0
-        h-1
+        h-[3px]
         z-[99999]
         origin-left
         bg-gradient-to-r
         from-[#616CFA]
         to-[#E46ECC]
+        will-change-transform
       "
       style={{
         scaleX: scrollYProgress,
@@ -18747,32 +18717,45 @@ export let lenis: Lenis | null = null;
 
 export default function SmoothScroll() {
   useEffect(() => {
-    const isTouchDevice =
-      window.matchMedia("(pointer: coarse)").matches;
+    // Disable Lenis on mobile, tablets, and touch devices.
+    const mediaQuery = window.matchMedia(
+      "(min-width: 1280px) and (pointer: fine)"
+    );
 
-    if (isTouchDevice) {
+    if (!mediaQuery.matches) {
       return;
     }
 
-    lenis = new Lenis({
-      duration: 1.2,
-      smoothWheel: true,
-    });
-
-    let animationFrameId: number;
-
-    function raf(time: number) {
-      lenis?.raf(time);
-      animationFrameId = requestAnimationFrame(raf);
+    // Prevent duplicate Lenis instances.
+    if (lenis) {
+      return;
     }
 
-    animationFrameId = requestAnimationFrame(raf);
+    const instance = new Lenis({
+      duration: 1.1,
+      smoothWheel: true,
+      touchMultiplier: 1,
+    });
+
+    lenis = instance;
+
+    let animationFrameId = 0;
+
+    const raf = (time: number) => {
+      instance.raf(time);
+      animationFrameId = window.requestAnimationFrame(raf);
+    };
+
+    animationFrameId = window.requestAnimationFrame(raf);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      window.cancelAnimationFrame(animationFrameId);
 
-      lenis?.destroy();
-      lenis = null;
+      instance.destroy();
+
+      if (lenis === instance) {
+        lenis = null;
+      }
     };
   }, []);
 
@@ -18786,25 +18769,15 @@ export default function SmoothScroll() {
 
 import { motion } from "framer-motion";
 
-import Navbar from "@/components/layout/Navbar";
-import CustomCursor from "@/components/ui/CustomCursor";
-import ScrollProgress from "@/components/ui/ScrollProgress";
-import SectionNavigator from "@/components/ui/SectionNavigator";
-import SmoothScroll from "@/components/ui/SmoothScroll";
-
 export default function BackgroundFX() {
   return (
     <>
-      <ScrollProgress />
-      <SmoothScroll />
-      <CustomCursor />
-      <SectionNavigator />
-      <Navbar />
-
       {/* Grid */}
       <div
         className="
-          fixed inset-0 -z-30
+          fixed
+          inset-0
+          -z-30
           bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)]
           bg-[size:60px_60px]
         "
@@ -18822,7 +18795,17 @@ export default function BackgroundFX() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-[-200px] left-[-100px] h-[500px] w-[500px] rounded-full bg-[#616CFA]/20 blur-[140px]"
+          className="
+            absolute
+            top-[-200px]
+            left-[-100px]
+            h-[500px]
+            w-[500px]
+            rounded-full
+            bg-[#616CFA]/20
+            blur-[120px]
+            will-change-transform
+          "
         />
 
         <motion.div
@@ -18835,12 +18818,29 @@ export default function BackgroundFX() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-[-250px] right-[-100px] h-[550px] w-[550px] rounded-full bg-[#E46ECC]/20 blur-[160px]"
+          className="
+            absolute
+            bottom-[-250px]
+            right-[-100px]
+            h-[550px]
+            w-[550px]
+            rounded-full
+            bg-[#E46ECC]/20
+            blur-[120px]
+            will-change-transform
+          "
         />
       </div>
 
       {/* Radial Glow */}
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_60%)]" />
+      <div
+        className="
+          fixed
+          inset-0
+          -z-10
+          bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_60%)]
+        "
+      />
     </>
   );
 }
@@ -18947,7 +18947,7 @@ export default function CTA() {
                 hover:scale-105
               "
             >
-              Start a Project →
+              Start a Project â†’
             </Link>
 
           </div>
@@ -19363,7 +19363,7 @@ export default function Hero() {
             sm:text-sm
           "
         >
-          Strategy • Design • Technology • Growth
+          Strategy â€¢ Design â€¢ Technology â€¢ Growth
         </div>
 
 
