@@ -24,16 +24,13 @@ export default function ChatModal({ open, onClose }: Props) {
       {open && (
         <div
           className="
+            pointer-events-none
             fixed
             inset-0
             z-[9999]
-
-            pointer-events-none
-
             flex
             items-end
             justify-end
-
             p-3
             sm:p-5
             lg:p-6
@@ -42,8 +39,8 @@ export default function ChatModal({ open, onClose }: Props) {
           <motion.div
             initial={{
               opacity: 0,
-              y: 40,
-              scale: 0.96,
+              y: 24,
+              scale: 0.98,
             }}
             animate={{
               opacity: 1,
@@ -52,41 +49,31 @@ export default function ChatModal({ open, onClose }: Props) {
             }}
             exit={{
               opacity: 0,
-              y: 40,
-              scale: 0.96,
+              y: 20,
+              scale: 0.98,
             }}
             transition={{
-              duration: 0.3,
+              duration: 0.22,
               ease: "easeOut",
             }}
             className="pointer-events-auto"
           >
             <div
               className="
-                w-[360px]
                 h-[520px]
-
-                sm:w-[380px]
-                sm:h-[560px]
-
-                md:w-[400px]
-                md:h-[580px]
-
-                lg:w-[420px]
-                lg:h-[600px]
-
+                w-[360px]
                 overflow-hidden
-
                 rounded-3xl
-
                 border
                 border-white/10
-
-                bg-black/60
-                backdrop-blur-2xl
-
-                shadow-[0_25px_80px_rgba(0,0,0,0.45)]
-                shadow-violet-900/30
+                bg-[#09090B]/95
+                shadow-[0_20px_60px_rgba(0,0,0,0.45)]
+                sm:h-[560px]
+                sm:w-[380px]
+                md:h-[580px]
+                md:w-[400px]
+                lg:h-[600px]
+                lg:w-[420px]
               "
             >
               {started ? (

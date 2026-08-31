@@ -12,14 +12,40 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const [started, setStarted] = useState(false);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
+  /*
+  |--------------------------------------------------------------------------
+  | SELECT DESKTOP / MOBILE VIDEO
+  |--------------------------------------------------------------------------
+  */
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
 
-    setVideoSrc(
-      mediaQuery.matches
-        ? "/videos/mobileintro.mp4"
-        : "/videos/web-intro.mp4"
-    );
+    const updateVideoSource = () => {
+      setVideoSrc(
+        mediaQuery.matches
+          ? "/videos/mobileintro.mp4"
+          : "/videos/web-intro.mp4"
+      );
+    };
+
+    updateVideoSource();
+
+    mediaQuery.addEventListener("change", updateVideoSource);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateVideoSource);
+    };
+  }, []);
+
+  /*
+  |--------------------------------------------------------------------------
+  | SAFETY FALLBACK
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    if (!videoSrc) return;
 
     const timer = window.setTimeout(() => {
       onFinish();
@@ -28,7 +54,13 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [onFinish]);
+  }, [videoSrc, onFinish]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | START VIDEO
+  |--------------------------------------------------------------------------
+  */
 
   const handleStart = async () => {
     const video = videoRef.current;
@@ -36,45 +68,41 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
     if (!video || started) return;
 
     try {
+      /*
+      User interaction allows Safari/browser
+      to play video with sound.
+      */
+
       video.muted = false;
       video.volume = 1;
 
       await video.play();
 
       setStarted(true);
-    } catch (error) {
-      console.error("Unable to play intro video:", error);
+    } catch {
+      /*
+      Fallback to muted playback
+      */
 
-      // Fallback to muted playback
       try {
         video.muted = true;
 
         await video.play();
 
         setStarted(true);
-      } catch (fallbackError) {
-        console.error(
-          "Muted intro video playback also failed:",
-          fallbackError
-        );
-
+      } catch {
         onFinish();
       }
     }
   };
 
-  const handleVideoError = (
-    event: React.SyntheticEvent<HTMLVideoElement>
-  ) => {
-    const video = event.currentTarget;
+  /*
+  |--------------------------------------------------------------------------
+  | VIDEO ERROR
+  |--------------------------------------------------------------------------
+  */
 
-    console.error("Intro video failed to load", {
-      src: video.currentSrc,
-      networkState: video.networkState,
-      readyState: video.readyState,
-      errorCode: video.error?.code ?? null,
-    });
-
+  const handleVideoError = () => {
     onFinish();
   };
 
@@ -92,11 +120,25 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
       "
       onClick={handleStart}
     >
+      {/* START MESSAGE */}
+
       {!started && (
-        <div className="pointer-events-none absolute z-50 text-lg text-white">
+        <div
+          className="
+            pointer-events-none
+            absolute
+            z-10
+            text-center
+            text-sm
+            text-white/80
+            sm:text-base
+          "
+        >
           Tap anywhere to start
         </div>
       )}
+
+      {/* VIDEO */}
 
       {videoSrc && (
         <video

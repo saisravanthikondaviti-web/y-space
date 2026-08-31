@@ -12,15 +12,20 @@ interface Props {
 export default function WelcomeScreen({ onStart, onClose }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{
+        duration: 0.25,
+        ease: "easeOut",
+      }}
       onClick={onClose}
       className="
         relative
         flex
         h-full
         w-full
+        cursor-pointer
         flex-col
         items-center
         justify-center
@@ -29,8 +34,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
         px-5
         text-center
         sm:px-6
-        md:px-8
-        cursor-pointer
       "
     >
       {/* Background Glow */}
@@ -38,14 +41,14 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
         className="
           pointer-events-none
           absolute
-          -top-20
+          -top-16
           left-1/2
-          h-56
-          w-56
+          h-48
+          w-48
           -translate-x-1/2
           rounded-full
-          bg-violet-600/20
-          blur-[100px]
+          bg-violet-600/15
+          blur-[80px]
         "
       />
 
@@ -54,46 +57,42 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
           pointer-events-none
           absolute
           bottom-0
-          h-44
-          w-44
+          h-36
+          w-36
           rounded-full
-          bg-fuchsia-600/20
-          blur-[100px]
+          bg-fuchsia-600/15
+          blur-[80px]
         "
       />
 
       <div className="relative z-10">
-        {/* Logo */}
+        {/* Assistant Image */}
         <div
-  className="
-    mx-auto
-    mb-6
-    h-16
-    w-16
-    overflow-hidden
-    rounded-full
-    border-2
-    border-violet-500/60
-    bg-gradient-to-br
-    from-violet-600
-    to-fuchsia-500
-    shadow-xl
-    shadow-violet-600/30
-    sm:h-18
-    sm:w-18
-    md:h-20
-    md:w-20
-  "
->
- <Image
-  src="/images/chatbot/robot_wink.png"
-  alt="VAI SPACE Assistant"
-  width={80}
-  height={80}
-  className="block h-full w-full object-cover"
-/>
-
-</div>
+          className="
+            mx-auto
+            mb-6
+            h-16
+            w-16
+            overflow-hidden
+            rounded-full
+            border
+            border-violet-500/50
+            bg-black
+            shadow-lg
+            shadow-violet-600/20
+            sm:h-[72px]
+            sm:w-[72px]
+          "
+        >
+          <Image
+            src="/images/chatbot/robot_wink.png"
+            alt="VAI SPACE Assistant"
+            width={72}
+            height={72}
+            priority={false}
+            className="h-full w-full object-cover"
+          />
+        </div>
 
         {/* Title */}
         <h1
@@ -103,7 +102,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             font-bold
             text-white
             sm:text-[28px]
-            md:text-3xl
           "
         >
           Welcome to VAISPACE
@@ -119,9 +117,6 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             text-zinc-400
             sm:max-w-xs
             sm:text-[15px]
-            md:max-w-sm
-            md:text-base
-            md:leading-7
           "
         >
           I&apos;m your AI assistant.
@@ -130,16 +125,16 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
           digital solution.
         </p>
 
-        {/* Button */}
+        {/* Start Button */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onStart();
           }}
           className="
             group
-            mt-8
+            mt-7
             inline-flex
             items-center
             gap-2
@@ -152,13 +147,11 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
             text-sm
             font-medium
             text-white
-            transition-all
-            duration-300
-            hover:scale-105
-            hover:shadow-lg
-            hover:shadow-violet-600/40
+            transition-transform
+            duration-200
+            hover:scale-[1.03]
+            active:scale-95
             sm:px-6
-            sm:py-3.5
             sm:text-base
           "
         >
@@ -166,7 +159,11 @@ export default function WelcomeScreen({ onStart, onClose }: Props) {
 
           <ArrowRight
             size={16}
-            className="transition-transform group-hover:translate-x-1"
+            className="
+              transition-transform
+              duration-200
+              group-hover:translate-x-1
+            "
           />
         </button>
       </div>
