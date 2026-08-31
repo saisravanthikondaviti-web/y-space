@@ -61,7 +61,9 @@ export default function ChatLauncher() {
       }
     }, 3500);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+    };
   }, [open]);
 
   /*
@@ -71,23 +73,30 @@ export default function ChatLauncher() {
   */
 
   useEffect(() => {
-    if (open || hovered) return;
+    if (open || hovered) {
+      return;
+    }
 
     let cancelled = false;
-    let timer: ReturnType<typeof window.setTimeout>;
+    let timer: number | undefined;
     let index = 0;
 
     const runNext = () => {
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       const current = idleSequence[index];
 
       setBotState(current.state);
 
       timer = window.setTimeout(() => {
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
 
         index = (index + 1) % idleSequence.length;
+
         runNext();
       }, current.duration);
     };
@@ -96,9 +105,18 @@ export default function ChatLauncher() {
 
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
+
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+      }
     };
   }, [open, hovered]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | OPEN CHAT
+  |--------------------------------------------------------------------------
+  */
 
   const handleOpen = () => {
     setShowGreeting(false);
@@ -106,10 +124,22 @@ export default function ChatLauncher() {
     setOpen(true);
   };
 
+  /*
+  |--------------------------------------------------------------------------
+  | CLOSE CHAT
+  |--------------------------------------------------------------------------
+  */
+
   const handleClose = () => {
     setOpen(false);
     setBotState("awake");
   };
+
+  /*
+  |--------------------------------------------------------------------------
+  | HOVER
+  |--------------------------------------------------------------------------
+  */
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -132,9 +162,9 @@ export default function ChatLauncher() {
           fixed
           bottom-5
           right-5
+          z-[9998]
           sm:bottom-7
           sm:right-7
-          z-[9998]
         "
       >
         {/* GREETING */}
@@ -164,8 +194,8 @@ export default function ChatLauncher() {
                 absolute
                 right-0
                 bottom-[88px]
-                sm:bottom-[102px]
                 w-[250px]
+                sm:bottom-[102px]
               "
             >
               <div
@@ -269,17 +299,17 @@ export default function ChatLauncher() {
             flex
             h-[68px]
             w-[68px]
-            sm:h-[76px]
-            sm:w-[76px]
             items-center
             justify-center
             rounded-full
             outline-none
+            sm:h-[76px]
+            sm:w-[76px]
             focus-visible:ring-2
             focus-visible:ring-violet-400/70
           "
         >
-          {/* SINGLE STATIC AMBIENT GLOW */}
+          {/* STATIC AMBIENT GLOW */}
 
           <div
             className="
@@ -292,7 +322,7 @@ export default function ChatLauncher() {
             "
           />
 
-          {/* SINGLE SLOW ROTATING RING */}
+          {/* SLOW ROTATING RING */}
 
           <motion.div
             animate={{
@@ -338,12 +368,12 @@ export default function ChatLauncher() {
               flex
               h-[50px]
               w-[50px]
-              sm:h-[58px]
-              sm:w-[58px]
               items-center
               justify-center
               overflow-hidden
               rounded-full
+              sm:h-[58px]
+              sm:w-[58px]
             "
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -372,8 +402,8 @@ export default function ChatLauncher() {
                   inset-0
                   h-full
                   w-full
-                  object-contain
                   select-none
+                  object-contain
                 "
                 onError={() => {
                   console.error(
@@ -394,12 +424,12 @@ export default function ChatLauncher() {
               z-30
               h-[9px]
               w-[9px]
-              sm:h-[10px]
-              sm:w-[10px]
               rounded-full
               border-2
               border-black
               bg-emerald-400
+              sm:h-[10px]
+              sm:w-[10px]
             "
           />
 
@@ -423,10 +453,10 @@ export default function ChatLauncher() {
               z-20
               h-[9px]
               w-[9px]
-              sm:h-[10px]
-              sm:w-[10px]
               rounded-full
               bg-emerald-400
+              sm:h-[10px]
+              sm:w-[10px]
             "
           />
         </motion.button>
