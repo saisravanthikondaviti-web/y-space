@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -16,10 +17,18 @@ function generateParticles(count: number): Particle[] {
   return Array.from({ length: count }, () => ({
     left: Math.random() * 100,
     top: Math.random() * 100,
-    duration: 6 + Math.random() * 5,
-    delay: Math.random() * 3,
+
+    // Smooth, slow movement
+    duration: 7 + Math.random() * 5,
+
+    // Stagger animations
+    delay: Math.random() * 4,
+
+    // VAI SPACE colors
     color: Math.random() > 0.5 ? "#616CFA" : "#E46ECC",
-    size: 1 + Math.random() * 2,
+
+    // Slightly reduced medium size
+    size: 2.5 + Math.random() * 1.5,
   }));
 }
 
@@ -31,12 +40,12 @@ export default function GlobalParticles() {
       "(min-width: 1280px) and (pointer: fine)"
     );
 
-    // No particles on mobile and tablets for better performance.
+    // No particles on mobile/tablets for better performance
     if (!desktopQuery.matches) {
       return;
     }
 
-    setParticles(generateParticles(15));
+    setParticles(generateParticles(22));
   }, []);
 
   return (
@@ -47,10 +56,12 @@ export default function GlobalParticles() {
       {particles.map((particle, index) => (
         <motion.div
           key={index}
-          className="absolute rounded-full will-change-transform"
+          className="absolute rounded-full"
           animate={{
-            y: [0, -35, 0],
-            opacity: [0.2, 0.65, 0.2],
+            y: [0, -45, 0],
+            x: [0, 10, -8, 0],
+            opacity: [0.35, 1, 0.45, 0.35],
+            scale: [1, 1.2, 0.9, 1],
           }}
           transition={{
             duration: particle.duration,
@@ -64,9 +75,13 @@ export default function GlobalParticles() {
             width: `${particle.size}px`,
             height: `${particle.size}px`,
             backgroundColor: particle.color,
+
+            // Subtle colored glow
+            boxShadow: `0 0 ${particle.size * 3}px ${particle.color}`,
           }}
         />
       ))}
     </div>
   );
 }
+
