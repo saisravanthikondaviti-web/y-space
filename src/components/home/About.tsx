@@ -1,6 +1,6 @@
+
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import FadeUp from "../ui/FadeUp";
 
@@ -8,7 +8,6 @@ export default function About() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const element = videoContainerRef.current;
@@ -42,12 +41,16 @@ export default function About() {
     const playVideo = async () => {
       try {
         await video.play();
-      } catch {
-        // Autoplay may be blocked by the browser.
+      } catch (error) {
+        console.log("Video autoplay prevented:", error);
       }
     };
 
     playVideo();
+
+    return () => {
+      video.pause();
+    };
   }, [shouldLoadVideo]);
 
   return (
@@ -84,24 +87,12 @@ export default function About() {
 
         {/* Main Section */}
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Image / Video */}
+          {/* Video */}
           <FadeUp>
             <div
               ref={videoContainerRef}
               className="relative h-[240px] overflow-hidden rounded-3xl border border-white/10 bg-black sm:h-[300px] md:h-[360px] lg:h-[420px]"
             >
-              {/* Poster / fallback */}
-              <Image
-  src="/images/about-robo-poster.webp"
-  alt="VAI SPACE digital innovation"
-  fill
-  sizes="(max-width: 1024px) 100vw, 50vw"
-  className={`object-cover transition-opacity duration-700 ${
-    videoReady ? "opacity-0" : "opacity-100"
-  }`}
-/>
-
-              {/* Video */}
               {shouldLoadVideo && (
                 <video
                   ref={videoRef}
@@ -109,18 +100,14 @@ export default function About() {
                   muted
                   loop
                   playsInline
-                  preload="none"
-                  onCanPlay={() => setVideoReady(true)}
-                  className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
-                    videoReady
-                      ? "opacity-100 hover:scale-105"
-                      : "opacity-0"
-                  }`}
+                  autoPlay
+                  preload="auto"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               )}
 
               {/* Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
 
               {/* Text */}
               <div className="absolute bottom-6 left-6">
@@ -172,3 +159,4 @@ export default function About() {
     </section>
   );
 }
+
