@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* ================= FONTS ================= */
+/* =========================================================
+   FONTS
+   ========================================================= */
 
 @font-face {
   font-family: "Axiforma";
@@ -162,7 +164,9 @@
   font-display: swap;
 }
 
-/* ================= ROOT VARIABLES ================= */
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
 
 :root {
   --font-heading: "Axiforma";
@@ -182,7 +186,9 @@
   --border: rgba(255, 255, 255, 0.08);
 }
 
-/* ================= RESETS ================= */
+/* =========================================================
+   RESET
+   ========================================================= */
 
 *,
 *::before,
@@ -191,12 +197,25 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--background);
   color: var(--text-primary);
+
+  /*
+   * Prevent text from becoming unexpectedly larger on
+   * iOS Safari and other mobile browsers.
+   */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /*
+   * Keep normal browser scrolling as the fallback.
+   * Lenis is enabled separately on supported devices.
+   */
+  scroll-behavior: smooth;
 }
 
 body {
+  min-width: 320px;
   min-height: 100vh;
   margin: 0;
 
@@ -210,9 +229,19 @@ body {
   font-family: var(--font-body), sans-serif;
 
   text-rendering: optimizeLegibility;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /*
+   * Prevent accidental horizontal scrolling on mobile.
+   */
+  overscroll-behavior-x: none;
 }
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
 
 img,
 picture,
@@ -224,7 +253,25 @@ svg {
   height: auto;
 }
 
-/* ================= TYPOGRAPHY ================= */
+/*
+ * Prevent inline media from creating unexpected whitespace
+ * and improve mobile rendering.
+ */
+img,
+video {
+  vertical-align: middle;
+}
+
+/*
+ * Videos should not overflow their containers.
+ */
+video {
+  max-width: 100%;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
 
 h1,
 h2,
@@ -241,14 +288,18 @@ h6,
 }
 
 .section-label {
+  margin-bottom: 0.4rem;
+
+  color: #71717a;
+
   font-size: 0.8rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #71717a;
-  margin-bottom: 0.4rem;
 }
 
 .section-title {
+  max-width: 100%;
+
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   line-height: 1.05;
   font-weight: 700;
@@ -259,8 +310,9 @@ h6,
   line-height: 1.7;
 }
 
-/* ================= SPACING SYSTEM ================= */
-
+/* =========================================================
+   SPACING SYSTEM
+   ========================================================= */
 
 .section-padding {
   padding-block: clamp(1.75rem, 3vw, 3rem);
@@ -281,42 +333,111 @@ h6,
   flex-direction: column;
   gap: clamp(0.75rem, 1.2vw, 1.25rem);
 }
-/* ================= BACKGROUNDS ================= */
+
+/* =========================================================
+   BACKGROUNDS
+   ========================================================= */
 
 .hero-grid {
   background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    linear-gradient(
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
 
-  background-size: clamp(24px, 4vw, 50px)
-                   clamp(24px, 4vw, 50px);
+  background-size:
+    clamp(24px, 4vw, 50px)
+    clamp(24px, 4vw, 50px);
 }
 
-/* ================= UTILITIES ================= */
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* ================= SELECTION ================= */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
 
 ::selection {
   background: rgba(97, 108, 250, 0.3);
 }
 
-/* ================= LINKS ================= */
+/* =========================================================
+   LINKS
+   ========================================================= */
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* ================= CHATBOT ================= */
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/*
+ * Prevent iOS Safari from zooming into form controls.
+ * 16px is the safest minimum for mobile input controls.
+ */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+button {
+  min-height: 44px;
+
+  /*
+   * Remove the default iOS tap highlight.
+   */
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Better touch behavior for interactive elements.
+ */
+button,
+a,
+input,
+textarea,
+select {
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   CHATBOT SCROLLBAR
+   ========================================================= */
+
+.chat-scroll {
+  scrollbar-width: thin;
+}
 
 .chat-scroll::-webkit-scrollbar {
   width: 5px;
@@ -331,44 +452,17 @@ a {
   border-radius: 999px;
 }
 
-.chat-scroll {
-  scrollbar-width: thin;
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  min-width: 320px;
-}
-
-
-
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-button {
-  min-height: 44px;
-}
-
-/* ================= RESPONSIVE ================= */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 1280px) {
-
   .section-title {
     max-width: 18ch;
   }
-
 }
 
 @media (max-width: 1024px) {
-
   .section-title {
     max-width: 100%;
   }
@@ -376,11 +470,9 @@ button {
   .section-text {
     max-width: 100%;
   }
-
 }
 
 @media (max-width: 768px) {
-
   .section-padding {
     padding-block: 4rem;
   }
@@ -392,11 +484,9 @@ button {
   .section-title {
     font-size: clamp(2rem, 8vw, 3rem);
   }
-
 }
 
 @media (max-width: 640px) {
-
   .section-label {
     letter-spacing: 0.18em;
   }
@@ -409,11 +499,9 @@ button {
     font-size: 0.95rem;
     line-height: 1.7;
   }
-
 }
 
 @media (max-width: 480px) {
-
   body {
     font-size: 15px;
   }
@@ -421,12 +509,18 @@ button {
   .section-padding {
     padding-block: 3rem;
   }
-
 }
 
-/* ================= CUSTOM CURSOR ================= */
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
 
-/* Desktop only */
+/*
+ * Only hide the native cursor on devices that actually have
+ * a precise pointing device.
+
+ * Touch devices retain the normal browser cursor behavior.
+ */
 @media (pointer: fine) {
   body {
     cursor: none;
@@ -441,8 +535,6 @@ button {
   }
 }
 
-
-/* Mobile / Touch devices */
 @media (pointer: coarse) {
   body,
   a,
@@ -454,3 +546,36 @@ button {
   }
 }
 
+/* =========================================================
+   REDUCED MOTION / ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   SAFER MOBILE VIEWPORT
+   ========================================================= */
+
+/*
+ * Helps layouts that use full-screen fixed elements on
+ * iPhones with a browser toolbar / safe areas.
+ */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}

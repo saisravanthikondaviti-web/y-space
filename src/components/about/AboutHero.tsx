@@ -45,7 +45,7 @@ export default function AboutHero() {
 
           blur-[90px]
           sm:blur-[120px]
-          md:blur-[150px]
+          md:blur-[70px] md:blur-[100px]
         "
       />
 
@@ -83,7 +83,7 @@ export default function AboutHero() {
 
           blur-[100px]
           sm:blur-[130px]
-          md:blur-[170px]
+          md:blur-[80px] md:blur-[110px]
         "
       />
 

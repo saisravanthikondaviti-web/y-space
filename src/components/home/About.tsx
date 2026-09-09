@@ -1,8 +1,58 @@
+
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import FadeUp from "../ui/FadeUp";
 
 export default function About() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  useEffect(() => {
+    const element = videoContainerRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: "300px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldLoadVideo || !videoRef.current) return;
+
+    const video = videoRef.current;
+
+    video.load();
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch (error) {
+        console.log("Video autoplay prevented:", error);
+      }
+    };
+
+    playVideo();
+
+    return () => {
+      video.pause();
+    };
+  }, [shouldLoadVideo]);
+
   return (
     <section
       id="about"
@@ -37,20 +87,29 @@ export default function About() {
 
         {/* Main Section */}
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Image */}
+          {/* Video */}
           <FadeUp>
-            <div className="relative h-[240px] overflow-hidden rounded-3xl border border-white/10 sm:h-[300px] md:h-[360px] lg:h-[420px]">
-              <video
-                src="/videos/about-robo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover brightness-100 transition duration-700 hover:scale-105"
-              />
+            <div
+              ref={videoContainerRef}
+              className="relative h-[240px] overflow-hidden rounded-3xl border border-white/10 bg-black sm:h-[300px] md:h-[360px] lg:h-[420px]"
+            >
+              {shouldLoadVideo && (
+                <video
+                  ref={videoRef}
+                  src="/videos/about-robo.mp4"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                  preload="auto"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              )}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              {/* Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
 
+              {/* Text */}
               <div className="absolute bottom-6 left-6">
                 <p className="mb-2 text-sm uppercase tracking-[0.3em] text-zinc-500">
                   Our Vision
@@ -100,3 +159,4 @@ export default function About() {
     </section>
   );
 }
+

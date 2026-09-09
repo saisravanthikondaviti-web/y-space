@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, Lexend } from "next/font/google";
+
 import "./globals.css";
+
 import GlobalParticles from "@/components/ui/GlobalParticles";
-import ChatLauncher from "@/components/chatbot/ChatLauncher";
+import ChatLauncherLoader from "@/components/chatbot/ChatLauncherLoader";
 
 const headingFont = Space_Grotesk({
   subsets: ["latin"],
@@ -77,7 +79,7 @@ export default function RootLayout({
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
       <head>
-        {/* Google Analytics (GA4) */}
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-022P31P0VY"
           strategy="afterInteractive"
@@ -97,8 +99,11 @@ export default function RootLayout({
       <body className="min-h-screen bg-black">
         {children}
 
+        {/* Global background particles */}
         <GlobalParticles />
-        <ChatLauncher />
+
+        {/* Lazy-loaded chatbot */}
+        <ChatLauncherLoader />
       </body>
     </html>
   );

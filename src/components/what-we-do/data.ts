@@ -27,7 +27,7 @@ export const services: Service[] = [
   {
     slug: "branding",
     title: "Branding",
-    image: "/images/whatwedo/branding_.png",
+    image: "/images/whatwedo/cbranding.png",
     description:
       "We help businesses create meaningful identities that communicate who they are and what they stand for.",
     items: [
@@ -57,7 +57,7 @@ export const services: Service[] = [
   {
     slug: "performance-marketing",
     title: "Performance Marketing",
-    image: "/images/whatwedo/performance_marketing.png",
+    image: "/images/whatwedo/cperform.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -87,7 +87,7 @@ export const services: Service[] = [
   {
     slug: "design-creative",
     title: "Design & Creative",
-    image: "/images/whatwedo/create_design.png",
+    image: "/images/whatwedo/cdc.png",
     description:
       "We create visual experiences that help businesses look professional, consistent, and memorable.",
     items: [
@@ -114,7 +114,7 @@ export const services: Service[] = [
   {
     slug: "digital-marketing",
     title: "Digital Marketing",
-    image: "/images/whatwedo/digital_marketing.png",
+    image: "/images/whatwedo/cdigim.png",
     description:
       "Our marketing approach combines creativity with strategy to build awareness, engagement, and growth.",
     items: [
@@ -144,7 +144,7 @@ export const services: Service[] = [
   {
     slug: "web-development",
     title: "Website Design & Development",
-    image: "/images/whatwedo/web_development.png",
+    image: "/images/whatwedo/cwebdev.png",
     description:
       "We design and develop websites that are visually refined, user-focused, and performance-driven.",
     items: [
@@ -187,9 +187,68 @@ export const services: Service[] = [
   },
 
   {
+    slug: "ai-solutions",
+    title: "AI Solutions",
+    image: "/images/whatwedo/cai.png",
+description:
+  "Intelligent AI solutions that automate processes, improve decisions, and create smarter digital experiences.",
+    items: [
+      "AI Chatbots & Virtual Assistants",
+      "AI Document Analyzer",
+      "AI Resume Screening System",
+      "AI Recommendation Systems",
+      "Predictive Analytics",
+      "Fraud & Risk Detection",
+      "AI Cybersecurity Solutions",
+      "AI Image & Computer Vision Solutions",
+      "AI-Powered Data Dashboards",
+      "Multilingual AI Assistants",
+      "AI Automation",
+      "Custom Machine Learning Models",
+    ],
+    details: {
+      "AI Chatbots & Virtual Assistants":
+        "Intelligent assistants that automate conversations, answer questions, and support customers instantly.",
+
+      "AI Document Analyzer":
+        "Extract, summarize, and organize key information from documents using AI.",
+
+      "AI Resume Screening System":
+        "Screen resumes, identify relevant skills, and rank candidates automatically.",
+
+      "AI Recommendation Systems":
+        "Deliver personalized recommendations based on user behavior, preferences, and interests.",
+
+      "Predictive Analytics":
+        "Analyze data patterns to forecast outcomes and support smarter business decisions.",
+
+      "Fraud & Risk Detection":
+        "Detect suspicious activity, anomalies, and potential fraud using intelligent AI systems.",
+
+      "AI Cybersecurity Solutions":
+        "Identify threats, unusual behavior, and security risks with AI-powered monitoring.",
+
+      "AI Image & Computer Vision Solutions":
+        "Analyze images and video to detect objects, patterns, and visual information.",
+
+      "AI-Powered Data Dashboards":
+        "Turn complex data into intelligent dashboards with actionable AI-powered insights.",
+
+      "Multilingual AI Assistants":
+        "Build AI assistants that understand and respond naturally across multiple languages.",
+
+      "AI Automation":
+        "Automate repetitive workflows to reduce manual effort and improve business efficiency.",
+
+      "Custom Machine Learning Models":
+        "Develop custom AI models tailored to your data, workflows, and business goals.",
+    },
+  },
+
+  {
     slug: "video-production",
     title: "Video Production",
-    image: "/images/whatwedo/video_production.png",
+    image: "/images/whatwedo/video-production.png",
     description:
       "We create compelling visual content designed to engage, educate, and inspire.",
     items: [

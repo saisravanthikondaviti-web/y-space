@@ -1,6 +1,7 @@
 "use client";
 
-import { X, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { X } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -21,14 +22,18 @@ export default function ChatHeader({ onClose }: Props) {
       <div className="relative flex items-center justify-between px-5 py-4">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-500 shadow-lg shadow-violet-500/30">
-            <Sparkles size={18} className="text-white" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-500 p-[2px] shadow-lg shadow-violet-500/30">
+            <Image
+              src="/images/chatbot/robot_wink.png"
+              alt="VAI SPACE Assistant"
+              width={44}
+              height={44}
+              className="h-full w-full rounded-full object-cover"
+            />
           </div>
 
           <div>
-            <h2 className="font-semibold text-white">
-              Y Space Assistant
-            </h2>
+            <h2 className="font-semibold text-white">VAI SPACE Assistant</h2>
 
             <div className="mt-1 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />

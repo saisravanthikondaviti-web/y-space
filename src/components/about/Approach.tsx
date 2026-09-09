@@ -128,7 +128,7 @@ export default function Approach() {
       </div>
 
       {/* Background Glow */}
-      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#616CFA]/10 blur-[80px] sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:h-[500px] lg:w-[500px] lg:blur-[150px]" />
+      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#616CFA]/10 blur-[80px] sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:h-[500px] lg:w-[500px] lg:blur-[70px] md:blur-[100px]" />
     </section>
   );
 }

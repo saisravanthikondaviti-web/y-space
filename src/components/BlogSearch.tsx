@@ -78,7 +78,7 @@ export default function BlogSearch({ blogs }: BlogSearchProps) {
       </div>
 
       {/* Blog Grid */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
         {filteredBlogs.map((blog) => (
           <BlogCard
             key={blog.id}

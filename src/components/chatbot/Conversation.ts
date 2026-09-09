@@ -15,6 +15,7 @@ export const conversation = [
       "App Development",
       "AI Solutions",
       "Video Production",
+      "Graphic Design",
       "Other",
     ],
   },

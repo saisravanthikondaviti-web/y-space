@@ -23,7 +23,7 @@ export default function Hero() {
           -translate-y-1/2
           rounded-full
           bg-[#616CFA]/20
-          blur-[150px]
+          blur-[70px] md:blur-[100px]
         "
       />
 
@@ -77,7 +77,7 @@ export default function Hero() {
         >
           <motion.span
             className="inline-block text-white"
-            initial={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
