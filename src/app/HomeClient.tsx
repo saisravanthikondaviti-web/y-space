@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -24,16 +25,24 @@ export default function HomeClient() {
   const [introChecked, setIntroChecked] = useState(false);
 
   useEffect(() => {
-    try {
-      const introSeen = window.localStorage.getItem(INTRO_STORAGE_KEY);
+    const checkIntroStatus = () => {
+      try {
+        const introSeen = window.localStorage.getItem(INTRO_STORAGE_KEY);
 
-      setShowIntro(introSeen !== "true");
-    } catch (error) {
-      // If storage is unavailable, show the intro safely.
-      setShowIntro(true);
-    } finally {
-      setIntroChecked(true);
-    }
+        setShowIntro(introSeen !== "true");
+      } catch {
+        // If storage is unavailable, show the intro safely.
+        setShowIntro(true);
+      } finally {
+        setIntroChecked(true);
+      }
+    };
+
+    const frameId = window.requestAnimationFrame(checkIntroStatus);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   const handleIntroFinish = () => {
@@ -70,3 +79,4 @@ export default function HomeClient() {
     </>
   );
 }
+

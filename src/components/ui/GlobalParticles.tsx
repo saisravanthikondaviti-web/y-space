@@ -45,7 +45,13 @@ export default function GlobalParticles() {
       return;
     }
 
-    setParticles(generateParticles(22));
+    const frameId = window.requestAnimationFrame(() => {
+      setParticles(generateParticles(22));
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   return (
@@ -84,4 +90,3 @@ export default function GlobalParticles() {
     </div>
   );
 }
-
