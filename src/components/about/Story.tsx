@@ -62,7 +62,7 @@ export default function Story() {
             w-[500px]
             h-[500px]
             bg-[#E46ECC]/10
-            blur-[180px]
+            blur-[80px] md:blur-[120px]
             rounded-full
           "
         />
@@ -208,7 +208,7 @@ export default function Story() {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src="/videos/roadmap.mp4" type="video/mp4" />
             </video>

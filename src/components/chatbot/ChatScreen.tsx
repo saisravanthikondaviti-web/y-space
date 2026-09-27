@@ -22,6 +22,7 @@ interface Props {
 
 export default function ChatScreen({ onClose }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const timersRef = useRef<number[]>([]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState(0);
@@ -37,18 +38,38 @@ export default function ChatScreen({ onClose }: Props) {
     projectDetails: "",
   });
 
-  const askQuestion = useCallback((index: number) => {
-    setTyping(true);
+  const createTimer = useCallback(
+    (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+        timersRef.current = timersRef.current.filter(
+          (id) => id !== timer
+        );
 
-    const timer = window.setTimeout(() => {
-      const question = conversation[index];
+        callback();
+      }, delay);
+
+      timersRef.current.push(timer);
+
+      return timer;
+    },
+    []
+  );
+
+  /*
+  |--------------------------------------------------------------------------
+  | INITIAL QUESTION
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    createTimer(() => {
+      const question = conversation[0];
 
       if (!question) return;
 
       setTyping(false);
 
-      setMessages((prev) => [
-        ...prev,
+      setMessages([
         {
           id: crypto.randomUUID(),
           role: "bot",
@@ -56,34 +77,45 @@ export default function ChatScreen({ onClose }: Props) {
           options: question.options,
         },
       ]);
-    }, 900);
+    }, 500);
 
     return () => {
-      window.clearTimeout(timer);
+      timersRef.current.forEach((timer) => {
+        window.clearTimeout(timer);
+      });
+
+      timersRef.current = [];
     };
-  }, []);
+  }, [createTimer]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | AUTO SCROLL
+  |--------------------------------------------------------------------------
+  */
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      askQuestion(0);
-    }, 0);
+      bottomRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 50);
 
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [askQuestion]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    return () => window.clearTimeout(timer);
   }, [messages, typing]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | HANDLE ANSWER
+  |--------------------------------------------------------------------------
+  */
 
   const handleAnswer = useCallback(
     (answer: string) => {
       const current = conversation[step];
 
-      if (!current) return;
+      if (!current || typing) return;
 
       setMessages((prev) => [
         ...prev,
@@ -94,7 +126,7 @@ export default function ChatScreen({ onClose }: Props) {
         },
       ]);
 
-      const updatedLead = {
+      const updatedLead: LeadData = {
         ...lead,
         [current.key]: answer,
       };
@@ -103,16 +135,28 @@ export default function ChatScreen({ onClose }: Props) {
 
       const nextStep = step + 1;
 
+      /*
+      |--------------------------------------------------------------------------
+      | CONVERSATION COMPLETE
+      |--------------------------------------------------------------------------
+      */
+
       if (nextStep >= conversation.length) {
+        setTyping(true);
+
         fetch("/api/chatbot", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedLead),
-        }).catch(console.error);
+        }).catch((error) => {
+          console.error("Chatbot submission failed:", error);
+        });
 
-        window.setTimeout(() => {
+        createTimer(() => {
+          setTyping(false);
+
           setMessages((prev) => [
             ...prev,
             {
@@ -122,15 +166,21 @@ export default function ChatScreen({ onClose }: Props) {
                 "🎉 Thank you!\n\nWe've received your request.\n\nOur team will contact you shortly.",
             },
           ]);
-        }, 800);
+        }, 700);
 
         return;
       }
 
+      /*
+      |--------------------------------------------------------------------------
+      | NEXT QUESTION
+      |--------------------------------------------------------------------------
+      */
+
       setStep(nextStep);
       setTyping(true);
 
-      window.setTimeout(() => {
+      createTimer(() => {
         const nextQuestion = conversation[nextStep];
 
         if (!nextQuestion) return;
@@ -146,9 +196,9 @@ export default function ChatScreen({ onClose }: Props) {
             options: nextQuestion.options,
           },
         ]);
-      }, 900);
+      }, 700);
     },
-    [lead, step]
+    [step, lead, typing, createTimer]
   );
 
   const currentQuestion = conversation[step];
@@ -164,8 +214,7 @@ export default function ChatScreen({ onClose }: Props) {
         rounded-2xl
         border
         border-white/10
-        bg-[#09090B]/90
-        backdrop-blur-xl
+        bg-[#09090B]
         sm:rounded-3xl
       "
     >
@@ -185,12 +234,38 @@ export default function ChatScreen({ onClose }: Props) {
           lg:px-6
         "
       >
-        <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-violet-600/10 blur-[120px]" />
+        {/* Lightweight background effects */}
 
-        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-[120px]" />
+        <div
+          className="
+            pointer-events-none
+            absolute
+            left-0
+            top-0
+            h-48
+            w-48
+            rounded-full
+            bg-violet-600/5
+            blur-[80px]
+          "
+        />
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            bottom-0
+            right-0
+            h-48
+            w-48
+            rounded-full
+            bg-fuchsia-600/5
+            blur-[80px]
+          "
+        />
 
         <div className="relative space-y-4 sm:space-y-5">
-          {messages.map((msg) => (
+          {messages.map((msg, index) => (
             <div key={msg.id}>
               <MessageBubble
                 role={msg.role}
@@ -198,7 +273,7 @@ export default function ChatScreen({ onClose }: Props) {
               />
 
               {msg.options &&
-                msg === messages[messages.length - 1] &&
+                index === messages.length - 1 &&
                 !typing &&
                 step < conversation.length && (
                   <QuickReplies
@@ -222,8 +297,7 @@ export default function ChatScreen({ onClose }: Props) {
               shrink-0
               border-t
               border-white/10
-              bg-black/20
-              backdrop-blur-md
+              bg-[#09090B]
             "
           >
             <MessageInput

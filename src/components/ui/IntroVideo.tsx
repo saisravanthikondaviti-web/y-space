@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface IntroVideoProps {
   onFinish: () => void;
@@ -10,65 +10,101 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [started, setStarted] = useState(false);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
+  /*
+  |--------------------------------------------------------------------------
+  | SELECT DESKTOP / MOBILE VIDEO
+  |--------------------------------------------------------------------------
+  */
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const updateVideoSource = () => {
+      setVideoSrc(
+        mediaQuery.matches
+          ? "/videos/mobileintro.mp4"
+          : "/videos/web-intro.mp4"
+      );
     };
 
-    checkMobile();
+    updateVideoSource();
 
-    window.addEventListener(
-      "resize",
-      checkMobile
-    );
+    mediaQuery.addEventListener("change", updateVideoSource);
 
     return () => {
-      window.removeEventListener(
-        "resize",
-        checkMobile
-      );
+      mediaQuery.removeEventListener("change", updateVideoSource);
     };
   }, []);
 
+  /*
+  |--------------------------------------------------------------------------
+  | SAFETY FALLBACK
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    if (!videoSrc) return;
+
+    const timer = window.setTimeout(() => {
+      onFinish();
+    }, 15000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [videoSrc, onFinish]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | START VIDEO
+  |--------------------------------------------------------------------------
+  */
 
   const handleStart = async () => {
     const video = videoRef.current;
 
     if (!video || started) return;
 
-
     try {
-      // keep muted for browser permission
-      video.muted = true;
+      /*
+      User interaction allows Safari/browser
+      to play video with sound.
+      */
+
+      video.muted = false;
+      video.volume = 1;
 
       await video.play();
 
       setStarted(true);
+    } catch {
+      /*
+      Fallback to muted playback
+      */
 
+      try {
+        video.muted = true;
 
-      // enable audio after playback starts
-      setTimeout(() => {
-        video.muted = false;
-      }, 300);
+        await video.play();
 
-
-    } catch (error) {
-      console.error(
-        "Unable to play intro video:",
-        error
-      );
+        setStarted(true);
+      } catch {
+        onFinish();
+      }
     }
   };
 
+  /*
+  |--------------------------------------------------------------------------
+  | VIDEO ERROR
+  |--------------------------------------------------------------------------
+  */
 
-  // Prevent hydration mismatch
-  if (isMobile === null) {
-    return null;
-  }
-
+  const handleVideoError = () => {
+    onFinish();
+  };
 
   return (
     <div
@@ -76,48 +112,47 @@ export default function IntroVideo({ onFinish }: IntroVideoProps) {
         fixed
         inset-0
         z-[9999]
-        bg-black
         flex
+        cursor-pointer
         items-center
         justify-center
-        cursor-pointer
+        bg-black
       "
       onClick={handleStart}
     >
+      {/* START MESSAGE */}
 
       {!started && (
         <div
           className="
-            absolute
-            z-50
-            text-white
-            text-lg
             pointer-events-none
+            absolute
+            z-10
+            text-center
+            text-sm
+            text-white/80
+            sm:text-base
           "
         >
           Tap anywhere to start
         </div>
       )}
 
+      {/* VIDEO */}
 
-      <video
-        ref={videoRef}
-        src={
-          isMobile
-            ? "/videos/mobileintro.mp4"
-            : "/videos/web-intro.mp4"
-        }
-        playsInline
-        muted
-        preload="auto"
-        className="
-          w-full
-          h-full
-          object-cover
-        "
-        onEnded={onFinish}
-      />
-
+      {videoSrc && (
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          src={videoSrc}
+          muted
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+          onEnded={onFinish}
+          onError={handleVideoError}
+        />
+      )}
     </div>
   );
 }

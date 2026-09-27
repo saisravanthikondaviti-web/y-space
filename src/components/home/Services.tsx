@@ -40,6 +40,12 @@ const services = [
     description:
       "Modern, responsive, and high-performance websites built for growth and scalability.",
   },
+  {
+    slug: "ai-solutions",
+    title: "AI Solutions",
+    description:
+      "Intelligent AI solutions that automate processes, improve decision-making, and create smarter digital experiences.",
+  },
 ];
 
 export default function Services() {
@@ -76,40 +82,43 @@ export default function Services() {
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <FadeUp key={service.title}>
-              <Link href={`/services?service=${service.slug}`} prefetch={false}>
+              <Link
+                href={`/services?service=${service.slug}`}
+                prefetch={false}
+              >
                 <div
                   className="
-      group
-      relative
-      flex
-      h-full
-      flex-col
-      overflow-hidden
-      rounded-xl
-      border
-      border-white/15
-      bg-zinc-900/80
-      backdrop-blur-xl
-      p-3.5 lg:p-4
-      shadow-[0_10px_30px_rgba(0,0,0,0.25)]
-      transition-all
-      duration-500
-      hover:-translate-y-1
-      hover:border-[#616CFA]/20
-      hover:bg-zinc-900
-      cursor-none
-    "
+                    group
+                    relative
+                    flex
+                    h-full
+                    flex-col
+                    overflow-hidden
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-zinc-900/80
+                    backdrop-blur-xl
+                    p-3.5 lg:p-4
+                    shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+                    transition-all
+                    duration-500
+                    hover:-translate-y-1
+                    hover:border-[#616CFA]/20
+                    hover:bg-zinc-900
+                    cursor-none
+                  "
                 >
                   {/* Glow */}
                   <div
                     className="
-        absolute
-        inset-0
-        opacity-0
-        transition-opacity
-        duration-500
-        group-hover:opacity-100
-      "
+                      absolute
+                      inset-0
+                      opacity-0
+                      transition-opacity
+                      duration-500
+                      group-hover:opacity-100
+                    "
                   >
                     <div className="absolute -left-10 top-0 h-28 w-28 rounded-full bg-[#616CFA]/10 blur-3xl" />
                     <div className="absolute -right-10 bottom-0 h-28 w-28 rounded-full bg-[#E46ECC]/10 blur-3xl" />
@@ -118,37 +127,37 @@ export default function Services() {
                   {/* Top */}
                   <div className="relative mb-2 flex items-center justify-between">
                     <span className="text-[11px] font-medium tracking-wider text-zinc-400">
-                      0{index + 1}
+                      {String(index + 1).padStart(2, "0")}
                     </span>
 
                     <div
                       className="
-          h-2
-          w-2
-          rounded-full
-          bg-zinc-600
-          transition-all
-          duration-500
-          group-hover:bg-[#616CFA]
-        "
+                        h-2
+                        w-2
+                        rounded-full
+                        bg-zinc-600
+                        transition-all
+                        duration-500
+                        group-hover:bg-[#616CFA]
+                      "
                     />
                   </div>
 
                   {/* Accent Line */}
                   <div
                     className="
-        relative
-        mb-2
-        h-px
-        w-10
-        bg-zinc-700
-        transition-all
-        duration-500
-        group-hover:w-16
-        group-hover:bg-gradient-to-r
-        group-hover:from-[#616CFA]
-        group-hover:to-[#E46ECC]
-      "
+                      relative
+                      mb-2
+                      h-px
+                      w-10
+                      bg-zinc-700
+                      transition-all
+                      duration-500
+                      group-hover:w-16
+                      group-hover:bg-gradient-to-r
+                      group-hover:from-[#616CFA]
+                      group-hover:to-[#E46ECC]
+                    "
                   />
 
                   {/* Content */}
@@ -165,25 +174,25 @@ export default function Services() {
                   {/* Arrow */}
                   <div
                     className="
-        relative
-        mt-5
-        flex
-        items-center
-        text-zinc-500
-        transition-all
-        duration-300
-        group-hover:text-[#616CFA]
-      "
+                      relative
+                      mt-5
+                      flex
+                      items-center
+                      text-zinc-500
+                      transition-all
+                      duration-300
+                      group-hover:text-[#616CFA]
+                    "
                   >
                     <span className="text-[13px]">Learn More</span>
 
                     <span
                       className="
-          ml-2
-          transition-transform
-          duration-300
-          group-hover:translate-x-1
-        "
+                        ml-2
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-1
+                      "
                     >
                       →
                     </span>
