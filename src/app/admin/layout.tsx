@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import CustomCursor from "@/components/ui/CustomCursor";
+import AdminShell from "@/components/admin/AdminShell";
 
 export default function AdminLayout({
   children,
@@ -7,9 +8,9 @@ export default function AdminLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen cursor-none bg-black text-white">
+    <div className="admin-shell min-h-screen bg-[var(--admin-bg)] text-[var(--admin-text)] transition-colors duration-300 cursor-none">
       <CustomCursor />
-      {children}
+      <AdminShell>{children}</AdminShell>
     </div>
   );
 }

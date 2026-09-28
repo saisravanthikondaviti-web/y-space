@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { AdminOrb } from "./AdminOrb";
 
 type AdminAuthProps = {
@@ -11,16 +13,84 @@ type AdminAuthProps = {
 export function AdminAuth({ mode }: AdminAuthProps) {
   const isLogin = mode === "login";
 
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
 
-    // Authentication will be connected after the UI is complete.
-    setTimeout(() => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    const formData = new FormData(event.currentTarget);
+
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        router.push("/admin/dashboard");
+        router.refresh();
+
+        return;
+      }
+
+      const name = String(formData.get("name") ?? "").trim();
+
+      const confirmPassword = String(
+        formData.get("confirmPassword") ?? ""
+      );
+
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match.");
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+          },
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.session) {
+        router.push("/admin/dashboard");
+        router.refresh();
+
+        return;
+      }
+
+      setSuccess(
+        "Account created. Please check your email to verify your account."
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
       setLoading(false);
-    }, 700);
+    }
   }
 
   return (
@@ -53,11 +123,13 @@ export function AdminAuth({ mode }: AdminAuthProps) {
               <p className="font-[Space_Grotesk] text-xl font-semibold tracking-[0.22em]">
                 VAI
               </p>
+
               <p className="mt-1 text-[9px] tracking-[0.45em] text-white/40">
                 SPACE ADMIN
               </p>
             </div>
 
+            {/* Heading */}
             <div className="mb-10">
               <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-[#8b93ff]">
                 {isLogin ? "Admin access" : "New administrator"}
@@ -74,7 +146,23 @@ export function AdminAuth({ mode }: AdminAuthProps) {
               </p>
             </div>
 
+            {/* Error */}
+            {error && (
+              <div className="mb-5 rounded-xl border border-red-400/20 bg-red-400/[0.06] px-4 py-3 font-[Lexend] text-xs leading-5 text-red-300">
+                {error}
+              </div>
+            )}
+
+            {/* Success */}
+            {success && (
+              <div className="mb-5 rounded-xl border border-[#616CFA]/20 bg-[#616CFA]/[0.06] px-4 py-3 font-[Lexend] text-xs leading-5 text-[#aab0ff]">
+                {success}
+              </div>
+            )}
+
+            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Name */}
               {!isLogin && (
                 <div>
                   <label
@@ -95,6 +183,7 @@ export function AdminAuth({ mode }: AdminAuthProps) {
                 </div>
               )}
 
+              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -108,11 +197,13 @@ export function AdminAuth({ mode }: AdminAuthProps) {
                   name="email"
                   type="email"
                   required
+                  autoComplete="email"
                   placeholder="admin@vaispace.com"
                   className="h-13 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 font-[Lexend] text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#616CFA]/60 focus:bg-white/[0.05]"
                 />
               </div>
 
+              {/* Password */}
               <div>
                 <label
                   htmlFor="password"
@@ -126,11 +217,13 @@ export function AdminAuth({ mode }: AdminAuthProps) {
                   name="password"
                   type="password"
                   required
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                   placeholder="••••••••"
                   className="h-13 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 font-[Lexend] text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#616CFA]/60 focus:bg-white/[0.05]"
                 />
               </div>
 
+              {/* Confirm Password */}
               {!isLogin && (
                 <div>
                   <label
@@ -145,12 +238,14 @@ export function AdminAuth({ mode }: AdminAuthProps) {
                     name="confirmPassword"
                     type="password"
                     required
+                    autoComplete="new-password"
                     placeholder="••••••••"
                     className="h-13 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 font-[Lexend] text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#616CFA]/60 focus:bg-white/[0.05]"
                   />
                 </div>
               )}
 
+              {/* Submit */}
               <button
                 type="submit"
                 disabled={loading}
@@ -168,6 +263,7 @@ export function AdminAuth({ mode }: AdminAuthProps) {
               </button>
             </form>
 
+            {/* Switch Login / Signup */}
             <div className="mt-8 text-center font-[Lexend] text-xs text-white/35">
               {isLogin ? (
                 <>
