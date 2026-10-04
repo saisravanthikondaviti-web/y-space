@@ -64,6 +64,18 @@ const searchItems: SearchItem[] = [
   },
 ];
 
+type AdminTheme = "dark" | "light";
+
+function getInitialTheme(): AdminTheme {
+  if (typeof window === "undefined") {
+    return "dark";
+  }
+
+  const savedTheme = localStorage.getItem("vai-admin-theme");
+
+  return savedTheme === "light" ? "light" : "dark";
+}
+
 export default function AdminHeader() {
   const router = useRouter();
 
@@ -72,25 +84,26 @@ export default function AdminHeader() {
   const [search, setSearch] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
 
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<AdminTheme>(getInitialTheme);
 
   const [showGuide, setShowGuide] = useState(false);
 
+  /*
+   * Apply the initial theme to the document.
+   *
+   * Theme state itself is initialized above, so there is no
+   * synchronous setState call inside this effect.
+   */
   useEffect(() => {
-    const savedTheme = localStorage.getItem(
-      "vai-admin-theme"
-    ) as "dark" | "light" | null;
-
-    const initialTheme = savedTheme || "dark";
-
-    setTheme(initialTheme);
-
     document.documentElement.classList.toggle(
       "admin-light",
-      initialTheme === "light"
+      theme === "light",
     );
-  }, []);
+  }, [theme]);
 
+  /*
+   * Close search results when clicking outside.
+   */
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -108,17 +121,16 @@ export default function AdminHeader() {
     };
   }, []);
 
+  /*
+   * Theme toggle.
+   */
   function toggleTheme() {
-    const nextTheme = theme === "dark" ? "light" : "dark";
+    const nextTheme: AdminTheme =
+      theme === "dark" ? "light" : "dark";
 
     setTheme(nextTheme);
 
     localStorage.setItem("vai-admin-theme", nextTheme);
-
-    document.documentElement.classList.toggle(
-      "admin-light",
-      nextTheme === "light"
-    );
   }
 
   const filteredSearchItems = searchItems.filter((item) => {
@@ -139,7 +151,7 @@ export default function AdminHeader() {
   }
 
   function handleSearchKeyDown(
-    event: React.KeyboardEvent<HTMLInputElement>
+    event: React.KeyboardEvent<HTMLInputElement>,
   ) {
     if (event.key === "Enter") {
       const firstResult = filteredSearchItems[0];

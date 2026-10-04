@@ -14,6 +14,8 @@ import Link from "next/link";
 import ShareButton from "@/components/ShareButton";
 import Comments from "@/components/comments/Comments";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage({
   params,
 }: {
@@ -21,11 +23,12 @@ export default async function BlogPage({
 }) {
   const { slug } = await params;
 
-  const { data: blog, error } = await supabase
-    .from("blogs")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
+const { data: blog, error } = await supabase
+  .from("blogs")
+  .select("*")
+  .eq("slug", slug)
+  .eq("status", "published")
+  .maybeSingle();
 
   const views = blog ? await getBlogViews(blog.id) : 0;
 
