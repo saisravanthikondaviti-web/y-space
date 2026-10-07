@@ -1,68 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_URL environment variable.",
-  );
-}
-
-if (!supabaseAnonKey) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable.",
-  );
-}
-
-if (!serviceRoleKey) {
-  throw new Error(
-    "Missing SUPABASE_SERVICE_ROLE_KEY environment variable.",
-  );
-}
-
-/*
- * Public/anon client.
- *
- * Used only to validate the access token sent by the
- * currently logged-in admin.
- */
-const supabaseAuth = createClient(
-  supabaseUrl,
-  supabaseAnonKey,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  },
-);
-
-/*
- * Service-role client.
- *
- * IMPORTANT:
- * This is server-only.
- * Never expose this key through NEXT_PUBLIC_* variables.
- */
-const supabaseAdmin = createClient(
-  supabaseUrl,
-  serviceRoleKey,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  },
-);
-
 export async function GET(request: NextRequest) {
   try {
-    /*
-     * Get the access token from the Authorization header.
-     */
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Supabase URL is not configured.",
+        },
+        { status: 500 },
+      );
+    }
+
+    if (!supabaseAnonKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Supabase anonymous key is not configured.",
+        },
+        { status: 500 },
+      );
+    }
+
+    if (!serviceRoleKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Supabase service role key is not configured.",
+        },
+        { status: 500 },
+      );
+    }
+
     const authorization =
       request.headers.get("authorization");
 
@@ -77,7 +51,7 @@ export async function GET(request: NextRequest) {
     }
 
     const accessToken =
-      authorization.substring("Bearer ".length);
+      authorization.substring("Bearer ".length).trim();
 
     if (!accessToken) {
       return NextResponse.json(
@@ -89,15 +63,32 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    /*
-     * Ask Supabase Auth to validate the access token.
-     */
+    const supabaseAuth = createClient(
+      supabaseUrl,
+      supabaseAnonKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      },
+    );
+
+    const supabaseAdmin = createClient(
+      supabaseUrl,
+      serviceRoleKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      },
+    );
+
     const {
       data: { user },
       error: authError,
-    } = await supabaseAuth.auth.getUser(
-      accessToken,
-    );
+    } = await supabaseAuth.auth.getUser(accessToken);
 
     if (authError || !user) {
       console.error(
@@ -114,19 +105,14 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    /*
-     * Verify that this authenticated user exists
-     * in our admin_users table.
-     *
-     * The service-role client is used here because
-     * this is a server-side authorization check.
-     */
-    const { data: adminUser, error: adminError } =
-      await supabaseAdmin
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", user.id)
-        .maybeSingle();
+    const {
+      data: adminUser,
+      error: adminError,
+    } = await supabaseAdmin
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
 
     if (adminError) {
       console.error(
@@ -137,8 +123,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Unable to verify administrator access.",
+          error: "Unable to verify administrator access.",
         },
         { status: 500 },
       );
@@ -148,20 +133,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "You are not authorized to view users.",
+          error: "You are not authorized to view users.",
         },
         { status: 403 },
       );
     }
 
-    /*
-     * Fetch all Supabase Auth users.
-     *
-     * auth.users cannot be queried directly from
-     * the browser, so this happens securely on
-     * the server with the service-role client.
-     */
     const allUsers = [];
 
     let page = 1;
@@ -200,10 +177,6 @@ export async function GET(request: NextRequest) {
       page += 1;
     }
 
-    /*
-     * Get every admin account so we can show the
-     * correct role in the dashboard.
-     */
     const {
       data: adminRows,
       error: adminUsersError,
@@ -232,10 +205,6 @@ export async function GET(request: NextRequest) {
       ),
     );
 
-    /*
-     * Convert Supabase Auth users into the shape
-     * required by the dashboard.
-     */
     const users = allUsers.map((authUser) => {
       const metadata =
         authUser.user_metadata ?? {};
@@ -288,9 +257,6 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    /*
-     * Newest accounts first.
-     */
     users.sort((a, b) => {
       return (
         new Date(b.createdAt).getTime() -
