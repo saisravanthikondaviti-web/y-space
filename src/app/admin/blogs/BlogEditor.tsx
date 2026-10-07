@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import {
   ArrowLeft,
   Check,
@@ -17,6 +17,7 @@ import {
   Upload,
   X,
 } from "lucide-react";
+
 import {
   ChangeEvent,
   FormEvent,
@@ -25,6 +26,7 @@ import {
   useRef,
   useState,
 } from "react";
+
 import { supabase } from "@/lib/supabase";
 
 type BlogStatus = "draft" | "published";
@@ -92,6 +94,7 @@ const textareaClass = `
 
 export default function BlogEditor({ blogId }: BlogEditorProps) {
   const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const isEditing = Boolean(blogId);
@@ -105,6 +108,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
   const [coverImage, setCoverImage] = useState("");
+
   const [status, setStatus] = useState<BlogStatus>("draft");
 
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
@@ -113,12 +117,12 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(
-    null
+    null,
   );
 
   const [notice, setNotice] = useState<NoticeState>(null);
-  const [loaded, setLoaded] = useState(false);
 
+  const [loaded, setLoaded] = useState(false);
   const [initialSnapshot, setInitialSnapshot] = useState("");
 
   const currentSnapshot = useMemo(
@@ -132,7 +136,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
         coverImage,
         status,
       }),
-    [title, slug, excerpt, content, category, coverImage, status]
+    [title, slug, excerpt, content, category, coverImage, status],
   );
 
   const hasUnsavedChanges =
@@ -145,6 +149,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
       if (!blogId) {
         setLoading(false);
         setLoaded(true);
+
         setInitialSnapshot(
           JSON.stringify({
             title: "",
@@ -154,8 +159,9 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
             category: "",
             coverImage: "",
             status: "draft",
-          })
+          }),
         );
+
         return;
       }
 
@@ -164,9 +170,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
       const { data, error } = await supabase
         .from("blogs")
-        .select(
-          "id,title,slug,excerpt,content,category,cover_image,status"
-        )
+        .select("id,title,slug,excerpt,content,category,cover_image,status")
         .eq("id", blogId)
         .maybeSingle();
 
@@ -177,6 +181,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
           type: "error",
           message: error.message,
         });
+
         setLoading(false);
         return;
       }
@@ -186,6 +191,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
           type: "error",
           message: "The requested blog could not be found.",
         });
+
         setLoading(false);
         return;
       }
@@ -221,7 +227,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
           category: nextCategory,
           coverImage: nextCoverImage,
           status: nextStatus,
-        })
+        }),
       );
 
       setLoaded(true);
@@ -307,6 +313,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
       if (error) {
         console.error("Slug check error:", error);
+
         setSlugAvailable(null);
         return false;
       }
@@ -353,46 +360,43 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
     if (slugAvailable === false) {
       showNotice(
         "error",
-        "This blog URL is already being used. Please choose another slug."
+        "This blog URL is already being used. Please choose another slug.",
       );
+
       return false;
     }
 
     return true;
   }
 
-  async function handleImageChange(
-    event: ChangeEvent<HTMLInputElement>
-  ) {
+  async function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
     setNotice(null);
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     if (!allowedTypes.includes(file.type)) {
       showNotice(
         "error",
-        "Please upload a JPG, PNG, or WebP image."
+        "Please upload a JPG, PNG, or WebP image.",
       );
 
       event.target.value = "";
+
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
       showNotice(
         "error",
-        "The cover image must be smaller than 5 MB."
+        "The cover image must be smaller than 5 MB.",
       );
 
       event.target.value = "";
+
       return;
     }
 
@@ -407,6 +411,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
             : "webp";
 
       const fileName = `${crypto.randomUUID()}.${extension}`;
+
       const filePath = `blog-covers/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
@@ -432,7 +437,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
       showNotice(
         "success",
-        "Cover image uploaded. Save the blog to keep it."
+        "Cover image uploaded. Save the blog to keep it.",
       );
     } catch (error) {
       console.error("Image upload error:", error);
@@ -441,7 +446,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
         "error",
         error instanceof Error
           ? error.message
-          : "Unable to upload the cover image."
+          : "Unable to upload the cover image.",
       );
     } finally {
       setUploadingImage(false);
@@ -461,7 +466,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
       if (error) {
         console.warn(
           "Unable to remove newly uploaded image:",
-          error
+          error,
         );
       }
 
@@ -470,10 +475,52 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
     setCoverImage("");
 
-    showNotice("info", "Cover image removed. Save to apply the change.");
+    showNotice(
+      "info",
+      "Cover image removed. Save to apply the change.",
+    );
   }
 
-  async function saveBlog(event?: FormEvent) {
+  async function getAuthenticatedUser() {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+
+    if (error) {
+      throw new Error(
+        `Unable to read the Supabase session: ${error.message}`,
+      );
+    }
+
+    if (!session?.user) {
+      throw new Error(
+        "Your admin session is missing or expired. Please sign in again at /admin/login.",
+      );
+    }
+
+    const { data: isAdmin, error: adminError } =
+      await supabase.rpc("is_admin");
+
+    if (adminError) {
+      throw new Error(
+        `Unable to verify admin access: ${adminError.message}`,
+      );
+    }
+
+    if (!isAdmin) {
+      throw new Error(
+        "This account is not authorized to manage blogs.",
+      );
+    }
+
+    return session.user;
+  }
+
+  async function saveBlog(
+    event?: FormEvent,
+    forcedStatus?: BlogStatus,
+  ) {
     event?.preventDefault();
 
     if (saving) return;
@@ -487,18 +534,30 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
     setSaving(true);
 
     try {
-      const available = await checkSlugAvailability(normalizedSlug);
+      const user = await getAuthenticatedUser();
+
+      const available =
+        await checkSlugAvailability(normalizedSlug);
 
       if (!available) {
         showNotice(
           "error",
-          "This blog URL is already in use. Please choose another slug."
+          "This blog URL is already in use. Please choose another slug.",
         );
-        setSaving(false);
+
         return;
       }
 
-      const { data: userData } = await supabase.auth.getUser();
+      /*
+       * If forcedStatus is supplied, it takes priority.
+       *
+       * Save changes:
+       *   keeps the current status.
+       *
+       * Save as draft:
+       *   always changes the blog to draft.
+       */
+      const nextStatus = forcedStatus ?? status;
 
       const payload = {
         title: title.trim(),
@@ -507,63 +566,162 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
         content: content.trim(),
         category: category.trim() || null,
         cover_image: coverImage.trim() || null,
-        status,
+        status: nextStatus,
       };
 
       if (blogId) {
-        const { error } = await supabase
-          .from("blogs")
-          .update(payload)
-          .eq("id", blogId);
+        const { data: updatedBlog, error: updateError } =
+          await supabase
+            .from("blogs")
+            .update(payload)
+            .eq("id", blogId)
+            .select(
+              "id,title,slug,excerpt,content,category,cover_image,status,updated_at",
+            )
+            .single();
 
-        if (error) {
-          throw error;
+        if (updateError) {
+          console.error(
+            "Blog update error message:",
+            updateError.message,
+          );
+
+          console.error(
+            "Blog update error code:",
+            updateError.code,
+          );
+
+          console.error(
+            "Blog update error details:",
+            updateError.details,
+          );
+
+          console.error(
+            "Blog update error hint:",
+            updateError.hint,
+          );
+
+          throw new Error(
+            updateError.message ||
+              "The blog could not be updated.",
+          );
         }
+
+        if (!updatedBlog) {
+          throw new Error(
+            "The blog update returned no row. Please verify that this account has admin access.",
+          );
+        }
+
+        console.log(
+          "BLOG UPDATED SUCCESSFULLY:",
+          updatedBlog,
+        );
+
+        const savedStatus =
+          updatedBlog.status === "published"
+            ? "published"
+            : "draft";
+
+        const savedTitle = updatedBlog.title ?? "";
+        const savedSlug =
+          updatedBlog.slug ?? normalizedSlug;
+        const savedExcerpt =
+          updatedBlog.excerpt ?? "";
+        const savedContent =
+          updatedBlog.content ?? "";
+        const savedCategory =
+          updatedBlog.category ?? "";
+        const savedCoverImage =
+          updatedBlog.cover_image ?? "";
+
+        setTitle(savedTitle);
+        setSlug(savedSlug);
+        setExcerpt(savedExcerpt);
+        setContent(savedContent);
+        setCategory(savedCategory);
+        setCoverImage(savedCoverImage);
+        setStatus(savedStatus);
+        setSlugAvailable(true);
 
         setInitialSnapshot(
           JSON.stringify({
-            title: payload.title,
-            slug: payload.slug,
-            excerpt: payload.excerpt ?? "",
-            content: payload.content,
-            category: payload.category ?? "",
-            coverImage: payload.cover_image ?? "",
-            status: payload.status,
-          })
+            title: savedTitle,
+            slug: savedSlug,
+            excerpt: savedExcerpt,
+            content: savedContent,
+            category: savedCategory,
+            coverImage: savedCoverImage,
+            status: savedStatus,
+          }),
         );
-
-        setSlug(payload.slug);
-        setSlugAvailable(true);
 
         showNotice(
           "success",
-          "Blog updated successfully."
+          savedStatus === "draft"
+            ? "Blog saved as draft. It will not be published until you publish it."
+            : "Blog updated successfully. Your changes are now saved.",
         );
 
         router.refresh();
-      } else {
-        const { data, error } = await supabase
+
+        return;
+      }
+
+      const { data, error: insertError } =
+        await supabase
           .from("blogs")
           .insert({
             ...payload,
-            author_id: userData.user?.id ?? null,
+            author_id: user.id,
           })
           .select("id")
           .single();
 
-        if (error) {
-          throw error;
-        }
+      if (insertError) {
+        console.error(
+          "Blog create error message:",
+          insertError.message,
+        );
 
-        if (!data?.id) {
-          throw new Error("The blog was created but no ID was returned.");
-        }
+        console.error(
+          "Blog create error code:",
+          insertError.code,
+        );
 
-        setUploadedImagePath(null);
+        console.error(
+          "Blog create error details:",
+          insertError.details,
+        );
 
-        router.push("/admin/blogs");
-        router.refresh();
+        console.error(
+          "Blog create error hint:",
+          insertError.hint,
+        );
+
+        throw new Error(
+          insertError.message ||
+            "The blog could not be created.",
+        );
       }
+
+      if (!data?.id) {
+        throw new Error(
+          "The blog was created but no ID was returned.",
+        );
+      }
+
+      setUploadedImagePath(null);
+
+      showNotice(
+        "success",
+        nextStatus === "draft"
+          ? "Blog saved as draft successfully."
+          : "Blog created and published successfully.",
+      );
+
+      router.push("/admin/blogs");
+      router.refresh();
     } catch (error) {
       console.error("Blog save error:", error);
 
@@ -571,7 +729,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
         "error",
         error instanceof Error
           ? error.message
-          : "Unable to save the blog."
+          : "Unable to save the blog.",
       );
     } finally {
       setSaving(false);
@@ -581,7 +739,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
   function handleBack() {
     if (hasUnsavedChanges) {
       const confirmed = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
+        "You have unsaved changes. Are you sure you want to leave?",
       );
 
       if (!confirmed) return;
@@ -594,23 +752,25 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
     if (!slug.trim()) {
       showNotice(
         "error",
-        "Add a blog slug before previewing."
+        "Add a blog slug before previewing.",
       );
+
       return;
     }
 
     if (status !== "published") {
       showNotice(
         "info",
-        "Save and publish the blog before opening the public preview."
+        "Save and publish the blog before opening the public preview.",
       );
+
       return;
     }
 
     window.open(
       `/blogs/${slugify(slug)}`,
       "_blank",
-      "noopener,noreferrer"
+      "noopener,noreferrer",
     );
   }
 
@@ -619,7 +779,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
     if (!value) return 0;
 
-    return value.split(/\s+/).filter(Boolean).length;
+    return value
+      .split(/\s+/)
+      .filter(Boolean)
+      .length;
   }, [content]);
 
   const characterCount = content.length;
@@ -672,6 +835,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
     >
       <div className="mx-auto max-w-[1280px]">
         {/* Header */}
+
         <div className="mb-6">
           <button
             type="button"
@@ -745,32 +909,80 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
               </p>
             </div>
 
+            {/* Desktop actions */}
+
             <div className="hidden items-center gap-2 sm:flex">
-              {isEditing && status === "published" && slug && (
-                <button
-                  type="button"
-                  onClick={handlePreview}
-                  className="
-                    inline-flex h-10
-                    items-center gap-2
-                    rounded-xl
-                    border border-[var(--admin-border)]
-                    bg-[var(--admin-surface)]
-                    px-4
-                    font-[Lexend]
-                    text-[11px]
-                    font-medium
-                    text-[var(--admin-text)]
-                    shadow-sm
-                    transition-all duration-200
-                    hover:border-[var(--admin-border-strong)]
-                    hover:bg-[var(--admin-surface-3)]
-                  "
-                >
-                  <Eye size={15} strokeWidth={1.8} />
-                  Preview
-                </button>
-              )}
+              {isEditing &&
+                status === "published" &&
+                slug && (
+                  <button
+                    type="button"
+                    onClick={handlePreview}
+                    className="
+                      inline-flex h-10
+                      items-center gap-2
+                      rounded-xl
+                      border border-[var(--admin-border)]
+                      bg-[var(--admin-surface)]
+                      px-4
+                      font-[Lexend]
+                      text-[11px]
+                      font-medium
+                      text-[var(--admin-text)]
+                      shadow-sm
+                      transition-all duration-200
+                      hover:border-[var(--admin-border-strong)]
+                      hover:bg-[var(--admin-surface-3)]
+                    "
+                  >
+                    <Eye size={15} strokeWidth={1.8} />
+                    Preview
+                  </button>
+                )}
+
+              {/* Save as draft */}
+
+              <button
+                type="button"
+                onClick={() =>
+                  saveBlog(undefined, "draft")
+                }
+                disabled={saving}
+                className="
+                  inline-flex h-10
+                  items-center gap-2
+                  rounded-xl
+                  border border-[var(--admin-border)]
+                  bg-[var(--admin-surface)]
+                  px-4
+                  font-[Lexend]
+                  text-[11px]
+                  font-medium
+                  text-[var(--admin-text)]
+                  shadow-sm
+                  transition-all duration-200
+                  hover:border-[var(--admin-border-strong)]
+                  hover:bg-[var(--admin-surface-2)]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
+                "
+              >
+                {saving ? (
+                  <Loader2
+                    size={15}
+                    className="animate-spin"
+                  />
+                ) : (
+                  <FileText
+                    size={15}
+                    strokeWidth={1.8}
+                  />
+                )}
+
+                Save as draft
+              </button>
+
+              {/* Normal save */}
 
               <button
                 type="button"
@@ -800,7 +1012,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                     className="animate-spin"
                   />
                 ) : (
-                  <Save size={15} strokeWidth={1.8} />
+                  <Save
+                    size={15}
+                    strokeWidth={1.8}
+                  />
                 )}
 
                 {saving
@@ -824,8 +1039,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
         <form onSubmit={saveBlog}>
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_310px]">
             {/* Main editor */}
+
             <div className="min-w-0 space-y-5">
               {/* Article details */}
+
               <section
                 className="
                   rounded-2xl
@@ -837,13 +1054,19 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                 "
               >
                 <SectionHeader
-                  icon={<FileText size={16} strokeWidth={1.8} />}
+                  icon={
+                    <FileText
+                      size={16}
+                      strokeWidth={1.8}
+                    />
+                  }
                   title="Article details"
                   description="The basic information visitors will see."
                 />
 
                 <div className="mt-5 space-y-5">
                   {/* Title */}
+
                   <div>
                     <FieldLabel
                       htmlFor="blog-title"
@@ -856,10 +1079,12 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       type="text"
                       value={title}
                       onChange={(event) =>
-                        handleTitleChange(event.target.value)
+                        handleTitleChange(
+                          event.target.value,
+                        )
                       }
                       placeholder="Enter your blog title..."
-                      maxLength={180}
+                      maxLength={80}
                       className="
                         h-14 w-full
                         rounded-xl
@@ -882,12 +1107,13 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
                     <div className="mt-1.5 flex justify-end">
                       <span className="font-[Lexend] text-[9px] text-[var(--admin-text-muted)]">
-                        {title.length}/180
+                        {title.length}/80
                       </span>
                     </div>
                   </div>
 
                   {/* Slug + Category */}
+
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <FieldLabel
@@ -915,7 +1141,9 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                           type="text"
                           value={slug}
                           onChange={(event) =>
-                            handleSlugChange(event.target.value)
+                            handleSlugChange(
+                              event.target.value,
+                            )
                           }
                           onBlur={handleSlugBlur}
                           placeholder="your-blog-url"
@@ -976,6 +1204,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                   </div>
 
                   {/* Excerpt */}
+
                   <div>
                     <FieldLabel
                       htmlFor="blog-excerpt"
@@ -989,14 +1218,14 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                         setExcerpt(event.target.value)
                       }
                       placeholder="Write a short description that explains what this article is about..."
-                      maxLength={300}
+                      maxLength={65}
                       rows={3}
                       className={`${textareaClass} min-h-[100px] resize-y`}
                     />
 
                     <div className="mt-1.5 flex justify-end">
                       <span className="font-[Lexend] text-[9px] text-[var(--admin-text-muted)]">
-                        {excerpt.length}/300
+                        {excerpt.length}/65
                       </span>
                     </div>
                   </div>
@@ -1004,6 +1233,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
               </section>
 
               {/* Content */}
+
               <section
                 className="
                   rounded-2xl
@@ -1015,7 +1245,12 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                 "
               >
                 <SectionHeader
-                  icon={<FileText size={16} strokeWidth={1.8} />}
+                  icon={
+                    <FileText
+                      size={16}
+                      strokeWidth={1.8}
+                    />
+                  }
                   title="Article content"
                   description="Write the main content of your article."
                 />
@@ -1062,8 +1297,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
             </div>
 
             {/* Sidebar */}
+
             <aside className="space-y-5">
               {/* Publishing */}
+
               <SidebarCard
                 title="Publishing"
                 description="Control how the article appears publicly."
@@ -1076,12 +1313,16 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       value={status}
                       onChange={(event) =>
                         setStatus(
-                          event.target.value as BlogStatus
+                          event.target
+                            .value as BlogStatus,
                         )
                       }
                       className={`${inputClass} appearance-none pr-10`}
                     >
-                      <option value="draft">Draft</option>
+                      <option value="draft">
+                        Draft
+                      </option>
+
                       <option value="published">
                         Published
                       </option>
@@ -1129,6 +1370,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
               </SidebarCard>
 
               {/* Cover image */}
+
               <SidebarCard
                 title="Cover image"
                 description="Recommended for the blog card and article header."
@@ -1138,7 +1380,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                     <div className="relative aspect-[16/9] w-full bg-[var(--admin-surface-2)]">
                       <Image
                         src={coverImage}
-                        alt={title || "Blog cover image"}
+                        alt={
+                          title ||
+                          "Blog cover image"
+                        }
                         fill
                         sizes="310px"
                         className="object-cover"
@@ -1184,14 +1429,15 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() =>
+                      fileInputRef.current?.click()
+                    }
                     disabled={uploadingImage}
                     className="
                       flex min-h-[170px]
                       w-full
                       flex-col
-                      items-center
-                      justify-center
+                      items-center justify-center
                       rounded-xl
                       border
                       border-dashed
@@ -1254,7 +1500,9 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                 {coverImage && (
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() =>
+                      fileInputRef.current?.click()
+                    }
                     disabled={uploadingImage}
                     className="
                       mt-2.5
@@ -1280,6 +1528,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
               </SidebarCard>
 
               {/* Summary */}
+
               <SidebarCard
                 title="Article summary"
                 description="Quick information about this article."
@@ -1297,7 +1546,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
 
                   <SummaryRow
                     label="Category"
-                    value={category.trim() || "Uncategorized"}
+                    value={
+                      category.trim() ||
+                      "Uncategorized"
+                    }
                   />
 
                   <SummaryRow
@@ -1312,6 +1564,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
               </SidebarCard>
 
               {/* Public link */}
+
               {slug && (
                 <SidebarCard
                   title="Public address"
@@ -1379,6 +1632,7 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
           </div>
 
           {/* Mobile actions */}
+
           <div
             className="
               mt-5
@@ -1410,6 +1664,46 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                   Preview
                 </button>
               )}
+
+            {/* Mobile Save as draft */}
+
+            <button
+              type="button"
+              onClick={() =>
+                saveBlog(undefined, "draft")
+              }
+              disabled={saving}
+              className="
+                flex h-11
+                items-center justify-center
+                gap-2
+                rounded-xl
+                border border-[var(--admin-border)]
+                bg-[var(--admin-surface)]
+                font-[Lexend]
+                text-[11px]
+                font-medium
+                text-[var(--admin-text)]
+                transition-all duration-200
+                hover:border-[var(--admin-border-strong)]
+                hover:bg-[var(--admin-surface-2)]
+                disabled:cursor-not-allowed
+                disabled:opacity-60
+              "
+            >
+              {saving ? (
+                <Loader2
+                  size={15}
+                  className="animate-spin"
+                />
+              ) : (
+                <FileText size={15} />
+              )}
+
+              Save as draft
+            </button>
+
+            {/* Mobile normal save */}
 
             <button
               type="submit"
@@ -1687,12 +1981,14 @@ function Notice({
       text-emerald-600
       dark:text-emerald-400
     `,
+
     error: `
       border-red-500/20
       bg-red-500/[0.05]
       text-red-600
       dark:text-red-400
     `,
+
     info: `
       border-[var(--admin-purple)]/20
       bg-[var(--admin-purple)]/[0.05]

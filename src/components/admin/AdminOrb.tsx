@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -196,10 +197,12 @@ export function AdminOrb() {
               className={`relative ${service.size} overflow-hidden rounded-full border border-white/10 bg-white/[0.045] p-1.5 shadow-[0_0_30px_rgba(97,108,250,0.08)] backdrop-blur-xl transition-all duration-500 group-hover:border-[#616CFA]/60 group-hover:shadow-[0_0_35px_rgba(97,108,250,0.25)]`}
             >
               <div className="relative h-full w-full overflow-hidden rounded-full">
-                <img
+                <Image
                   src={service.image}
                   alt={service.name}
-                  className="h-full w-full object-cover opacity-75 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100"
+                  fill
+                  sizes="64px"
+                  className="object-cover opacity-75 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-[#616CFA]/20" />
@@ -288,22 +291,21 @@ export function AdminOrb() {
         />
 
         {/* VAI SPACE text */}
+        <motion.div
+          className="relative z-10 select-none text-center"
+          animate={{
+            scale: active ? 1.04 : 1,
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="font-[Space_Grotesk] text-[42px] font-semibold leading-none tracking-[0.18em] text-white">
+            VAI
+          </div>
 
-<motion.div
-  className="relative z-10 select-none text-center"
-  animate={{
-    scale: active ? 1.04 : 1,
-  }}
-  transition={{ duration: 0.5 }}
->
-  <div className="font-[Space_Grotesk] text-[42px] font-semibold leading-none tracking-[0.18em] text-white">
-    VAI
-  </div>
-
-  <div className="mt-2 font-[Lexend] text-[12px] font-medium tracking-[0.55em] text-white/55">
-    SPACE
-  </div>
-</motion.div>
+          <div className="mt-2 font-[Lexend] text-[12px] font-medium tracking-[0.55em] text-white/55">
+            SPACE
+          </div>
+        </motion.div>
 
         {/* Highlight */}
         <div className="pointer-events-none absolute left-[22%] top-[15%] h-[28%] w-[22%] rotate-[-35deg] rounded-full bg-white/10 blur-md" />

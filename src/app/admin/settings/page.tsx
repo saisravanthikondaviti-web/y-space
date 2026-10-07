@@ -33,6 +33,49 @@ type ToggleProps = {
   description: string;
 };
 
+const sections: {
+  id: SettingSection;
+  title: string;
+  description: string;
+}[] = [
+  {
+    id: "account",
+    title: "Account & team",
+    description:
+      "Manage workspace information and administrator details.",
+  },
+  {
+    id: "roles",
+    title: "Roles & permissions",
+    description:
+      "Control access levels and workspace permissions.",
+  },
+  {
+    id: "branding",
+    title: "Branding & domains",
+    description:
+      "Manage your VAI SPACE identity, logo and domains.",
+  },
+  {
+    id: "security",
+    title: "Integrations & security",
+    description:
+      "Manage integrations, API access and security controls.",
+  },
+  {
+    id: "audit",
+    title: "Audit log",
+    description:
+      "Review important activity across your admin workspace.",
+  },
+  {
+    id: "notifications",
+    title: "Notification preferences",
+    description:
+      "Choose which events and alerts you want to receive.",
+  },
+];
+
 function Toggle({
   enabled,
   onChange,
@@ -147,45 +190,6 @@ export default function AdminSettingsPage() {
   const [showAddSettings, setShowAddSettings] =
     useState(false);
 
-  const sections = [
-    {
-      id: "account" as SettingSection,
-      title: "Account & team",
-      description:
-        "Manage workspace information and administrator details.",
-    },
-    {
-      id: "roles" as SettingSection,
-      title: "Roles & permissions",
-      description:
-        "Control access levels and workspace permissions.",
-    },
-    {
-      id: "branding" as SettingSection,
-      title: "Branding & domains",
-      description:
-        "Manage your VAI SPACE identity, logo and domains.",
-    },
-    {
-      id: "security" as SettingSection,
-      title: "Integrations & security",
-      description:
-        "Manage integrations, API access and security controls.",
-    },
-    {
-      id: "audit" as SettingSection,
-      title: "Audit log",
-      description:
-        "Review important activity across your admin workspace.",
-    },
-    {
-      id: "notifications" as SettingSection,
-      title: "Notification preferences",
-      description:
-        "Choose which events and alerts you want to receive.",
-    },
-  ];
-
   const filteredSections = useMemo(() => {
     const value = search.trim().toLowerCase();
 
@@ -196,7 +200,7 @@ export default function AdminSettingsPage() {
     return sections.filter(
       (section) =>
         section.title.toLowerCase().includes(value) ||
-        section.description.toLowerCase().includes(value)
+        section.description.toLowerCase().includes(value),
     );
   }, [search]);
 
@@ -765,7 +769,6 @@ export default function AdminSettingsPage() {
               className="admin-button flex h-11 items-center gap-2 rounded-lg px-4 font-[Lexend] text-[11px] font-medium"
             >
               <RefreshCw size={15} />
-
               Refresh
             </button>
 
@@ -775,7 +778,6 @@ export default function AdminSettingsPage() {
               className="admin-primary-button flex h-11 items-center gap-2 rounded-lg px-4 font-[Lexend] text-[11px] font-medium"
             >
               <SlidersHorizontal size={15} />
-
               Add settings
             </button>
           </div>

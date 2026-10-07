@@ -18,6 +18,8 @@ import {
   LogOut,
   ChevronRight,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 
 const navigation = [
@@ -83,15 +85,92 @@ const navigation = [
   },
 ];
 
+function getDisplayName(user: User | null) {
+  if (!user) {
+    return "Admin";
+  }
+
+  const metadata = user.user_metadata ?? {};
+
+  const name =
+    metadata.full_name ||
+    metadata.name ||
+    metadata.display_name ||
+    metadata.username;
+
+  if (typeof name === "string" && name.trim()) {
+    return name.trim();
+  }
+
+  if (user.email) {
+    return user.email.split("@")[0];
+  }
+
+  return "Admin";
+}
+
+function getInitials(name: string) {
+  const parts = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (parts.length === 0) {
+    return "AD";
+  }
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+}
+
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadUser() {
+      const {
+        data: { user: currentUser },
+      } = await supabase.auth.getUser();
+
+      if (mounted) {
+        setUser(currentUser);
+      }
+    }
+
+    void loadUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (mounted) {
+          setUser(session?.user ?? null);
+        }
+      },
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   async function handleLogout() {
     await supabase.auth.signOut();
     router.replace("/admin/login");
     router.refresh();
   }
+
+  const displayName = getDisplayName(user);
+  const initials = getInitials(displayName);
 
   return (
     <aside className="fixed left-0 top-0 z-50 hidden h-screen w-[250px] border-r border-[var(--admin-border)] bg-[var(--admin-bg)] text-[var(--admin-text)] lg:block">
@@ -181,17 +260,17 @@ export default function AdminSidebar() {
         <div className="flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-surface-2)] px-3 py-3">
           {/* Avatar */}
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#766cff]/40 bg-[#1d193c] font-[Space_Grotesk] text-[13px] font-semibold text-white shadow-[0_0_20px_rgba(118,108,255,0.12)]">
-            AS
+            {initials}
           </div>
 
           {/* User details */}
           <div className="min-w-0 flex-1">
             <p className="truncate font-[Lexend] text-[13px] font-medium text-[var(--admin-text)]">
-              Aarav Sharma
+              {displayName}
             </p>
 
             <p className="truncate font-[Lexend] text-[11px] text-[var(--admin-text-muted)]">
-              Platform Admin
+              {user?.email ?? "Platform Admin"}
             </p>
           </div>
 

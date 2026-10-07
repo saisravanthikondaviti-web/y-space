@@ -22,7 +22,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
   type RefObject,
 } from "react";
 
@@ -71,22 +70,13 @@ function relativeDate(date: string | null) {
     return "—";
   }
 
-  const difference = Math.max(
-    0,
-    Date.now() - timestamp,
-  );
+  const difference = Math.max(0, Date.now() - timestamp);
 
-  const minutes = Math.floor(
-    difference / 60000,
-  );
+  const minutes = Math.floor(difference / 60000);
 
-  const hours = Math.floor(
-    difference / 3600000,
-  );
+  const hours = Math.floor(difference / 3600000);
 
-  const days = Math.floor(
-    difference / 86400000,
-  );
+  const days = Math.floor(difference / 86400000);
 
   if (minutes < 1) return "Just now";
   if (minutes < 60) return `${minutes}m ago`;
@@ -101,48 +91,38 @@ export default function BlogManager() {
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] =
-    useState<StatusFilter>("all");
-  const [categoryFilter, setCategoryFilter] =
-    useState("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
-  const [statusOpen, setStatusOpen] =
-    useState(false);
-  const [categoryOpen, setCategoryOpen] =
-    useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
-  const [activeMenu, setActiveMenu] =
-    useState<string | null>(null);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const [actionLoading, setActionLoading] =
-    useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const statusRef =
-    useRef<HTMLDivElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
 
-  const categoryRef =
-    useRef<HTMLDivElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
 
-  const menuRef =
-    useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   async function loadBlogs() {
     setLoading(true);
     setError("");
 
     try {
-      const { data, error: fetchError } =
-        await supabase
-          .from("blogs")
-          .select(
-            "id,title,slug,excerpt,cover_image,category,status,created_at,updated_at",
-          )
-          .order("updated_at", {
-            ascending: false,
-          });
+      const { data, error: fetchError } = await supabase
+        .from("blogs")
+        .select(
+          "id,title,slug,excerpt,cover_image,category,status,created_at,updated_at",
+        )
+        .order("updated_at", {
+          ascending: false,
+        });
 
       if (fetchError) {
         throw fetchError;
@@ -150,19 +130,21 @@ export default function BlogManager() {
 
       setBlogs((data ?? []) as Blog[]);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to load blogs.",
-      );
+      setError(err instanceof Error ? err.message : "Unable to load blogs.");
     } finally {
       setLoading(false);
     }
   }
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     void loadBlogs();
-  }, []);
+  }, 0);
+
+  return () => {
+    window.clearTimeout(timer);
+  };
+}, []);
 
   /*
    * One global outside-click handler for:
@@ -174,106 +156,62 @@ export default function BlogManager() {
     function handleOutsideClick(event: MouseEvent) {
       const target = event.target as Node;
 
-      if (
-        statusRef.current &&
-        !statusRef.current.contains(target)
-      ) {
+      if (statusRef.current && !statusRef.current.contains(target)) {
         setStatusOpen(false);
       }
 
-      if (
-        categoryRef.current &&
-        !categoryRef.current.contains(target)
-      ) {
+      if (categoryRef.current && !categoryRef.current.contains(target)) {
         setCategoryOpen(false);
       }
 
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(target)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(target)) {
         setActiveMenu(null);
       }
     }
 
-    document.addEventListener(
-      "mousedown",
-      handleOutsideClick,
-    );
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleOutsideClick,
-      );
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
   const categories = useMemo(() => {
     const values = blogs
       .map((blog) => blog.category?.trim())
-      .filter(
-        (category): category is string =>
-          Boolean(category),
-      );
+      .filter((category): category is string => Boolean(category));
 
-    return Array.from(new Set(values)).sort(
-      (a, b) => a.localeCompare(b),
-    );
+    return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
   }, [blogs]);
 
   const filteredBlogs = useMemo(() => {
-    const query =
-      search.trim().toLowerCase();
+    const query = search.trim().toLowerCase();
 
     return blogs.filter((blog) => {
       const matchesSearch =
         !query ||
-        blog.title
-          .toLowerCase()
-          .includes(query) ||
-        blog.slug
-          .toLowerCase()
-          .includes(query) ||
-        (blog.category ?? "")
-          .toLowerCase()
-          .includes(query) ||
-        (blog.excerpt ?? "")
-          .toLowerCase()
-          .includes(query);
+        blog.title.toLowerCase().includes(query) ||
+        blog.slug.toLowerCase().includes(query) ||
+        (blog.category ?? "").toLowerCase().includes(query) ||
+        (blog.excerpt ?? "").toLowerCase().includes(query);
 
       const matchesStatus =
-        statusFilter === "all" ||
-        blog.status === statusFilter;
+        statusFilter === "all" || blog.status === statusFilter;
 
       const matchesCategory =
-        categoryFilter === "all" ||
-        blog.category === categoryFilter;
+        categoryFilter === "all" || blog.category === categoryFilter;
 
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesCategory
-      );
+      return matchesSearch && matchesStatus && matchesCategory;
     });
-  }, [
-    blogs,
-    search,
-    statusFilter,
-    categoryFilter,
-  ]);
+  }, [blogs, search, statusFilter, categoryFilter]);
 
   const stats = useMemo(() => {
     return {
       total: blogs.length,
 
-      published: blogs.filter(
-        (blog) => blog.status === "published",
-      ).length,
+      published: blogs.filter((blog) => blog.status === "published").length,
 
-      drafts: blogs.filter(
-        (blog) => blog.status === "draft",
-      ).length,
+      drafts: blogs.filter((blog) => blog.status === "draft").length,
 
       categories: categories.length,
     };
@@ -287,12 +225,7 @@ export default function BlogManager() {
 
   const categoryOptions: FilterOption[] = [
     ["all", "All categories"],
-    ...categories.map(
-      (category): FilterOption => [
-        category,
-        category,
-      ],
-    ),
+    ...categories.map((category): FilterOption => [category, category]),
   ];
 
   const hasFilters =
@@ -302,9 +235,7 @@ export default function BlogManager() {
 
   async function toggleStatus(blog: Blog) {
     const nextStatus: BlogStatus =
-      blog.status === "published"
-        ? "draft"
-        : "published";
+      blog.status === "published" ? "draft" : "published";
 
     setActionLoading(blog.id);
     setActiveMenu(null);
@@ -312,13 +243,12 @@ export default function BlogManager() {
     setSuccess("");
 
     try {
-      const { error: updateError } =
-        await supabase
-          .from("blogs")
-          .update({
-            status: nextStatus,
-          })
-          .eq("id", blog.id);
+      const { error: updateError } = await supabase
+        .from("blogs")
+        .update({
+          status: nextStatus,
+        })
+        .eq("id", blog.id);
 
       if (updateError) {
         throw updateError;
@@ -330,8 +260,7 @@ export default function BlogManager() {
             ? {
                 ...item,
                 status: nextStatus,
-                updated_at:
-                  new Date().toISOString(),
+                updated_at: new Date().toISOString(),
               }
             : item,
         ),
@@ -344,9 +273,7 @@ export default function BlogManager() {
       );
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to update article.",
+        err instanceof Error ? err.message : "Unable to update article.",
       );
     } finally {
       setActionLoading(null);
@@ -366,30 +293,21 @@ export default function BlogManager() {
     setSuccess("");
 
     try {
-      const { error: deleteError } =
-        await supabase
-          .from("blogs")
-          .delete()
-          .eq("id", blog.id);
+      const { error: deleteError } = await supabase
+        .from("blogs")
+        .delete()
+        .eq("id", blog.id);
 
       if (deleteError) {
         throw deleteError;
       }
 
-      setBlogs((current) =>
-        current.filter(
-          (item) => item.id !== blog.id,
-        ),
-      );
+      setBlogs((current) => current.filter((item) => item.id !== blog.id));
 
-      setSuccess(
-        `"${blog.title}" was deleted.`,
-      );
+      setSuccess(`"${blog.title}" was deleted.`);
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to delete article.",
+        err instanceof Error ? err.message : "Unable to delete article.",
       );
     } finally {
       setActionLoading(null);
@@ -431,27 +349,39 @@ export default function BlogManager() {
             </h1>
 
             <p className="mt-2 max-w-md text-[10px] leading-5 text-[var(--admin-muted)]">
-              Create, organize and publish the
-              content behind your public blog.
+              Create, organize and publish the content behind your public blog.
             </p>
           </div>
 
           <Link
             href="/admin/blogs/new"
-            className="inline-flex h-8 items-center justify-center gap-1.5 self-start rounded-md bg-[var(--admin-primary)] px-3 text-[10px] font-semibold text-white transition hover:-translate-y-px hover:opacity-90 sm:self-auto"
+            className="
+    inline-flex h-10
+    items-center justify-center
+    gap-2
+    self-start
+    rounded-xl
+    bg-[var(--admin-purple)]
+    px-4
+    font-[Lexend]
+    text-[11px]
+    font-medium
+    text-white
+    shadow-sm
+    transition-all duration-200
+    hover:-translate-y-px
+    hover:opacity-95
+    sm:self-auto
+  "
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus size={15} strokeWidth={1.8} />
             New article
           </Link>
         </header>
 
         {/* Notifications */}
         {error && (
-          <Notice
-            type="error"
-            message={error}
-            onClose={() => setError("")}
-          />
+          <Notice type="error" message={error} onClose={() => setError("")} />
         )}
 
         {success && (
@@ -464,28 +394,13 @@ export default function BlogManager() {
 
         {/* Statistics */}
         <div className="mb-5 grid grid-cols-2 border-y border-[var(--admin-border)] sm:grid-cols-4">
-          <MiniStat
-            label="Articles"
-            value={stats.total}
-          />
+          <MiniStat label="Articles" value={stats.total} />
 
-          <MiniStat
-            label="Published"
-            value={stats.published}
-            border
-          />
+          <MiniStat label="Published" value={stats.published} border />
 
-          <MiniStat
-            label="Drafts"
-            value={stats.drafts}
-            border
-          />
+          <MiniStat label="Drafts" value={stats.drafts} border />
 
-          <MiniStat
-            label="Topics"
-            value={stats.categories}
-            border
-          />
+          <MiniStat label="Topics" value={stats.categories} border />
         </div>
 
         {/* Toolbar */}
@@ -498,9 +413,7 @@ export default function BlogManager() {
               <input
                 type="search"
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search articles..."
                 className="h-9 w-full rounded-md border border-[var(--admin-border)] bg-[var(--admin-card)] pl-9 pr-3 text-[10px] text-[var(--admin-text)] outline-none transition placeholder:text-[var(--admin-muted)] focus:border-[var(--admin-primary)]/30"
               />
@@ -508,27 +421,19 @@ export default function BlogManager() {
 
             <div className="flex gap-1.5">
               {/* Status dropdown */}
-              <div
-                ref={statusRef}
-                className="relative"
-              >
+              <div ref={statusRef} className="relative">
                 <FilterButton
                   label={
                     statusFilter === "all"
                       ? "Status"
-                      : statusFilter ===
-                          "published"
+                      : statusFilter === "published"
                         ? "Published"
                         : "Drafts"
                   }
-                  active={
-                    statusFilter !== "all"
-                  }
+                  active={statusFilter !== "all"}
                   open={statusOpen}
                   onClick={() => {
-                    setStatusOpen(
-                      (current) => !current,
-                    );
+                    setStatusOpen((current) => !current);
                     setCategoryOpen(false);
                   }}
                 />
@@ -538,9 +443,7 @@ export default function BlogManager() {
                     options={statusOptions}
                     value={statusFilter}
                     onSelect={(value) => {
-                      setStatusFilter(
-                        value as StatusFilter,
-                      );
+                      setStatusFilter(value as StatusFilter);
                       setStatusOpen(false);
                     }}
                   />
@@ -548,24 +451,13 @@ export default function BlogManager() {
               </div>
 
               {/* Category dropdown */}
-              <div
-                ref={categoryRef}
-                className="relative"
-              >
+              <div ref={categoryRef} className="relative">
                 <FilterButton
-                  label={
-                    categoryFilter === "all"
-                      ? "Category"
-                      : categoryFilter
-                  }
-                  active={
-                    categoryFilter !== "all"
-                  }
+                  label={categoryFilter === "all" ? "Category" : categoryFilter}
+                  active={categoryFilter !== "all"}
                   open={categoryOpen}
                   onClick={() => {
-                    setCategoryOpen(
-                      (current) => !current,
-                    );
+                    setCategoryOpen((current) => !current);
                     setStatusOpen(false);
                   }}
                 />
@@ -575,9 +467,7 @@ export default function BlogManager() {
                     options={categoryOptions}
                     value={categoryFilter}
                     onSelect={(value) => {
-                      setCategoryFilter(
-                        value,
-                      );
+                      setCategoryFilter(value);
                       setCategoryOpen(false);
                     }}
                   />
@@ -598,18 +488,12 @@ export default function BlogManager() {
               <button
                 type="button"
                 disabled={loading}
-                onClick={() =>
-                  void loadBlogs()
-                }
+                onClick={() => void loadBlogs()}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--admin-border)] bg-[var(--admin-card)] text-[var(--admin-muted)] transition hover:text-[var(--admin-text)] disabled:opacity-50"
                 aria-label="Refresh articles"
               >
                 <RefreshCw
-                  className={`h-3.5 w-3.5 ${
-                    loading
-                      ? "animate-spin"
-                      : ""
-                  }`}
+                  className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`}
                 />
               </button>
             </div>
@@ -640,69 +524,42 @@ export default function BlogManager() {
           {loading ? (
             <LoadingState />
           ) : filteredBlogs.length === 0 ? (
-            <EmptyState
-              filtered={hasFilters}
-              onReset={clearFilters}
-            />
+            <EmptyState filtered={hasFilters} onReset={clearFilters} />
           ) : (
             <div>
-              {filteredBlogs.map(
-                (blog, index) => (
-                  <ArticleCard
-                    key={blog.id}
-                    blog={blog}
-                    first={index === 0}
-                    busy={
-                      actionLoading ===
-                      blog.id
-                    }
-                    menuOpen={
-                      activeMenu === blog.id
-                    }
-                    menuRef={
-                      activeMenu === blog.id
-                        ? menuRef
-                        : undefined
-                    }
-                    onMenu={() =>
-                      setActiveMenu(
-                        (current) =>
-                          current === blog.id
-                            ? null
-                            : blog.id,
-                      )
-                    }
-                    onClose={() =>
-                      setActiveMenu(null)
-                    }
-                    onToggle={() =>
-                      void toggleStatus(
-                        blog,
-                      )
-                    }
-                    onDelete={() =>
-                      void deleteBlog(blog)
-                    }
-                  />
-                ),
-              )}
+              {filteredBlogs.map((blog, index) => (
+                <ArticleCard
+                  key={blog.id}
+                  blog={blog}
+                  first={index === 0}
+                  busy={actionLoading === blog.id}
+                  menuOpen={activeMenu === blog.id}
+                  menuRef={activeMenu === blog.id ? menuRef : undefined}
+                  onMenu={() =>
+                    setActiveMenu((current) =>
+                      current === blog.id ? null : blog.id,
+                    )
+                  }
+                  onClose={() => setActiveMenu(null)}
+                  onToggle={() => void toggleStatus(blog)}
+                  onDelete={() => void deleteBlog(blog)}
+                />
+              ))}
             </div>
           )}
         </div>
 
-        {!loading &&
-          filteredBlogs.length > 0 && (
-            <div className="mt-3 flex items-center justify-between px-1">
-              <span className="text-[8px] text-[var(--admin-muted)]">
-                Showing {filteredBlogs.length}{" "}
-                of {blogs.length} articles
-              </span>
+        {!loading && filteredBlogs.length > 0 && (
+          <div className="mt-3 flex items-center justify-between px-1">
+            <span className="text-[8px] text-[var(--admin-muted)]">
+              Showing {filteredBlogs.length} of {blogs.length} articles
+            </span>
 
-              <span className="text-[8px] text-[var(--admin-muted)]">
-                Updated content appears first
-              </span>
-            </div>
-          )}
+            <span className="text-[8px] text-[var(--admin-muted)]">
+              Updated content appears first
+            </span>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -724,9 +581,7 @@ function MiniStat({
   return (
     <div
       className={`flex items-center justify-between px-3 py-3 ${
-        border
-          ? "border-l border-[var(--admin-border)]"
-          : ""
+        border ? "border-l border-[var(--admin-border)]" : ""
       }`}
     >
       <span className="text-[8px] font-medium uppercase tracking-[0.14em] text-[var(--admin-muted)]">
@@ -765,9 +620,7 @@ function FilterButton({
           : "border-[var(--admin-border)] bg-[var(--admin-card)] !text-[var(--admin-muted)] hover:!text-[var(--admin-text)]"
       }`}
     >
-      <span className="truncate">
-        {label}
-      </span>
+      <span className="truncate">{label}</span>
 
       <ChevronDown
         className={`h-3 w-3 shrink-0 transition-transform ${
@@ -793,30 +646,24 @@ function CompactDropdown({
 }) {
   return (
     <div className="absolute right-0 top-[42px] z-[100] w-[155px] overflow-hidden rounded-lg border border-[var(--admin-border)] bg-[#0b0b0d] p-1 shadow-[0_18px_50px_rgba(0,0,0,0.55)]">
-      {options.map(
-        ([optionValue, label]) => (
-          <button
-            key={optionValue}
-            type="button"
-            onClick={() =>
-              onSelect(optionValue)
-            }
-            className={`flex h-8 w-full items-center justify-between rounded-md px-2.5 !text-[10px] font-medium transition ${
-              value === optionValue
-                ? "bg-[var(--admin-primary)]/[0.08] !text-[var(--admin-text)]"
-                : "!text-[var(--admin-muted)] hover:bg-white/[0.035] hover:!text-[var(--admin-text)]"
-            }`}
-          >
-            <span className="min-w-0 truncate">
-              {label}
-            </span>
+      {options.map(([optionValue, label]) => (
+        <button
+          key={optionValue}
+          type="button"
+          onClick={() => onSelect(optionValue)}
+          className={`flex h-8 w-full items-center justify-between rounded-md px-2.5 !text-[10px] font-medium transition ${
+            value === optionValue
+              ? "bg-[var(--admin-primary)]/[0.08] !text-[var(--admin-text)]"
+              : "!text-[var(--admin-muted)] hover:bg-white/[0.035] hover:!text-[var(--admin-text)]"
+          }`}
+        >
+          <span className="min-w-0 truncate">{label}</span>
 
-            {value === optionValue && (
-              <Check className="ml-2 h-3 w-3 shrink-0 text-[var(--admin-primary)]" />
-            )}
-          </button>
-        ),
-      )}
+          {value === optionValue && (
+            <Check className="ml-2 h-3 w-3 shrink-0 text-[var(--admin-primary)]" />
+          )}
+        </button>
+      ))}
     </div>
   );
 }
@@ -849,9 +696,7 @@ function ArticleCard({
   return (
     <article
       className={`group relative transition-colors hover:bg-white/[0.012] ${
-        first
-          ? ""
-          : "border-t border-[var(--admin-border)]"
+        first ? "" : "border-t border-[var(--admin-border)]"
       }`}
     >
       <div className="flex min-h-[84px] items-center gap-3 px-3 py-3 sm:px-4">
@@ -873,20 +718,13 @@ function ArticleCard({
         </div>
 
         {/* Main content */}
-        <Link
-          href={`/admin/blogs/${blog.id}/edit`}
-          className="min-w-0 flex-1"
-        >
+        <Link href={`/admin/blogs/${blog.id}/edit`} className="min-w-0 flex-1">
           <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
-            <StatusBadge
-              status={blog.status}
-            />
+            <StatusBadge status={blog.status} />
 
             {blog.category && (
               <>
-                <span className="text-[8px] text-[var(--admin-muted)]">
-                  /
-                </span>
+                <span className="text-[8px] text-[var(--admin-muted)]">/</span>
 
                 <span className="max-w-[150px] truncate text-[8px] text-[var(--admin-muted)]">
                   {blog.category}
@@ -909,10 +747,7 @@ function ArticleCard({
             </span>
 
             <span className="hidden text-[8px] text-[var(--admin-muted)] sm:inline">
-              Updated{" "}
-              {relativeDate(
-                blog.updated_at,
-              )}
+              Updated {relativeDate(blog.updated_at)}
             </span>
           </div>
         </Link>
@@ -920,25 +755,19 @@ function ArticleCard({
         {/* Excerpt */}
         <div className="hidden w-[210px] shrink-0 lg:block">
           <p className="line-clamp-2 text-[9px] leading-4 text-[var(--admin-muted)]">
-            {blog.excerpt ||
-              "No article description added yet."}
+            {blog.excerpt || "No article description added yet."}
           </p>
         </div>
 
         {/* Updated */}
         <div className="hidden w-[70px] shrink-0 text-right xl:block">
           <span className="text-[8px] text-[var(--admin-muted)]">
-            {relativeDate(
-              blog.updated_at,
-            )}
+            {relativeDate(blog.updated_at)}
           </span>
         </div>
 
         {/* Actions */}
-        <div
-          ref={menuRef}
-          className="relative shrink-0"
-        >
+        <div ref={menuRef} className="relative shrink-0">
           <button
             type="button"
             onClick={onMenu}
@@ -1022,9 +851,7 @@ function ArticleMenu({
           <Check className="h-3 w-3 text-[var(--admin-muted)]" />
         )}
 
-        {blog.status === "published"
-          ? "Move to draft"
-          : "Publish article"}
+        {blog.status === "published" ? "Move to draft" : "Publish article"}
       </button>
 
       <div className="my-1 border-t border-[var(--admin-border)]" />
@@ -1046,13 +873,8 @@ function ArticleMenu({
 /* Status                                                                     */
 /* -------------------------------------------------------------------------- */
 
-function StatusBadge({
-  status,
-}: {
-  status: BlogStatus;
-}) {
-  const published =
-    status === "published";
+function StatusBadge({ status }: { status: BlogStatus }) {
+  const published = status === "published";
 
   return (
     <span
@@ -1064,15 +886,11 @@ function StatusBadge({
     >
       <span
         className={`h-1 w-1 rounded-full ${
-          published
-            ? "bg-emerald-400"
-            : "bg-amber-400"
+          published ? "bg-emerald-400" : "bg-amber-400"
         }`}
       />
 
-      {published
-        ? "Published"
-        : "Draft"}
+      {published ? "Published" : "Draft"}
     </span>
   );
 }
@@ -1107,9 +925,7 @@ function Notice({
           <Check className="h-3 w-3 shrink-0" />
         )}
 
-        <span className="truncate">
-          {message}
-        </span>
+        <span className="truncate">{message}</span>
       </div>
 
       <button
@@ -1157,9 +973,7 @@ function EmptyState({
       </div>
 
       <h2 className="!text-[12px] font-semibold text-[var(--admin-text)]">
-        {filtered
-          ? "No articles found"
-          : "No articles yet"}
+        {filtered ? "No articles found" : "No articles yet"}
       </h2>
 
       <p className="mt-1 max-w-xs !text-[9px] leading-5 text-[var(--admin-muted)]">
@@ -1179,9 +993,25 @@ function EmptyState({
       ) : (
         <Link
           href="/admin/blogs/new"
-          className="mt-3 inline-flex h-7 items-center gap-1 rounded-md bg-[var(--admin-primary)] px-2.5 !text-[9px] font-semibold text-white"
+          className="
+    mt-3
+    inline-flex h-9
+    items-center justify-center
+    gap-1.5
+    rounded-lg
+    bg-[var(--admin-purple)]
+    px-3
+    font-[Lexend]
+    !text-[10px]
+    font-medium
+    text-white
+    shadow-sm
+    transition-all duration-200
+    hover:-translate-y-px
+    hover:opacity-95
+  "
         >
-          <Plus className="h-3 w-3" />
+          <Plus size={13} strokeWidth={1.8} />
           Create article
         </Link>
       )}

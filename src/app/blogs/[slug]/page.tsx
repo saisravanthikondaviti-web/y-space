@@ -23,54 +23,75 @@ export default async function BlogPage({
 }) {
   const { slug } = await params;
 
-const { data: blog, error } = await supabase
-  .from("blogs")
-  .select("*")
-  .eq("slug", slug)
-  .eq("status", "published")
-  .maybeSingle();
+  const { data: blog, error } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
 
-  const views = blog ? await getBlogViews(blog.id) : 0;
+  if (error) {
+    console.error("Failed to load blog:", error);
+  }
 
-  console.log("SLUG:", slug);
-  console.log("BLOG:", blog);
-  console.log("ERROR:", error);
+  console.log("BLOG SLUG:", slug);
+  console.log("BLOG DATA:", blog);
+  console.log("BLOG ERROR:", error);
 
   if (!blog) {
     return (
-      <div className="p-10 text-center">
-        <h1 className="text-xl font-bold">Blog not found</h1>
-        <p className="text-gray-500">
-          Check your slug or Supabase data
-        </p>
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="text-center">
+          <h1 className="text-xl font-bold">Blog not found</h1>
+          <p className="mt-2 text-gray-500">
+            Check the blog slug or Supabase data.
+          </p>
+
+          <Link
+            href="/blogs"
+            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300"
+          >
+            ← Back to Blogs
+          </Link>
+        </div>
       </div>
     );
   }
+
+  const views = await getBlogViews(blog.id);
 
   return (
     <>
       <ScrollProgress />
       <SmoothScroll />
       <CustomCursor />
+
       <Navbar />
 
       <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20">
-
         {/* Back Button */}
         <Link
           href="/blogs"
-          className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full
-          border border-white/10 bg-white/5 backdrop-blur-md
-          hover:bg-white/10 hover:border-violet-500
-          transition-all duration-300 group text-sm sm:text-base"
+          className="
+            inline-flex items-center gap-2
+            mb-6 sm:mb-8
+            px-4 sm:px-5 py-2 sm:py-2.5
+            rounded-full
+            border border-white/10
+            bg-white/5
+            backdrop-blur-md
+            hover:bg-white/10
+            hover:border-violet-500
+            transition-all duration-300
+            group
+            text-sm sm:text-base
+          "
         >
           <span className="transition-transform duration-300 group-hover:-translate-x-1">
             ←
           </span>
 
-          <span className="font-medium">
-            Back to Blogs
-          </span>
+          <span className="font-medium">Back to Blogs</span>
         </Link>
 
         <ViewTracker blogId={blog.id} />
@@ -82,10 +103,19 @@ const { data: blog, error } = await supabase
               src={blog.cover_image}
               alt={blog.title}
               fill
+              priority
               className="object-cover"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
-              priority
             />
+          </div>
+        )}
+
+        {/* Category */}
+        {blog.category && (
+          <div className="mb-4">
+            <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[#8E96FF]">
+              {blog.category}
+            </span>
           </div>
         )}
 
@@ -95,7 +125,8 @@ const { data: blog, error } = await supabase
             text-[2rem] leading-[1.15]
             sm:text-4xl sm:leading-[1.15]
             md:text-5xl md:leading-[1.1]
-            font-bold tracking-tight
+            font-bold
+            tracking-tight
             break-words
           "
         >
@@ -106,6 +137,21 @@ const { data: blog, error } = await supabase
         <div className="flex items-center gap-6 mt-4 sm:mt-5 text-xs sm:text-sm text-gray-400">
           <span>👁 {views} Views</span>
         </div>
+
+        {/* Excerpt */}
+        {blog.excerpt && (
+          <p
+            className="
+              mt-5 sm:mt-6
+              text-base sm:text-lg
+              leading-7 sm:leading-8
+              text-gray-400
+              break-words
+            "
+          >
+            {blog.excerpt}
+          </p>
+        )}
 
         {/* Blog Content */}
         <article

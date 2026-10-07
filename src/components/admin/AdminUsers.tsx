@@ -1,6 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Search,
   RefreshCw,
@@ -13,82 +18,289 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+
+type UserStatus =
+  | "Active"
+  | "Suspended"
+  | "Invited";
 
 type User = {
-  id: number;
+  id: string;
   name: string;
+  email: string;
   role: string;
-  status: "Active" | "Suspended" | "Invited";
-  lastLogin: string;
+  status: UserStatus;
+  lastLogin: string | null;
+  createdAt: string;
+  emailConfirmed: boolean;
+  providers: string[];
 };
 
-const demoUsers: User[] = [
-  {
-    id: 1,
-    name: "Aarav Sharma",
-    role: "Admin",
-    status: "Active",
-    lastLogin: "Today, 09:12",
-  },
-  {
-    id: 2,
-    name: "Nisha Reddy",
-    role: "Editor",
-    status: "Active",
-    lastLogin: "Today, 08:44",
-  },
-  {
-    id: 3,
-    name: "Maya Kumar",
-    role: "Author",
-    status: "Active",
-    lastLogin: "Yesterday",
-  },
-  {
-    id: 4,
-    name: "Vivek Rao",
-    role: "Analyst",
-    status: "Suspended",
-    lastLogin: "18 Sep 2026",
-  },
+const roles = [
+  "Admin",
+  "Editor",
+  "Author",
+  "Analyst",
 ];
 
-const roles = ["Admin", "Editor", "Author", "Analyst"];
+function formatDate(value: string | null) {
+  if (!value) return "Never";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Unknown";
+  }
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function formatShortDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Unknown";
+  }
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
+
+function getUserInitials(
+  name: string,
+  email: string,
+) {
+  const source =
+    name.trim() ||
+    email.split("@")[0] ||
+    "U";
+
+  const parts = source
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  }
+
+  return source.slice(0, 2).toUpperCase();
+}
 
 export default function AdminUsers() {
-  const [users, setUsers] = useState<User[]>(demoUsers);
+  const [users, setUsers] = useState<User[]>([]);
 
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("All statuses");
-  const [period, setPeriod] = useState("Last 30 days");
+  const [status, setStatus] =
+    useState("All statuses");
+  const [period, setPeriod] =
+    useState("Last 30 days");
 
-  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] =
+    useState(false);
 
-  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [error, setError] = useState("");
+
+  const [showInviteModal, setShowInviteModal] =
+    useState(false);
 
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Editor");
 
-  const [inviting, setInviting] = useState(false);
-  const [inviteError, setInviteError] = useState("");
-  const [inviteSuccess, setInviteSuccess] = useState("");
+  const [inviting, setInviting] =
+    useState(false);
+  const [inviteError, setInviteError] =
+    useState("");
+  const [inviteSuccess, setInviteSuccess] =
+    useState("");
 
+  /*
+   * Keep one stable reference time for filtering.
+   *
+   * This must be at component level.
+   * It must NOT be inside useMemo().
+   */
+  const [now] = useState(() => Date.now());
+
+  /*
+   * Load real users from Supabase Auth.
+   */
+  const loadUsers = useCallback(
+    async (showRefreshState = false) => {
+      if (showRefreshState) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      setError("");
+
+      try {
+        /*
+         * Get the currently logged-in Supabase session.
+         */
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          throw new Error(
+            "Unable to read your login session.",
+          );
+        }
+
+        if (!session?.access_token) {
+          throw new Error(
+            "Your login session has expired. Please sign in again.",
+          );
+        }
+
+        /*
+         * Send the access token to the secure
+         * server-side users API.
+         */
+        const response = await fetch(
+          "/api/admin/users",
+          {
+            method: "GET",
+            cache: "no-store",
+            headers: {
+              Authorization: `Bearer ${session.access_token}`,
+            },
+          },
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.error ||
+              "Unable to load users.",
+          );
+        }
+
+        setUsers(
+          Array.isArray(result.users)
+            ? result.users
+            : [],
+        );
+      } catch (error) {
+        console.error(
+          "Users loading error:",
+          error,
+        );
+
+        setUsers([]);
+
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Unable to load users.",
+        );
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [],
+  );
+
+  /*
+   * Initial users load.
+   *
+   * The small timeout prevents the React
+   * set-state-in-effect lint error while
+   * preserving the existing behavior.
+   */
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadUsers();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadUsers]);
+
+  /*
+   * Filter users locally.
+   */
   const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
-      const searchValue = search.toLowerCase().trim();
+    const searchValue = search
+      .toLowerCase()
+      .trim();
 
+    let periodStart: number | null = null;
+
+    if (period === "Last 7 days") {
+      periodStart =
+        now - 7 * 24 * 60 * 60 * 1000;
+    }
+
+    if (period === "Last 30 days") {
+      periodStart =
+        now - 30 * 24 * 60 * 60 * 1000;
+    }
+
+    if (period === "Last 90 days") {
+      periodStart =
+        now - 90 * 24 * 60 * 60 * 1000;
+    }
+
+    return users.filter((user) => {
       const matchesSearch =
         !searchValue ||
-        user.name.toLowerCase().includes(searchValue) ||
-        user.role.toLowerCase().includes(searchValue) ||
-        user.status.toLowerCase().includes(searchValue);
+        user.name
+          .toLowerCase()
+          .includes(searchValue) ||
+        user.email
+          .toLowerCase()
+          .includes(searchValue) ||
+        user.role
+          .toLowerCase()
+          .includes(searchValue) ||
+        user.status
+          .toLowerCase()
+          .includes(searchValue);
 
       const matchesStatus =
-        status === "All statuses" || user.status === status;
+        status === "All statuses" ||
+        user.status === status;
 
-      return matchesSearch && matchesStatus;
+      const lastLoginTime = user.lastLogin
+        ? new Date(user.lastLogin).getTime()
+        : null;
+
+      const matchesPeriod =
+        period === "All time" ||
+        periodStart === null ||
+        (lastLoginTime !== null &&
+          lastLoginTime >= periodStart);
+
+      return (
+        matchesSearch &&
+        matchesStatus &&
+        matchesPeriod
+      );
     });
-  }, [users, search, status]);
+  }, [
+    users,
+    search,
+    status,
+    period,
+    now,
+  ]);
 
   function openInviteModal() {
     setEmail("");
@@ -106,18 +318,26 @@ export default function AdminUsers() {
     setInviteSuccess("");
   }
 
-  async function handleInvite(event: React.FormEvent<HTMLFormElement>) {
+  async function handleInvite(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = email
+      .trim()
+      .toLowerCase();
 
     if (!cleanEmail) {
-      setInviteError("Please enter an email address.");
+      setInviteError(
+        "Please enter an email address.",
+      );
       return;
     }
 
     if (!role) {
-      setInviteError("Please select a role.");
+      setInviteError(
+        "Please select a role.",
+      );
       return;
     }
 
@@ -126,57 +346,57 @@ export default function AdminUsers() {
     setInviteSuccess("");
 
     try {
-      const response = await fetch("/api/admin/invite-user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "/api/admin/invite-user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            role,
+          }),
         },
-        body: JSON.stringify({
-          email: cleanEmail,
-          role,
-        }),
-      });
+      );
 
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          result.error || "Unable to send the invitation."
+          result.error ||
+            "Unable to send the invitation.",
         );
       }
 
-      const invitedName = cleanEmail.split("@")[0];
+      setInviteSuccess(
+        `Invitation sent to ${cleanEmail}.`,
+      );
 
-      setUsers((currentUsers) => [
-        ...currentUsers,
-        {
-          id: Date.now(),
-          name: invitedName,
-          role,
-          status: "Invited",
-          lastLogin: "Never",
-        },
-      ]);
-
-      setInviteSuccess(`Invitation sent to ${cleanEmail}.`);
       setEmail("");
+
+      /*
+       * Reload the actual Supabase Auth users.
+       */
+      await loadUsers(true);
     } catch (error) {
+      console.error(
+        "Invitation error:",
+        error,
+      );
+
       setInviteError(
         error instanceof Error
           ? error.message
-          : "Unable to send the invitation."
+          : "Unable to send the invitation.",
       );
     } finally {
       setInviting(false);
     }
   }
 
-  function handleRefresh() {
-    setRefreshing(true);
-
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 700);
+  async function handleRefresh() {
+    await loadUsers(true);
   }
 
   return (
@@ -194,7 +414,8 @@ export default function AdminUsers() {
             </h1>
 
             <p className="mt-2 font-[Lexend] text-[12px] leading-5 text-[var(--admin-text-secondary)]">
-              Manage team roles, permissions and workspace access.
+              Manage team roles, permissions and
+              workspace access.
             </p>
           </div>
 
@@ -203,6 +424,7 @@ export default function AdminUsers() {
             <button
               type="button"
               onClick={handleRefresh}
+              disabled={refreshing}
               className="
                 admin-button
                 flex h-[38px] items-center gap-1.5
@@ -211,12 +433,18 @@ export default function AdminUsers() {
                 font-[Lexend] text-[11px] font-medium
                 transition-all
                 hover:-translate-y-px
+                disabled:cursor-not-allowed
+                disabled:opacity-60
               "
             >
               <RefreshCw
                 size={14}
                 strokeWidth={1.8}
-                className={refreshing ? "animate-spin" : ""}
+                className={
+                  refreshing
+                    ? "animate-spin"
+                    : ""
+                }
               />
 
               Refresh
@@ -239,7 +467,11 @@ export default function AdminUsers() {
                 hover:shadow-[0_10px_28px_rgba(113,103,255,0.25)]
               "
             >
-              <Plus size={15} strokeWidth={2} />
+              <Plus
+                size={15}
+                strokeWidth={2}
+              />
+
               Invite user
             </button>
           </div>
@@ -258,7 +490,9 @@ export default function AdminUsers() {
             <input
               type="text"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) =>
+                setSearch(event.target.value)
+              }
               placeholder="Search users..."
               className="
                 h-[40px] w-full rounded-xl
@@ -283,7 +517,9 @@ export default function AdminUsers() {
           <div className="relative w-full sm:w-[145px]">
             <select
               value={status}
-              onChange={(event) => setStatus(event.target.value)}
+              onChange={(event) =>
+                setStatus(event.target.value)
+              }
               className="
                 h-[40px] w-full appearance-none rounded-xl
                 border border-[var(--admin-border)]
@@ -317,7 +553,9 @@ export default function AdminUsers() {
           <div className="relative w-full sm:w-[145px]">
             <select
               value={period}
-              onChange={(event) => setPeriod(event.target.value)}
+              onChange={(event) =>
+                setPeriod(event.target.value)
+              }
               className="
                 h-[40px] w-full appearance-none rounded-xl
                 border border-[var(--admin-border)]
@@ -348,10 +586,30 @@ export default function AdminUsers() {
           </div>
         </div>
 
+        {/* Error */}
+        {error && (
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-3 py-2.5">
+            <AlertCircle
+              size={15}
+              className="mt-0.5 shrink-0 text-red-500"
+            />
+
+            <div className="min-w-0">
+              <p className="font-[Lexend] text-[11px] font-medium text-red-600 dark:text-red-300">
+                Unable to load users
+              </p>
+
+              <p className="mt-0.5 font-[Lexend] text-[10px] leading-4 text-red-600/80 dark:text-red-300/80">
+                {error}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Table */}
         <div className="admin-card mt-5 overflow-hidden rounded-2xl border shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[820px] border-collapse">
+            <table className="w-full min-w-[900px] border-collapse">
               <thead>
                 <tr className="border-b border-[var(--admin-border)] bg-[var(--admin-surface-2)]">
                   <th className="px-4 py-3.5 text-left font-[Lexend] text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--admin-text-muted)]">
@@ -370,6 +628,10 @@ export default function AdminUsers() {
                     Last Login
                   </th>
 
+                  <th className="px-4 py-3.5 text-left font-[Lexend] text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--admin-text-muted)]">
+                    Joined
+                  </th>
+
                   <th className="px-4 py-3.5 text-right font-[Lexend] text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--admin-text-muted)]">
                     Actions
                   </th>
@@ -377,137 +639,179 @@ export default function AdminUsers() {
               </thead>
 
               <tbody>
-                {filteredUsers.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="
-                      border-b border-[var(--admin-border)]
-                      transition-colors
-                      last:border-b-0
-                      hover:bg-[var(--admin-hover)]
-                    "
-                  >
-                    {/* User */}
-                    <td className="px-4 py-[18px]">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--admin-border-strong)] bg-[var(--admin-surface-3)] font-[Space_Grotesk] text-[10px] font-semibold text-[var(--admin-purple)]">
-                          {user.name
-                            .split(" ")
-                            .map((part) => part[0])
-                            .join("")
-                            .slice(0, 2)
-                            .toUpperCase()}
-                        </div>
-
-                        <span className="font-[Lexend] text-[13px] font-medium text-[var(--admin-text)]">
-                          {user.name}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Role */}
-                    <td className="px-4 py-[18px]">
-                      <span className="inline-flex min-w-[58px] justify-center rounded-full border border-[var(--admin-border)] bg-[var(--admin-surface-3)] px-2.5 py-[5px] font-[Lexend] text-[10px] font-medium text-[var(--admin-text-secondary)]">
-                        {user.role}
-                      </span>
-                    </td>
-
-                    {/* Status */}
-                    <td className="px-4 py-[18px]">
-                      <span
-                        className={`
-                          inline-flex items-center gap-1.5
-                          font-[Lexend] text-[11px] font-medium
-                          ${
-                            user.status === "Active"
-                              ? "text-emerald-600 dark:text-emerald-300"
-                              : user.status === "Invited"
-                                ? "text-[var(--admin-purple)]"
-                                : "text-amber-600 dark:text-amber-300"
-                          }
-                        `}
-                      >
-                        <span
-                          className={`
-                            h-1.5 w-1.5 rounded-full
-                            ${
-                              user.status === "Active"
-                                ? "bg-emerald-500"
-                                : user.status === "Invited"
-                                  ? "bg-[var(--admin-purple)]"
-                                  : "bg-amber-500"
-                            }
-                          `}
-                        />
-
-                        {user.status}
-                      </span>
-                    </td>
-
-                    {/* Last Login */}
-                    <td className="px-4 py-[18px]">
-                      <span className="font-[Lexend] text-[12px] text-[var(--admin-text-secondary)]">
-                        {user.lastLogin}
-                      </span>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-4 py-[18px]">
-                      <div className="flex justify-end gap-1.5">
-                        <button
-                          type="button"
-                          title={`Edit ${user.name}`}
-                          className="
-                            admin-button
-                            flex h-[34px] w-[34px]
-                            items-center justify-center
-                            rounded-lg
-                            transition-all
-                            hover:border-[var(--admin-purple)]
-                            hover:text-[var(--admin-purple)]
-                          "
-                        >
-                          <Pencil size={15} strokeWidth={1.8} />
-                        </button>
-
-                        <button
-                          type="button"
-                          title={`Delete ${user.name}`}
-                          className="
-                            admin-button
-                            flex h-[34px] w-[34px]
-                            items-center justify-center
-                            rounded-lg
-                            transition-all
-                            hover:border-red-400/40
-                            hover:bg-red-500/[0.06]
-                            hover:text-red-500
-                          "
-                        >
-                          <Trash2 size={15} strokeWidth={1.8} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-
-                {filteredUsers.length === 0 && (
+                {loading ? (
                   <tr>
                     <td
-                      colSpan={5}
-                      className="px-4 py-14 text-center font-[Lexend] text-[12px] text-[var(--admin-text-muted)]"
+                      colSpan={6}
+                      className="px-4 py-16 text-center"
                     >
-                      No users found.
+                      <div className="flex flex-col items-center justify-center">
+                        <RefreshCw
+                          size={18}
+                          className="animate-spin text-[var(--admin-purple)]"
+                        />
+
+                        <p className="mt-3 font-[Lexend] text-[11px] text-[var(--admin-text-secondary)]">
+                          Loading users...
+                        </p>
+                      </div>
                     </td>
                   </tr>
+                ) : (
+                  filteredUsers.map((user) => (
+                    <tr
+                      key={user.id}
+                      className="
+                        border-b border-[var(--admin-border)]
+                        transition-colors
+                        last:border-b-0
+                        hover:bg-[var(--admin-hover)]
+                      "
+                    >
+                      {/* User */}
+                      <td className="px-4 py-[18px]">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--admin-border-strong)] bg-[var(--admin-surface-3)] font-[Space_Grotesk] text-[10px] font-semibold text-[var(--admin-purple)]">
+                            {getUserInitials(
+                              user.name,
+                              user.email,
+                            )}
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="truncate font-[Lexend] text-[13px] font-medium text-[var(--admin-text)]">
+                              {user.name}
+                            </p>
+
+                            <p className="mt-0.5 truncate font-[Lexend] text-[10px] text-[var(--admin-text-muted)]">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Role */}
+                      <td className="px-4 py-[18px]">
+                        <span className="inline-flex min-w-[58px] justify-center rounded-full border border-[var(--admin-border)] bg-[var(--admin-surface-3)] px-2.5 py-[5px] font-[Lexend] text-[10px] font-medium text-[var(--admin-text-secondary)]">
+                          {user.role}
+                        </span>
+                      </td>
+
+                      {/* Status */}
+                      <td className="px-4 py-[18px]">
+                        <span
+                          className={`
+                            inline-flex items-center gap-1.5
+                            font-[Lexend] text-[11px] font-medium
+                            ${
+                              user.status === "Active"
+                                ? "text-emerald-600 dark:text-emerald-300"
+                                : user.status === "Invited"
+                                  ? "text-[var(--admin-purple)]"
+                                  : "text-amber-600 dark:text-amber-300"
+                            }
+                          `}
+                        >
+                          <span
+                            className={`
+                              h-1.5 w-1.5 rounded-full
+                              ${
+                                user.status === "Active"
+                                  ? "bg-emerald-500"
+                                  : user.status === "Invited"
+                                    ? "bg-[var(--admin-purple)]"
+                                    : "bg-amber-500"
+                              }
+                            `}
+                          />
+
+                          {user.status}
+                        </span>
+                      </td>
+
+                      {/* Last Login */}
+                      <td className="px-4 py-[18px]">
+                        <span className="font-[Lexend] text-[12px] text-[var(--admin-text-secondary)]">
+                          {formatDate(
+                            user.lastLogin,
+                          )}
+                        </span>
+                      </td>
+
+                      {/* Joined */}
+                      <td className="px-4 py-[18px]">
+                        <span className="font-[Lexend] text-[12px] text-[var(--admin-text-secondary)]">
+                          {formatShortDate(
+                            user.createdAt,
+                          )}
+                        </span>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-4 py-[18px]">
+                        <div className="flex justify-end gap-1.5">
+                          <button
+                            type="button"
+                            title={`Edit ${user.name}`}
+                            className="
+                              admin-button
+                              flex h-[34px] w-[34px]
+                              items-center justify-center
+                              rounded-lg
+                              transition-all
+                              hover:border-[var(--admin-purple)]
+                              hover:text-[var(--admin-purple)]
+                            "
+                          >
+                            <Pencil
+                              size={15}
+                              strokeWidth={1.8}
+                            />
+                          </button>
+
+                          <button
+                            type="button"
+                            title={`Delete ${user.name}`}
+                            className="
+                              admin-button
+                              flex h-[34px] w-[34px]
+                              items-center justify-center
+                              rounded-lg
+                              transition-all
+                              hover:border-red-400/40
+                              hover:bg-red-500/[0.06]
+                              hover:text-red-500
+                            "
+                          >
+                            <Trash2
+                              size={15}
+                              strokeWidth={1.8}
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
                 )}
+
+                {!loading &&
+                  filteredUsers.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-14 text-center font-[Lexend] text-[12px] text-[var(--admin-text-muted)]"
+                      >
+                        No users found.
+                      </td>
+                    </tr>
+                  )}
               </tbody>
             </table>
           </div>
         </div>
 
         <p className="mt-3 font-[Lexend] text-[10px] leading-4 text-[var(--admin-text-muted)]">
-          User management is connected to the VAI SPACE invitation system.
+          Showing real users from Supabase Authentication.
         </p>
       </main>
 
@@ -522,7 +826,9 @@ export default function AdminUsers() {
             backdrop-blur-md
           "
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
+            if (
+              event.target === event.currentTarget
+            ) {
               closeInviteModal();
             }
           }}
@@ -564,7 +870,10 @@ export default function AdminUsers() {
                   disabled:opacity-50
                 "
               >
-                <X size={20} strokeWidth={1.8} />
+                <X
+                  size={20}
+                  strokeWidth={1.8}
+                />
               </button>
             </div>
 
@@ -572,7 +881,8 @@ export default function AdminUsers() {
             <form onSubmit={handleInvite}>
               <div className="px-6 py-6">
                 <p className="mb-5 font-[Lexend] text-[12px] leading-5 text-[var(--admin-text-secondary)]">
-                  Send an invitation to join VAI SPACE.
+                  Send an invitation to join VAI
+                  SPACE.
                 </p>
 
                 {/* Email */}
@@ -591,7 +901,11 @@ export default function AdminUsers() {
                     id="invite-email"
                     type="email"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event) =>
+                      setEmail(
+                        event.target.value,
+                      )
+                    }
                     placeholder="Enter user's email address"
                     autoComplete="email"
                     autoFocus
@@ -629,7 +943,11 @@ export default function AdminUsers() {
                       <select
                         id="invite-role"
                         value={role}
-                        onChange={(event) => setRole(event.target.value)}
+                        onChange={(event) =>
+                          setRole(
+                            event.target.value,
+                          )
+                        }
                         disabled={inviting}
                         className="
                           h-[48px] w-full appearance-none rounded-xl
@@ -646,10 +964,15 @@ export default function AdminUsers() {
                           disabled:opacity-50
                         "
                       >
-                        <option value="">Select a category</option>
+                        <option value="">
+                          Select a category
+                        </option>
 
                         {roles.map((item) => (
-                          <option key={item} value={item}>
+                          <option
+                            key={item}
+                            value={item}
+                          >
                             {item}
                           </option>
                         ))}
@@ -688,7 +1011,9 @@ export default function AdminUsers() {
                           opacity-90
                         "
                       >
-                        <option value="Active">Active</option>
+                        <option value="Active">
+                          Active
+                        </option>
                       </select>
 
                       <ChevronDown
@@ -785,7 +1110,10 @@ export default function AdminUsers() {
 
                 <button
                   type="submit"
-                  disabled={inviting || !email.trim()}
+                  disabled={
+                    inviting ||
+                    !email.trim()
+                  }
                   className="
                     flex h-[42px] items-center gap-2
                     rounded-xl
@@ -802,12 +1130,17 @@ export default function AdminUsers() {
                 >
                   {inviting ? (
                     <>
-                      <RefreshCw size={15} className="animate-spin" />
+                      <RefreshCw
+                        size={15}
+                        className="animate-spin"
+                      />
+
                       Sending...
                     </>
                   ) : (
                     <>
                       <Mail size={15} />
+
                       Send invitation
                     </>
                   )}
