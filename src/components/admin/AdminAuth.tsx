@@ -3,13 +3,81 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { supabase } from "@/lib/supabase";
 import { AdminOrb } from "./AdminOrb";
 
 type AdminAuthProps = {
   mode: "login" | "signup";
 };
+
+/*
+ * Page priority used after successful authentication.
+ *
+ * The first page that the user is actually allowed to access
+ * becomes their landing page.
+ */
+const ADMIN_ENTRY_PAGES = [
+  "dashboard",
+  "users",
+  "content",
+  "blogs",
+  "services",
+  "apps-products",
+  "api-hub",
+  "media",
+  "analytics",
+  "marketing",
+  "notifications",
+  "settings",
+] as const;
+
+async function getAdminEntryRoute(accessToken: string) {
+  /*
+   * Check every admin page through the existing server-side
+   * permission endpoint.
+   *
+   * We do NOT decide permissions from the browser.
+   * /api/admin/access-check remains the authority.
+   */
+  for (const page of ADMIN_ENTRY_PAGES) {
+    try {
+      const response = await fetch(
+        `/api/admin/access-check?page=${encodeURIComponent(page)}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const result = await response.json();
+
+      if (result.allowed === true) {
+        return `/admin/${page}`;
+      }
+    } catch (error) {
+      console.error(
+        `Failed to check admin access for ${page}:`,
+        error,
+      );
+    }
+  }
+
+  /*
+   * No admin page is available.
+   *
+   * This is the expected destination for a newly-created
+   * normal account that has not yet been approved by the
+   * Super Admin.
+   */
+  return "/admin/access-request";
+}
 
 export function AdminAuth({ mode }: AdminAuthProps) {
   const isLogin = mode === "login";
@@ -20,7 +88,33 @@ export function AdminAuth({ mode }: AdminAuthProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function redirectAfterAuthentication() {
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      throw sessionError;
+    }
+
+    if (!session?.access_token) {
+      throw new Error(
+        "Your account was created, but no active session was found. Please sign in again.",
+      );
+    }
+
+    const destination = await getAdminEntryRoute(
+      session.access_token,
+    );
+
+    router.replace(destination);
+    router.refresh();
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
     setLoading(true);
@@ -29,252 +123,98 @@ export function AdminAuth({ mode }: AdminAuthProps) {
 
     const formData = new FormData(event.currentTarget);
 
-    const email = String(formData.get("email") ?? "").trim();
-    const password = String(formData.get("password") ?? "");
+    const email = String(
+      formData.get("email") ?? "",
+    ).trim();
+
+    const password = String(
+      formData.get("password") ?? "",
+    );
 
     try {
       /*
-       * ============================================================
+       * -------------------------------------------------------
        * LOGIN
-       * ============================================================
+       * -------------------------------------------------------
        */
       if (isLogin) {
-        const {
-          data: loginData,
-          error: loginError,
-        } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { error } =
+          await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-        if (loginError) {
-          throw loginError;
+        if (error) {
+          throw error;
         }
 
-        /*
-         * Supabase should return both a user and a session
-         * after a successful password login.
-         */
-        if (!loginData.user || !loginData.session) {
-          throw new Error(
-            "Login succeeded, but Supabase did not create a browser session. Please try again."
-          );
-        }
-
-        console.log(
-          "ADMIN LOGIN SUCCESS:",
-          loginData.user.email
-        );
-
-        console.log(
-          "ADMIN USER ID:",
-          loginData.user.id
-        );
-
-        console.log(
-          "ADMIN SESSION EXISTS:",
-          Boolean(loginData.session)
-        );
-
-        /*
-         * ==========================================================
-         * VERIFY THE SESSION CAN BE READ BACK
-         * ==========================================================
-         *
-         * This is important for your current issue.
-         *
-         * signInWithPassword() returning a session is not enough.
-         * We also verify that the browser Supabase client can
-         * immediately retrieve that session.
-         */
-        const {
-          data: {
-            session: storedSession,
-          },
-          error: sessionError,
-        } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          console.error(
-            "ADMIN SESSION READ ERROR:",
-            sessionError
-          );
-
-          throw new Error(
-            `Unable to read the Supabase session: ${sessionError.message}`
-          );
-        }
-
-        if (!storedSession || !storedSession.user) {
-          console.error(
-            "ADMIN SESSION WAS NOT RESTORED:",
-            storedSession
-          );
-
-          throw new Error(
-            "Supabase login succeeded, but the browser session could not be restored."
-          );
-        }
-
-        console.log(
-          "ADMIN STORED SESSION:",
-          true
-        );
-
-        console.log(
-          "ADMIN STORED SESSION USER:",
-          storedSession.user.email
-        );
-
-        /*
-         * ==========================================================
-         * VERIFY THE AUTH STATE EVENT
-         * ==========================================================
-         *
-         * This gives us an additional confirmation that the browser
-         * client has an active authenticated user.
-         */
-        const {
-          data: {
-            user: authenticatedUser,
-          },
-          error: userError,
-        } = await supabase.auth.getUser();
-
-        if (userError) {
-          console.error(
-            "ADMIN GET USER ERROR:",
-            userError
-          );
-
-          throw new Error(
-            `Unable to verify the authenticated user: ${userError.message}`
-          );
-        }
-
-        if (!authenticatedUser) {
-          throw new Error(
-            "Supabase login completed, but the authenticated user could not be verified."
-          );
-        }
-
-        console.log(
-          "ADMIN AUTHENTICATED USER:",
-          authenticatedUser.email
-        );
-
-        /*
-         * Only redirect after all session checks succeed.
-         */
-        router.push("/admin/dashboard");
-        router.refresh();
+        await redirectAfterAuthentication();
 
         return;
       }
 
       /*
-       * ============================================================
-       * SIGNUP
-       * ============================================================
+       * -------------------------------------------------------
+       * SIGN UP
+       * -------------------------------------------------------
        */
-
       const name = String(
-        formData.get("name") ?? ""
+        formData.get("name") ?? "",
       ).trim();
 
       const confirmPassword = String(
-        formData.get("confirmPassword") ?? ""
+        formData.get("confirmPassword") ?? "",
       );
 
       if (password !== confirmPassword) {
-        throw new Error("Passwords do not match.");
-      }
-
-      if (password.length < 6) {
         throw new Error(
-          "Password must be at least 6 characters long."
+          "Passwords do not match.",
         );
       }
 
-      const {
-        data: signupData,
-        error: signupError,
-      } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
+      const { data, error } =
+        await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name,
+            },
           },
-        },
-      });
+        });
 
-      if (signupError) {
-        throw signupError;
+      if (error) {
+        throw error;
       }
 
       /*
-       * If Supabase immediately gives us a session,
-       * we can enter the dashboard.
+       * If Supabase immediately creates a session,
+       * perform the same admin-entry check.
        */
-      if (signupData.session && signupData.user) {
-        console.log(
-          "ADMIN SIGNUP SUCCESS:",
-          signupData.user.email
-        );
-
-        console.log(
-          "ADMIN SIGNUP USER ID:",
-          signupData.user.id
-        );
-
-        console.log(
-          "ADMIN SIGNUP SESSION EXISTS:",
-          true
-        );
-
-        const {
-          data: {
-            session: storedSignupSession,
-          },
-          error: signupSessionError,
-        } = await supabase.auth.getSession();
-
-        if (signupSessionError) {
-          throw new Error(
-            `Unable to restore the signup session: ${signupSessionError.message}`
-          );
-        }
-
-        if (!storedSignupSession) {
-          throw new Error(
-            "Account was created, but the browser session could not be restored."
-          );
-        }
-
-        router.push("/admin/dashboard");
-        router.refresh();
+      if (data.session) {
+        await redirectAfterAuthentication();
 
         return;
       }
 
       /*
-       * If email confirmation is enabled in Supabase,
-       * data.session can be null. That is expected.
+       * If email confirmation is enabled, there is no
+       * session yet. The user must verify their email and
+       * then sign in.
        */
       setSuccess(
-        "Account created. Please check your email to verify your account."
+        "Account created. Please check your email to verify your account.",
       );
     } catch (error) {
       console.error(
-        "ADMIN AUTH ERROR:",
-        error
+        "Admin authentication error:",
+        error,
       );
 
       setError(
         error instanceof Error
           ? error.message
-          : "Something went wrong. Please try again."
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -284,15 +224,10 @@ export function AdminAuth({ mode }: AdminAuthProps) {
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       <div className="grid min-h-screen lg:grid-cols-2">
-        {/* =========================================================
-            LEFT — VAI SPACE
-        ========================================================== */}
-
+        {/* LEFT — VAI SPACE */}
         <section className="relative hidden overflow-hidden lg:flex">
-          {/* Background */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(97,108,250,0.08),transparent_45%)]" />
 
-          {/* Subtle grid */}
           <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] [background-size:70px_70px]" />
 
           <div className="relative z-10 flex w-full items-center justify-center">
@@ -304,10 +239,7 @@ export function AdminAuth({ mode }: AdminAuthProps) {
           </div>
         </section>
 
-        {/* =========================================================
-            RIGHT — AUTH
-        ========================================================== */}
-
+        {/* RIGHT — AUTH */}
         <section className="relative flex min-h-screen items-center justify-center border-l border-white/[0.06] px-6 py-12 sm:px-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(228,110,204,0.05),transparent_35%)]" />
 

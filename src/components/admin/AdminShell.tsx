@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
+import AdminAccessGuard from "@/components/admin/AdminAccessGuard";
 
 export default function AdminShell({
   children,
@@ -12,12 +13,13 @@ export default function AdminShell({
 }) {
   const pathname = usePathname();
 
-  // Auth pages should NOT have sidebar/header
-  const isAuthPage =
+  const isStandalonePage =
     pathname === "/admin/login" ||
-    pathname === "/admin/signup";
+    pathname === "/admin/signup" ||
+    pathname === "/admin/access-request" ||
+    pathname === "/admin/reset-password";
 
-  if (isAuthPage) {
+  if (isStandalonePage) {
     return <>{children}</>;
   }
 
@@ -29,7 +31,9 @@ export default function AdminShell({
         <AdminHeader />
 
         <main className="min-h-[calc(100vh-78px)] bg-[var(--admin-bg)] text-[var(--admin-text)] transition-colors duration-300">
-          {children}
+          <AdminAccessGuard>
+            {children}
+          </AdminAccessGuard>
         </main>
       </div>
     </div>
