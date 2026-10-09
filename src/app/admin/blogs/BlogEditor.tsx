@@ -1485,6 +1485,8 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       JPG, PNG or WebP
                       <br />
                       Maximum 5 MB
+                      <br />
+                      Recommended 1672x941 px
                     </p>
                   </button>
                 )}
