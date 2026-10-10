@@ -11,7 +11,7 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
-import SectionNavigator from "@/components/ui/SectionNavigator";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function AboutPage() {
     <main className="bg-black text-white overflow-hidden">
       <ScrollProgress />
       <SmoothScroll />
-      <SectionNavigator />
+      
       <CustomCursor />
       <Navbar />
       <AboutHero />

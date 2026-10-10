@@ -19,10 +19,11 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogsPage() {
-  const { data: blogs, error } = await supabase
-    .from("blogs")
-    .select("*")
-    .order("created_at", { ascending: false });
+const { data: blogs, error } = await supabase
+  .from("blogs")
+  .select("*")
+  .eq("status", "published")
+  .order("created_at", { ascending: false });
 
   const blogsWithStats = await Promise.all(
     (blogs || []).map(async (blog) => ({
@@ -66,7 +67,7 @@ export default async function BlogsPage() {
 
         <BlogSearch blogs={blogsWithStats} />
 
-        <TrendingBlogs />
+        <TrendingBlogs blogs={blogsWithStats} />
 
         <RecentlyViewed />
       </main>
