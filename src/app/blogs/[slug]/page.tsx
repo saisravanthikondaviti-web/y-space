@@ -1,3 +1,4 @@
+
 import { supabase } from "@/lib/supabase";
 import LikeButton from "@/components/LikeButton";
 import ViewTracker from "@/components/ViewTracker";
@@ -13,6 +14,7 @@ import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import ShareButton from "@/components/ShareButton";
 import Comments from "@/components/comments/Comments";
+import DOMPurify from "isomorphic-dompurify";
 
 export const dynamic = "force-dynamic";
 
@@ -33,10 +35,6 @@ export default async function BlogPage({
   if (error) {
     console.error("Failed to load blog:", error);
   }
-
-  console.log("BLOG SLUG:", slug);
-  console.log("BLOG DATA:", blog);
-  console.log("BLOG ERROR:", error);
 
   if (!blog) {
     return (
@@ -59,6 +57,11 @@ export default async function BlogPage({
   }
 
   const views = await getBlogViews(blog.id);
+
+  // Sanitize saved Tiptap HTML before rendering it.
+  const sanitizedContent = DOMPurify.sanitize(blog.content ?? "", {
+    USE_PROFILES: { html: true },
+  });
 
   return (
     <>
@@ -153,7 +156,7 @@ export default async function BlogPage({
           </p>
         )}
 
-        {/* Blog Content */}
+        {/* Blog Content - render sanitized HTML */}
         <article
           className="
             mt-7 sm:mt-8
@@ -161,12 +164,27 @@ export default async function BlogPage({
             sm:text-[1.05rem] sm:leading-7
             md:text-[1.125rem] md:leading-8
             text-gray-300
-            whitespace-pre-wrap
             break-words
+            [&_p]:mb-5
+            [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:text-3xl [&_h1]:font-bold
+            [&_h2]:mt-7 [&_h2]:mb-3 [&_h2]:text-2xl [&_h2]:font-semibold
+            [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-xl [&_h3]:font-semibold
+            [&_strong]:font-bold
+            [&_b]:font-bold
+            [&_em]:italic
+            [&_i]:italic
+            [&_u]:underline
+            [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6
+            [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6
+            [&_li]:mb-2
+            [&_a]:text-[#8E96FF] [&_a]:underline [&_a]:underline-offset-4
+            [&_blockquote]:my-5 [&_blockquote]:border-l-4
+            [&_blockquote]:border-[#8E96FF] [&_blockquote]:pl-4
+            [&_blockquote]:italic
+            [&_hr]:my-6 [&_hr]:border-white/20
           "
-        >
-          {blog.content}
-        </article>
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+        />
 
         {/* Actions */}
         <div className="flex items-center gap-3 sm:gap-4 mt-8 sm:mt-10">

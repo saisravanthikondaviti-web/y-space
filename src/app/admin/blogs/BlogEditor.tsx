@@ -1566,11 +1566,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       disabled={!editor}
                       aria-label="Bold"
                       title="Bold"
-                      className={`rounded-lg border px-3 py-2 text-sm font-bold ${
-                        editor?.isActive("bold")
-                          ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
-                          : "border-[var(--admin-border)]"
-                      }`}
+                      className={`rounded-lg border px-3 py-2 text-sm font-bold ${editor?.isActive("bold")
+                        ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
+                        : "border-[var(--admin-border)]"
+                        }`}
                     >
                       B
                     </button>
@@ -1582,11 +1581,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       disabled={!editor}
                       aria-label="Underline"
                       title="Underline"
-                      className={`rounded-lg border px-3 py-2 text-sm underline ${
-                        editor?.isActive("underline")
-                          ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
-                          : "border-[var(--admin-border)]"
-                      }`}
+                      className={`rounded-lg border px-3 py-2 text-sm underline ${editor?.isActive("underline")
+                        ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
+                        : "border-[var(--admin-border)]"
+                        }`}
                     >
                       U
                     </button>
@@ -1598,11 +1596,10 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       disabled={!editor}
                       aria-label="Italic"
                       title="Italic"
-                      className={`rounded-lg border px-3 py-2 text-sm italic ${
-                        editor?.isActive("italic")
-                          ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
-                          : "border-[var(--admin-border)]"
-                      }`}
+                      className={`rounded-lg border px-3 py-2 text-sm italic ${editor?.isActive("italic")
+                        ? "border-[var(--admin-purple)] bg-[var(--admin-purple)]/10"
+                        : "border-[var(--admin-border)]"
+                        }`}
                     >
                       I
                     </button>
@@ -1655,6 +1652,27 @@ export default function BlogEditor({ blogId }: BlogEditorProps) {
                       className="rounded-lg border border-[var(--admin-border)] px-3 py-2 text-xs hover:border-[var(--admin-purple)]"
                     >
                       Remove link
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                      className={`px-3 py-2 rounded-xl border transition-all duration-200 ${editor?.isActive("bulletList")
+                          ? "border-white/10 bg-white/5 text-white"
+                          : "border-[#252525] bg-transparent text-white hover:bg-white/5"
+                        }`}
+                    >
+                      • Bullet List
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+                      className={`px-3 py-2 rounded-xl border transition-all duration-200 ${editor?.isActive("orderedList")
+                          ? "border-white/10 bg-white/5 text-white"
+                          : "border-[#252525] bg-transparent text-white hover:bg-white/5"
+                        }`}
+                    >
+                      1. Numbered List
                     </button>
                   </div>
 
@@ -2452,10 +2470,9 @@ function StatusBadge({ status }: { status: BlogStatus }) {
 
         tracking-[0.1em]
 
-        ${
-          published
-            ? "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600 dark:text-emerald-400"
-            : "border-[var(--admin-border)] bg-[var(--admin-surface-2)] text-[var(--admin-text-muted)]"
+        ${published
+          ? "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-600 dark:text-emerald-400"
+          : "border-[var(--admin-border)] bg-[var(--admin-surface-2)] text-[var(--admin-text-muted)]"
         }
 
       `}
@@ -2474,10 +2491,9 @@ function StatusDot({ status }: { status: BlogStatus }) {
 
         h-1.5 w-1.5 rounded-full
 
-        ${
-          status === "published"
-            ? "bg-emerald-500"
-            : "bg-[var(--admin-text-muted)]"
+        ${status === "published"
+          ? "bg-emerald-500"
+          : "bg-[var(--admin-text-muted)]"
         }
 
       `}
