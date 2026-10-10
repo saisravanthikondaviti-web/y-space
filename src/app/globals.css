@@ -1292,3 +1292,60 @@ html.admin-light ::-webkit-scrollbar-thumb:hover {
   }
 }
 
+
+/* VAI SPACE blog rich-text editor */
+.blog-editor-content .tiptap {
+  min-height: 420px;
+  outline: none;
+  color: var(--admin-text);
+  font-family: Lexend, sans-serif;
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.blog-editor-content .tiptap p {
+  margin: 0 0 0.85rem;
+}
+
+.blog-editor-content .tiptap h1,
+.blog-editor-content .tiptap h2,
+.blog-editor-content .tiptap h3 {
+  margin: 1.25rem 0 0.65rem;
+  font-weight: 600;
+}
+
+.blog-editor-content .tiptap h1 {
+  font-size: 1.75rem;
+}
+
+.blog-editor-content .tiptap h2 {
+  font-size: 1.4rem;
+}
+
+.blog-editor-content .tiptap h3 {
+  font-size: 1.15rem;
+}
+
+.blog-editor-content .tiptap a {
+  color: var(--admin-purple);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.blog-editor-content .tiptap ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.blog-editor-content .tiptap ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+.blog-editor-content .tiptap blockquote {
+  border-left: 3px solid var(--admin-purple);
+  margin: 1rem 0;
+  padding-left: 1rem;
+  opacity: 0.85;
+}
