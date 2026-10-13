@@ -37,7 +37,7 @@ export default function Belief() {
       {/* background glow */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-[#616CFA]/10 blur-[160px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[180px] rounded-full" />
+        <div className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-[#E46ECC]/10 blur-[80px] md:blur-[120px] rounded-full" />
       </div>
 
       <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">

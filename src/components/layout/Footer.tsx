@@ -1,13 +1,11 @@
+
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import SocialIcon from "./SocialIcon";
 import Link from "next/link";
 
 export default function Footer() {
-  const [showTerms, setShowTerms] = useState(false);
-
   return (
     <footer className="border-t border-white/10 py-6">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 md:grid-cols-3 lg:px-8">
@@ -49,7 +47,7 @@ export default function Footer() {
             <p>Email: hello@vaispace.com</p>
             <p>Location: Visakhapatnam, India</p>
 
-            <div className="pt-3 space-y-2">
+            <div className="space-y-2 pt-3">
               <Link
                 href="/pdfs/termsandconditions.pdf"
                 target="_blank"
@@ -67,10 +65,10 @@ export default function Footer() {
               >
                 Privacy Policy
               </Link>
-
             </div>
           </div>
         </div>
+
         {/* RIGHT */}
         <div>
           <p className="text-sm leading-6 text-zinc-500">
@@ -127,3 +125,4 @@ export default function Footer() {
     </footer>
   );
 }
+

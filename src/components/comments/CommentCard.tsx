@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Comment } from "@/types/comment";
@@ -7,17 +8,7 @@ interface Props {
   comment: Comment;
 }
 
-export default function CommentCard({ comment }: Props) {
-  // Generate initials from the user's name
-  const initials = comment.name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
-  // Format date
- function getRelativeTime(date: string) {
+function getRelativeTime(date: string) {
   const now = new Date();
   const created = new Date(date);
 
@@ -28,16 +19,22 @@ export default function CommentCard({ comment }: Props) {
   if (seconds < 60) return "Just now";
 
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60)
+
+  if (minutes < 60) {
     return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  }
 
   const hours = Math.floor(minutes / 60);
-  if (hours < 24)
+
+  if (hours < 24) {
     return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  }
 
   const days = Math.floor(hours / 24);
-  if (days < 7)
+
+  if (days < 7) {
     return `${days} day${days > 1 ? "s" : ""} ago`;
+  }
 
   return created.toLocaleDateString("en-US", {
     month: "short",
@@ -46,7 +43,15 @@ export default function CommentCard({ comment }: Props) {
   });
 }
 
-const formattedDate = getRelativeTime(comment.created_at);
+export default function CommentCard({ comment }: Props) {
+  const initials = comment.name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  const formattedDate = getRelativeTime(comment.created_at);
 
   return (
     <div
@@ -110,3 +115,4 @@ const formattedDate = getRelativeTime(comment.created_at);
     </div>
   );
 }
+

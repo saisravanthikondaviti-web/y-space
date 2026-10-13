@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* ================= FONTS ================= */
+/* =========================================================
+   FONTS
+   ========================================================= */
 
 @font-face {
   font-family: "Axiforma";
@@ -162,7 +164,9 @@
   font-display: swap;
 }
 
-/* ================= ROOT VARIABLES ================= */
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
 
 :root {
   --font-heading: "Axiforma";
@@ -182,7 +186,9 @@
   --border: rgba(255, 255, 255, 0.08);
 }
 
-/* ================= RESETS ================= */
+/* =========================================================
+   RESET
+   ========================================================= */
 
 *,
 *::before,
@@ -191,12 +197,25 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--background);
   color: var(--text-primary);
+
+  /*
+   * Prevent text from becoming unexpectedly larger on
+   * iOS Safari and other mobile browsers.
+   */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /*
+   * Keep normal browser scrolling as the fallback.
+   * Lenis is enabled separately on supported devices.
+   */
+  scroll-behavior: smooth;
 }
 
 body {
+  min-width: 320px;
   min-height: 100vh;
   margin: 0;
 
@@ -210,9 +229,19 @@ body {
   font-family: var(--font-body), sans-serif;
 
   text-rendering: optimizeLegibility;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /*
+   * Prevent accidental horizontal scrolling on mobile.
+   */
+  overscroll-behavior-x: none;
 }
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
 
 img,
 picture,
@@ -224,7 +253,25 @@ svg {
   height: auto;
 }
 
-/* ================= TYPOGRAPHY ================= */
+/*
+ * Prevent inline media from creating unexpected whitespace
+ * and improve mobile rendering.
+ */
+img,
+video {
+  vertical-align: middle;
+}
+
+/*
+ * Videos should not overflow their containers.
+ */
+video {
+  max-width: 100%;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
 
 h1,
 h2,
@@ -241,14 +288,18 @@ h6,
 }
 
 .section-label {
+  margin-bottom: 0.4rem;
+
+  color: #71717a;
+
   font-size: 0.8rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #71717a;
-  margin-bottom: 0.4rem;
 }
 
 .section-title {
+  max-width: 100%;
+
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   line-height: 1.05;
   font-weight: 700;
@@ -259,8 +310,9 @@ h6,
   line-height: 1.7;
 }
 
-/* ================= SPACING SYSTEM ================= */
-
+/* =========================================================
+   SPACING SYSTEM
+   ========================================================= */
 
 .section-padding {
   padding-block: clamp(1.75rem, 3vw, 3rem);
@@ -281,42 +333,111 @@ h6,
   flex-direction: column;
   gap: clamp(0.75rem, 1.2vw, 1.25rem);
 }
-/* ================= BACKGROUNDS ================= */
+
+/* =========================================================
+   BACKGROUNDS
+   ========================================================= */
 
 .hero-grid {
   background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    linear-gradient(
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
 
-  background-size: clamp(24px, 4vw, 50px)
-                   clamp(24px, 4vw, 50px);
+  background-size:
+    clamp(24px, 4vw, 50px)
+    clamp(24px, 4vw, 50px);
 }
 
-/* ================= UTILITIES ================= */
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* ================= SELECTION ================= */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
 
 ::selection {
   background: rgba(97, 108, 250, 0.3);
 }
 
-/* ================= LINKS ================= */
+/* =========================================================
+   LINKS
+   ========================================================= */
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* ================= CHATBOT ================= */
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/*
+ * Prevent iOS Safari from zooming into form controls.
+ * 16px is the safest minimum for mobile input controls.
+ */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+button {
+  min-height: 44px;
+
+  /*
+   * Remove the default iOS tap highlight.
+   */
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Better touch behavior for interactive elements.
+ */
+button,
+a,
+input,
+textarea,
+select {
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   CHATBOT SCROLLBAR
+   ========================================================= */
+
+.chat-scroll {
+  scrollbar-width: thin;
+}
 
 .chat-scroll::-webkit-scrollbar {
   width: 5px;
@@ -331,44 +452,17 @@ a {
   border-radius: 999px;
 }
 
-.chat-scroll {
-  scrollbar-width: thin;
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  min-width: 320px;
-}
-
-
-
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-button {
-  min-height: 44px;
-}
-
-/* ================= RESPONSIVE ================= */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 1280px) {
-
   .section-title {
     max-width: 18ch;
   }
-
 }
 
 @media (max-width: 1024px) {
-
   .section-title {
     max-width: 100%;
   }
@@ -376,11 +470,9 @@ button {
   .section-text {
     max-width: 100%;
   }
-
 }
 
 @media (max-width: 768px) {
-
   .section-padding {
     padding-block: 4rem;
   }
@@ -392,11 +484,9 @@ button {
   .section-title {
     font-size: clamp(2rem, 8vw, 3rem);
   }
-
 }
 
 @media (max-width: 640px) {
-
   .section-label {
     letter-spacing: 0.18em;
   }
@@ -409,11 +499,9 @@ button {
     font-size: 0.95rem;
     line-height: 1.7;
   }
-
 }
 
 @media (max-width: 480px) {
-
   body {
     font-size: 15px;
   }
@@ -421,12 +509,18 @@ button {
   .section-padding {
     padding-block: 3rem;
   }
-
 }
 
-/* ================= CUSTOM CURSOR ================= */
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
 
-/* Desktop only */
+/*
+ * Only hide the native cursor on devices that actually have
+ * a precise pointing device.
+
+ * Touch devices retain the normal browser cursor behavior.
+ */
 @media (pointer: fine) {
   body {
     cursor: none;
@@ -441,8 +535,6 @@ button {
   }
 }
 
-
-/* Mobile / Touch devices */
 @media (pointer: coarse) {
   body,
   a,
@@ -454,3 +546,806 @@ button {
   }
 }
 
+/* =========================================================
+   REDUCED MOTION / ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   SAFER MOBILE VIEWPORT
+   ========================================================= */
+
+/*
+ * Helps layouts that use full-screen fixed elements on
+ * iPhones with a browser toolbar / safe areas.
+ */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* =========================================================
+   VAI SPACE ADMIN THEME
+   DARK THEME = ORIGINAL VAI SPACE UI
+   LIGHT THEME = POLISHED ADMIN DAY UI
+   ========================================================= */
+
+
+/* =========================================================
+   DARK THEME
+   Keep the original VAI SPACE visual language.
+   ========================================================= */
+
+.admin-shell {
+  --admin-bg: #050506;
+
+  --admin-surface: #0b0c0e;
+  --admin-surface-2: #101114;
+  --admin-surface-3: #151619;
+
+  --admin-input: #0c0d0f;
+
+  --admin-border: rgba(255, 255, 255, 0.08);
+  --admin-border-strong: rgba(255, 255, 255, 0.13);
+
+  --admin-text: #eef0f5;
+  --admin-text-secondary: #a1a8b7;
+  --admin-text-muted: #707789;
+
+  --admin-icon: #9aa2b2;
+
+  --admin-purple: #7167ff;
+  --admin-purple-light: #8b83ff;
+
+  --admin-hover: rgba(255, 255, 255, 0.045);
+
+  --admin-success: #49c98b;
+  --admin-warning: #e8ad55;
+  --admin-danger: #ef7078;
+  --admin-info: #6e9dff;
+
+  --admin-overlay: rgba(0, 0, 0, 0.65);
+
+  --admin-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+  --admin-shadow-large: 0 25px 80px rgba(0, 0, 0, 0.38);
+
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   LIGHT / DAY THEME
+   ========================================================= */
+
+html.admin-light .admin-shell {
+  --admin-bg: #f5f6f8;
+
+  --admin-surface: #ffffff;
+  --admin-surface-2: #fafbfc;
+  --admin-surface-3: #eef0f4;
+
+  --admin-input: #ffffff;
+
+  --admin-border: rgba(25, 29, 40, 0.09);
+  --admin-border-strong: rgba(25, 29, 40, 0.15);
+
+  --admin-text: #181a21;
+  --admin-text-secondary: #596171;
+  --admin-text-muted: #7d8594;
+
+  --admin-icon: #697283;
+
+  --admin-purple: #6558ee;
+  --admin-purple-light: #7669ff;
+
+  --admin-hover: rgba(20, 24, 35, 0.035);
+
+  --admin-success: #159765;
+  --admin-warning: #b87919;
+  --admin-danger: #d74752;
+  --admin-info: #4f7fe8;
+
+  --admin-overlay: rgba(20, 24, 35, 0.38);
+
+  --admin-shadow:
+    0 8px 28px rgba(20, 24, 35, 0.055);
+
+  --admin-shadow-large:
+    0 25px 70px rgba(20, 24, 35, 0.13);
+
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+html:not(.admin-light),
+html:not(.admin-light) body {
+  background: #050506;
+}
+
+html.admin-light,
+html.admin-light body {
+  background: #f5f6f8;
+}
+
+
+/* =========================================================
+   THEME TRANSITIONS
+   IMPORTANT:
+   Do not apply transitions to every child element.
+   ========================================================= */
+
+.admin-shell,
+.admin-shell header,
+.admin-shell aside,
+.admin-shell main,
+.admin-shell section,
+.admin-shell article,
+.admin-shell button,
+.admin-shell input,
+.admin-shell textarea,
+.admin-shell select {
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+.admin-shell {
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.admin-shell header {
+  background: rgba(5, 5, 6, 0.95);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+html.admin-light .admin-shell header {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+
+  box-shadow:
+    0 1px 0 rgba(20, 24, 35, 0.035);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.admin-shell aside {
+  background: #050506;
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+}
+
+html.admin-light .admin-shell aside {
+  background: #ffffff;
+  border-color: var(--admin-border);
+
+  box-shadow:
+    1px 0 0 rgba(20, 24, 35, 0.025);
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.admin-dashboard,
+.admin-dashboard main {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   SURFACES
+   ========================================================= */
+
+.admin-shell .admin-surface {
+  background: var(--admin-surface);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-shell .admin-surface-secondary {
+  background: var(--admin-surface-2);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-shell .admin-surface-tertiary {
+  background: var(--admin-surface-3);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.admin-shell .admin-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+
+
+/* Only light theme gets the softer card shadow. */
+html.admin-light .admin-shell .admin-card {
+  box-shadow: var(--admin-shadow);
+}
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.admin-shell .admin-text {
+  color: var(--admin-text);
+}
+
+.admin-shell .admin-text-secondary {
+  color: var(--admin-text-secondary);
+}
+
+.admin-shell .admin-text-muted {
+  color: var(--admin-text-muted);
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.admin-shell input,
+.admin-shell textarea,
+.admin-shell select {
+  background-color: var(--admin-input);
+  border-color: var(--admin-border-strong);
+  color: var(--admin-text);
+}
+
+.admin-shell input::placeholder,
+.admin-shell textarea::placeholder {
+  color: var(--admin-text-muted);
+  opacity: 1;
+}
+
+.admin-shell input:focus,
+.admin-shell textarea:focus,
+.admin-shell select:focus {
+  outline: none;
+  border-color: var(--admin-purple);
+  box-shadow:
+    0 0 0 3px rgba(113, 103, 255, 0.10);
+}
+
+
+/* =========================================================
+   SELECT OPTIONS
+   ========================================================= */
+
+.admin-shell select option {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.admin-shell .admin-button {
+  background: var(--admin-surface-2);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-shell .admin-button:hover {
+  background: var(--admin-surface-3);
+  border-color: var(--admin-border-strong);
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.admin-shell .admin-primary-button {
+  background: var(--admin-purple);
+  border: 1px solid var(--admin-purple);
+  color: #ffffff;
+}
+
+.admin-shell .admin-primary-button:hover {
+  background: var(--admin-purple-light);
+  border-color: var(--admin-purple-light);
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.admin-shell .admin-search {
+  background: var(--admin-input);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-shell .admin-search::placeholder {
+  color: var(--admin-text-muted);
+}
+
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.admin-shell .admin-dropdown {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border-strong);
+  color: var(--admin-text);
+}
+
+html.admin-light .admin-shell .admin-dropdown {
+  box-shadow: var(--admin-shadow-large);
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.admin-shell .admin-modal {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border-strong);
+  color: var(--admin-text);
+}
+
+html.admin-light .admin-shell .admin-modal {
+  box-shadow: var(--admin-shadow-large);
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.admin-shell table {
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.admin-shell th {
+  color: var(--admin-text-muted);
+  border-color: var(--admin-border);
+}
+
+.admin-shell td {
+  color: var(--admin-text-secondary);
+  border-color: var(--admin-border);
+}
+
+.admin-shell tbody tr {
+  border-color: var(--admin-border);
+}
+
+.admin-shell tbody tr:hover {
+  background: var(--admin-hover);
+}
+
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+.admin-shell .admin-status-success {
+  color: var(--admin-success);
+}
+
+.admin-shell .admin-status-warning {
+  color: var(--admin-warning);
+}
+
+.admin-shell .admin-status-danger {
+  color: var(--admin-danger);
+}
+
+.admin-shell .admin-status-info {
+  color: var(--admin-info);
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.admin-shell .admin-avatar {
+  background: var(--admin-surface-3);
+  border: 1px solid var(--admin-border-strong);
+  color: var(--admin-purple);
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   EXISTING DARK TAILWIND BACKGROUND COMPATIBILITY
+   ========================================================= */
+
+/*
+   These rules ONLY execute when admin-light is active.
+   Therefore the original dark theme is untouched.
+*/
+
+html.admin-light .admin-shell .bg-black,
+html.admin-light .admin-shell .bg-\[\#050506\] {
+  background-color: #f5f6f8 !important;
+}
+
+html.admin-light .admin-shell .bg-\[\#0b0c0e\] {
+  background-color: #ffffff !important;
+}
+
+html.admin-light .admin-shell .bg-\[\#101114\] {
+  background-color: #fafbfc !important;
+}
+
+html.admin-light .admin-shell .bg-\[\#151619\] {
+  background-color: #eef0f4 !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   EXISTING WHITE TEXT
+   ========================================================= */
+
+html.admin-light .admin-shell .text-white {
+  color: #181a21 !important;
+}
+
+html.admin-light .admin-shell .text-\[\#f1f2f5\],
+html.admin-light .admin-shell .text-\[\#eef0f5\] {
+  color: #181a21 !important;
+}
+
+html.admin-light .admin-shell .text-\[\#d8dce5\],
+html.admin-light .admin-shell .text-\[\#d0d4dc\],
+html.admin-light .admin-shell .text-\[\#d7dbe4\] {
+  color: #596171 !important;
+}
+
+html.admin-light .admin-shell .text-\[\#a1a8b7\],
+html.admin-light .admin-shell .text-\[\#9ca3b5\] {
+  color: #596171 !important;
+}
+
+html.admin-light .admin-shell .text-\[\#8991a3\],
+html.admin-light .admin-shell .text-\[\#737b8d\],
+html.admin-light .admin-shell .text-\[\#73798a\] {
+  color: #7d8594 !important;
+}
+
+html.admin-light .admin-shell .text-\[\#707789\],
+html.admin-light .admin-shell .text-\[\#697184\],
+html.admin-light .admin-shell .text-\[\#687083\] {
+  color: #7d8594 !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ICON COLORS
+   ========================================================= */
+
+html.admin-light .admin-shell .text-\[\#8790a4\],
+html.admin-light .admin-shell .text-\[\#777e91\] {
+  color: #697283 !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   WHITE BORDERS
+   ========================================================= */
+
+html.admin-light .admin-shell .border-white\/\[0\.08\],
+html.admin-light .admin-shell .border-white\/\[0\.09\],
+html.admin-light .admin-shell .border-white\/\[0\.10\],
+html.admin-light .admin-shell .border-white\/\[0\.11\],
+html.admin-light .admin-shell .border-white\/\[0\.12\],
+html.admin-light .admin-shell .border-white\/\[0\.13\] {
+  border-color: rgba(25, 29, 40, 0.09) !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   WHITE TRANSPARENT BACKGROUNDS
+   ========================================================= */
+
+html.admin-light .admin-shell .bg-white\/\[0\.02\],
+html.admin-light .admin-shell .bg-white\/\[0\.025\],
+html.admin-light .admin-shell .bg-white\/\[0\.03\],
+html.admin-light .admin-shell .bg-white\/\[0\.04\],
+html.admin-light .admin-shell .bg-white\/\[0\.045\],
+html.admin-light .admin-shell .bg-white\/\[0\.05\],
+html.admin-light .admin-shell .bg-white\/\[0\.06\] {
+  background-color: rgba(20, 24, 35, 0.035) !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ACTIVE SIDEBAR
+   ========================================================= */
+
+html.admin-light .admin-shell aside a.bg-\[\#17152d\] {
+  background: #efedff !important;
+  color: #181a21 !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   PROFILE AREA
+   ========================================================= */
+
+html.admin-light .admin-shell aside .bg-white\/\[0\.025\] {
+  background: #f7f7fa !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   PURPLE TEXT
+   ========================================================= */
+
+html.admin-light .admin-shell .text-\[\#8177ff\],
+html.admin-light .admin-shell .text-\[\#8f85ff\],
+html.admin-light .admin-shell .text-\[\#8b83ff\],
+html.admin-light .admin-shell .text-\[\#7167ff\] {
+  color: #6558ee !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   PURPLE BACKGROUNDS
+   ========================================================= */
+
+html.admin-light .admin-shell .bg-\[\#17152d\] {
+  background-color: #efedff !important;
+}
+
+html.admin-light .admin-shell .bg-\[\#1d193c\] {
+  background-color: #eeeaff !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   PURPLE BORDERS
+   ========================================================= */
+
+html.admin-light .admin-shell .border-\[\#766cff\]\/40 {
+  border-color: rgba(101, 88, 238, 0.30) !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   BUTTON HOVER
+   ========================================================= */
+
+html.admin-light .admin-shell button:hover {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.admin-shell button:focus-visible,
+.admin-shell a:focus-visible,
+.admin-shell input:focus-visible,
+.admin-shell textarea:focus-visible,
+.admin-shell select:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 2px var(--admin-bg),
+    0 0 0 4px rgba(113, 103, 255, 0.45);
+}
+
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.admin-shell button:disabled,
+.admin-shell input:disabled,
+.admin-shell textarea:disabled,
+.admin-shell select:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+   ========================================================= */
+
+html:not(.admin-light) {
+  scrollbar-color: #30323a #050506;
+}
+
+html:not(.admin-light) ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html:not(.admin-light) ::-webkit-scrollbar-track {
+  background: #050506;
+}
+
+html:not(.admin-light) ::-webkit-scrollbar-thumb {
+  background: #30323a;
+  border-radius: 999px;
+}
+
+html:not(.admin-light) ::-webkit-scrollbar-thumb:hover {
+  background: #454852;
+}
+
+
+/* =========================================================
+   LIGHT SCROLLBAR
+   ========================================================= */
+
+html.admin-light {
+  scrollbar-color: #b8bdc8 #f5f6f8;
+}
+
+html.admin-light ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.admin-light ::-webkit-scrollbar-track {
+  background: #f5f6f8;
+}
+
+html.admin-light ::-webkit-scrollbar-thumb {
+  background: #b8bdc8;
+  border-radius: 999px;
+}
+
+html.admin-light ::-webkit-scrollbar-thumb:hover {
+  background: #969dab;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-shell,
+  .admin-shell *,
+  .admin-shell::before,
+  .admin-shell::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+/* VAI SPACE blog rich-text editor */
+.blog-editor-content .tiptap {
+  min-height: 420px;
+  outline: none;
+  color: var(--admin-text);
+  font-family: Lexend, sans-serif;
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.blog-editor-content .tiptap p {
+  margin: 0 0 0.85rem;
+}
+
+.blog-editor-content .tiptap h1,
+.blog-editor-content .tiptap h2,
+.blog-editor-content .tiptap h3 {
+  margin: 1.25rem 0 0.65rem;
+  font-weight: 600;
+}
+
+.blog-editor-content .tiptap h1 {
+  font-size: 1.75rem;
+}
+
+.blog-editor-content .tiptap h2 {
+  font-size: 1.4rem;
+}
+
+.blog-editor-content .tiptap h3 {
+  font-size: 1.15rem;
+}
+
+.blog-editor-content .tiptap a {
+  color: var(--admin-purple);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.blog-editor-content .tiptap ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.blog-editor-content .tiptap ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+.blog-editor-content .tiptap blockquote {
+  border-left: 3px solid var(--admin-purple);
+  margin: 1rem 0;
+  padding-left: 1rem;
+  opacity: 0.85;
+}
